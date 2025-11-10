@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federal Archeology Laws - Archalo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fafafa;
+        }
+        
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            color: #ecf0f1;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: clamp(1rem, 3vw, 2rem);
+        }
+        
+        .nav-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            transform: translateY(-1px);
+        }
+        
+        /* Hero section */
+        .hero {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: clamp(3rem, 6vw, 5rem) 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        .hero p {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        /* Laws container */
+        .laws-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: clamp(3rem, 6vw, 5rem) 2rem;
+        }
+        
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .search-bar input:focus {
+            border-color: #3498db;
+        }
+        
+        .laws-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .law-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .law-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .law-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        
+        .law-card h3 {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+        
+        .law-year {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .law-summary {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .law-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .law-tag {
+            background: #ecf0f1;
+            color: #2c3e50;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .expand-btn {
+            color: #3498db;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .expand-btn:hover {
+            color: #2980b9;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            margin: 5vh auto;
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow-y: auto;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #7f8c8d;
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+        
+        .modal-close:hover {
+            background: #f8f9fa;
+            color: #2c3e50;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 3rem;
+        }
+        
+        /* State lookup section styles */
+        .state-lookup-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .lookup-form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            align-items: end;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-group select,
+        .form-group input {
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: #3498db;
+        }
+        
+        .lookup-btn {
+            grid-column: 1 / -1;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .lookup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .lookup-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .state-laws-results {
+            margin-top: 2rem;
+        }
+        
+        .state-laws-results h3 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            text-align: center;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .laws-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .law-card {
+                padding: 1.5rem;
+            }
+            
+            .lookup-form {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Archalo</div>
+            <ul class="nav-links">
+                <li><a href="Archalo.html">Home</a></li>
+                <li><a href="laws.html" class="active">Laws</a></li>
+                <li><a href="artifactHelp.html">I Found an Artifact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Federal Archeology Laws</h1>
+        <p>Comprehensive guide to United States federal laws governing archaeological resources, preservation, and discovery</p>
+    </section>
+
+    <section class="laws-container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search federal laws by name, year, or keyword...">
+        </div>
+        
+        <!-- State/County Laws Lookup Section -->
+        <div class="state-lookup-section">
+            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: clamp(1.8rem, 4vw, 2.5rem);">State & County Laws</h2>
+            <div class="lookup-form">
+                <div class="form-group">
+                    <label for="stateSelect">Select State:</label>
+                    <select id="stateSelect">
+                        <option value="">Choose a state...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="countyInput">Enter County (Optional):</label>
+                    <input type="text" id="countyInput" placeholder="e.g., Los Angeles County">
+                </div>
+                <button id="lookupBtn" class="lookup-btn">Look Up Laws</button>
+            </div>
+            
+            <div id="stateLawsResults" class="state-laws-results" style="display: none;">
+                <h3>Archaeological Laws for <span id="selectedLocation"></span></h3>
+                <div id="stateLawsGrid" class="laws-grid"></div>
+            </div>
+        </div>
+        
+        <div style="margin: 3rem 0; border-top: 2px solid #e0e0e0;"></div>
+        
+        <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: clamp(1.8rem, 4vw, 2.5rem);">Federal Laws</h2>
+        
+        <div id="lawsGrid" class="laws-grid">
+            <div class="loading">Loading federal archeology laws...</div>
+        </div>
+    </section>
+
+    <!-- Modal for law details -->
+    <div id="lawModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeLawModal()">&times;</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIE7hK6HCD0-qTb1Eq9P7DufAMhk-PLzs",
+            authDomain: "fll-ftc-interest-app.firebaseapp.com",
+            projectId: "fll-ftc-interest-app",
+            storageBucket: "fll-ftc-interest-app.firebasestorage.app",
+            messagingSenderId: "1027540612916",
+            appId: "1:1027540612916:web:e0e0a20226a184fd4dd761",
+            measurementId: "G-09ZZMH0N13"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let allLaws = [];
+
+        // Sample law data - you can populate the database with this
+        const sampleLaws = [
+            {
+                id: "antiquities-act-1906",
+                title: "Antiquities Act",
+                year: "1906",
+                icon: "🏛️",
+                summary: "The first federal law to protect archaeological sites on public lands, establishing penalties for unauthorized excavation and artifact collection.",
+                fullText: "An Act for the preservation of American antiquities. Be it enacted by the Senate and House of Representatives of the United States of America in Congress assembled, That any person who shall appropriate, excavate, injure, or destroy any historic or prehistoric ruin or monument, or any object of antiquity, situated on lands owned or controlled by the Government of the United States, without the permission of the Secretary of the Department of the Government having jurisdiction over the lands on which such antiquities are situated, shall, upon conviction, be fined in a sum of not more than five hundred dollars or be imprisoned for a period of not more than ninety days, or shall suffer both fine and imprisonment, in the discretion of the court.",
+                tags: ["Historic Preservation", "Federal Lands", "Penalties"],
+                significance: "First comprehensive federal protection for archaeological resources",
+                enforcement: "National Park Service, Bureau of Land Management, U.S. Forest Service"
+            },
+            {
+                id: "archaeological-resources-protection-act-1979",
+                title: "Archaeological Resources Protection Act (ARPA)",
+                year: "1979",
+                icon: "⚖️",
+                summary: "Strengthens protection of archaeological resources on federal and Indian lands with enhanced penalties and permit requirements.",
+                fullText: "The Archaeological Resources Protection Act of 1979 provides enhanced protection for archaeological resources located on public lands and Indian lands. The Act establishes detailed requirements for permits to excavate or remove archaeological resources from federal or Indian lands, and strengthens the penalties for violations.",
+                tags: ["ARPA", "Indian Lands", "Permits", "Enhanced Penalties"],
+                significance: "Replaced and strengthened the Antiquities Act with specific archaeological focus",
+                enforcement: "Multiple federal agencies including DOI, USDA, DOD, TVA"
+            },
+            {
+                id: "national-historic-preservation-act-1966",
+                title: "National Historic Preservation Act (NHPA)",
+                year: "1966",
+                icon: "🏺",
+                summary: "Establishes the National Register of Historic Places and requires federal agencies to consider effects on historic properties.",
+                fullText: "The National Historic Preservation Act established a comprehensive national historic preservation program and created the National Register of Historic Places. Section 106 requires federal agencies to take into account the effects of their undertakings on historic properties.",
+                tags: ["NHPA", "Section 106", "National Register", "Historic Properties"],
+                significance: "Created framework for historic preservation review of federal projects",
+                enforcement: "Advisory Council on Historic Preservation, State Historic Preservation Officers"
+            },
+            {
+                id: "native-american-graves-protection-1990",
+                title: "Native American Graves Protection and Repatriation Act (NAGPRA)",
+                year: "1990",
+                icon: "🪶",
+                summary: "Requires museums and federal agencies to return Native American cultural items to lineal descendants and culturally affiliated tribes.",
+                fullText: "The Native American Graves Protection and Repatriation Act establishes the rights of Native American lineal descendants, Indian tribes, and Native Hawaiian organizations to Native American cultural items, including human remains, funerary objects, sacred objects, and objects of cultural patrimony.",
+                tags: ["NAGPRA", "Repatriation", "Native American", "Cultural Items"],
+                significance: "Addresses historical injustices and promotes tribal sovereignty over cultural heritage",
+                enforcement: "National Park Service, Review Committee"
+            },
+            {
+                id: "american-indian-religious-freedom-act-1978",
+                title: "American Indian Religious Freedom Act",
+                year: "1978",
+                icon: "🕊️",
+                summary: "Protects and preserves the traditional religious rights and cultural practices of American Indians, Eskimos, Aleuts, and Native Hawaiians.",
+                fullText: "Resolved that henceforth it shall be the policy of the United States to protect and preserve for American Indians their inherent right of freedom to believe, express, and exercise the traditional religions of the American Indian, Eskimo, Aleut, and Native Hawaiians, including but not limited to access to sites, use and possession of sacred objects, and the freedom to worship through ceremonials and traditional rites.",
+                tags: ["Religious Freedom", "Sacred Sites", "Traditional Practices"],
+                significance: "Recognizes and protects Native American religious practices and sacred sites",
+                enforcement: "Multiple federal agencies in consultation with tribes"
+            }
+        ];
+
+        // Initialize database with sample data
+        async function initializeLawsDatabase() {
+            try {
+                for (const law of sampleLaws) {
+                    await setDoc(doc(db, "archaeologyLaws", law.id), law);
+                }
+                console.log("Laws database initialized");
+            } catch (error) {
+                console.error("Error initializing laws database:", error);
+            }
+        }
+
+        // Fetch laws from database
+        async function fetchLaws() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "archaeologyLaws"));
+                const laws = [];
+                
+                if (querySnapshot.empty) {
+                    console.log("No laws found, initializing database...");
+                    await initializeLawsDatabase();
+                    return fetchLaws(); // Retry after initialization
+                }
+                
+                querySnapshot.forEach((doc) => {
+                    laws.push({ id: doc.id, ...doc.data() });
+                });
+                
+                return laws;
+            } catch (error) {
+                console.error("Error fetching laws:", error);
+                // Return sample data as fallback
+                return sampleLaws;
+            }
+        }
+
+        // Display laws in grid
+        function displayLaws(laws) {
+            const grid = document.getElementById('lawsGrid');
+            
+            if (laws.length === 0) {
+                grid.innerHTML = '<div class="loading">No laws found matching your search.</div>';
+                return;
+            }
+            
+            grid.innerHTML = laws.map(law => `
+                <div class="law-card" onclick="openLawModal('${law.id}')">
+                    <div class="law-icon">${law.icon}</div>
+                    <h3>${law.title}</h3>
+                    <div class="law-year">${law.year}</div>
+                    <p class="law-summary">${law.summary}</p>
+                    <div class="law-tags">
+                        ${law.tags.map(tag => `<span class="law-tag">${tag}</span>`).join('')}
+                    </div>
+                    <a href="#" class="expand-btn">Learn More →</a>
+                </div>
+            `).join('');
+        }
+
+        // Search functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filteredLaws = allLaws.filter(law =>
+                    law.title.toLowerCase().includes(searchTerm) ||
+                    law.year.includes(searchTerm) ||
+                    law.summary.toLowerCase().includes(searchTerm) ||
+                    law.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+                );
+                displayLaws(filteredLaws);
+            });
+        }
+
+        // Modal functions
+        window.openLawModal = function(lawId) {
+            const law = allLaws.find(l => l.id === lawId);
+            if (!law) return;
+            
+            const modal = document.getElementById('lawModal');
+            const content = document.getElementById('modalContent');
+            
+            content.innerHTML = `
+                <div class="law-icon" style="margin-bottom: 1rem;">${law.icon}</div>
+                <h2 style="color: #2c3e50; margin-bottom: 0.5rem;">${law.title}</h2>
+                <p style="color: #7f8c8d; margin-bottom: 1.5rem; font-weight: 500;">Enacted: ${law.year}</p>
+                
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Summary</h3>
+                <p style="margin-bottom: 1.5rem; line-height: 1.6;">${law.summary}</p>
+                
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Significance</h3>
+                <p style="margin-bottom: 1.5rem; line-height: 1.6;">${law.significance}</p>
+                
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Enforcement</h3>
+                <p style="margin-bottom: 1.5rem; line-height: 1.6;">${law.enforcement}</p>
+                
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Full Text (Excerpt)</h3>
+                <p style="font-style: italic; line-height: 1.6; color: #555;">${law.fullText}</p>
+                
+                <div style="margin-top: 1.5rem;">
+                    ${law.tags.map(tag => `<span class="law-tag">${tag}</span>`).join('')}
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        };
+
+        window.closeLawModal = function() {
+            document.getElementById('lawModal').style.display = 'none';
+        };
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('lawModal');
+            if (e.target === modal) {
+                closeLawModal();
+            }
+        });
+
+        // US States list
+        const usStates = [
+            'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
+            'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
+            'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
+            'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico',
+            'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania',
+            'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+            'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+        ];
+
+        // Sample state/county laws data
+        const sampleStateLaws = [
+            {
+                id: "california-ceqa",
+                state: "California",
+                county: "",
+                title: "California Environmental Quality Act (CEQA)",
+                year: "1970",
+                icon: "🏛️",
+                summary: "Requires environmental review of projects that may impact archaeological resources in California.",
+                fullText: "CEQA requires state and local agencies to identify the significant environmental effects of their actions and to avoid or mitigate those effects where feasible.",
+                tags: ["Environmental Review", "State Law", "Cultural Resources"],
+                significance: "Primary state law protecting archaeological resources through environmental review",
+                enforcement: "California Office of Historic Preservation"
+            },
+            {
+                id: "texas-antiquities-code",
+                state: "Texas",
+                county: "",
+                title: "Texas Antiquities Code",
+                year: "1969",
+                icon: "⭐",
+                summary: "Protects archaeological and historical sites on state lands and requires permits for investigations.",
+                fullText: "The Texas Antiquities Code protects all sites, objects, buildings, artifacts, implements, and locations of historical, anthropological, archaeological, paleontological, or scientific interest located on lands belonging to the State of Texas or any county, city, or political subdivision of the state.",
+                tags: ["State Protection", "Permits", "Public Lands"],
+                significance: "Comprehensive state protection for archaeological resources",
+                enforcement: "Texas Historical Commission"
+            },
+            {
+                id: "new-york-parks-law",
+                state: "New York",
+                county: "",
+                title: "New York State Parks, Recreation and Historic Preservation Law",
+                year: "1972",
+                icon: "🗽",
+                summary: "Establishes state historic preservation program and protects archaeological sites.",
+                fullText: "This law establishes the New York State historic preservation program and provides protection for archaeological and historic resources on state lands.",
+                tags: ["Historic Preservation", "State Program", "Archaeological Protection"],
+                significance: "Creates framework for state-level historic preservation",
+                enforcement: "New York State Historic Preservation Office"
+            },
+            {
+                id: "arizona-antiquities-act",
+                state: "Arizona",
+                county: "",
+                title: "Arizona Antiquities Act",
+                year: "1960",
+                icon: "🌵",
+                summary: "Protects archaeological sites and artifacts on state and school trust lands.",
+                fullText: "The Arizona Antiquities Act protects all paleontological specimens, archaeological sites, and historic properties on state lands and school trust lands.",
+                tags: ["State Lands", "School Trust Lands", "Archaeological Sites"],
+                significance: "Protects archaeological resources on Arizona state lands",
+                enforcement: "Arizona State Museum, Arizona State Parks"
+            },
+            {
+                id: "los-angeles-county-ordinance",
+                state: "California",
+                county: "Los Angeles County",
+                title: "Los Angeles County Cultural Resources Ordinance",
+                year: "2015",
+                icon: "🏙️",
+                summary: "County-level protection for archaeological and cultural resources in unincorporated areas.",
+                fullText: "This ordinance establishes procedures for the identification, evaluation, and protection of cultural resources in Los Angeles County unincorporated areas.",
+                tags: ["County Law", "Cultural Resources", "Local Protection"],
+                significance: "Local-level archaeological resource protection",
+                enforcement: "Los Angeles County Department of Regional Planning"
+            }
+        ];
+
+        // Initialize database with sample data
+        async function initializeStateLawsDatabase() {
+            try {
+                for (const law of sampleStateLaws) {
+                    await setDoc(doc(db, "stateLaws", law.id), law);
+                }
+                console.log("State laws database initialized");
+            } catch (error) {
+                console.error("Error initializing state laws database:", error);
+            }
+        }
+
+        // Fetch state/county laws
+        async function fetchStateLaws(state, county = '') {
+            try {
+                const querySnapshot = await getDocs(collection(db, "stateLaws"));
+                const laws = [];
+                
+                if (querySnapshot.empty) {
+                    console.log("No state laws found, initializing database...");
+                    await initializeStateLawsDatabase();
+                    return fetchStateLaws(state, county); // Retry after initialization
+                }
+                
+                querySnapshot.forEach((doc) => {
+                    const lawData = doc.data();
+                    // Match state first
+                    if (lawData.state === state) {
+                        if (county) {
+                            // If county is specified, only show laws that match that county or have no county
+                            if (!lawData.county || lawData.county.toLowerCase().includes(county.toLowerCase())) {
+                                laws.push({ id: doc.id, ...lawData });
+                            }
+                        } else {
+                            // If no county specified, show ALL laws for the state (including county-specific ones)
+                            laws.push({ id: doc.id, ...lawData });
+                        }
+                    }
+                });
+                
+                return laws;
+            } catch (error) {
+                console.error("Error fetching state laws:", error);
+                // Return filtered sample data as fallback
+                return sampleStateLaws.filter(law => {
+                    if (law.state === state) {
+                        if (county) {
+                            return !law.county || law.county.toLowerCase().includes(county.toLowerCase());
+                        } else {
+                            // Show all laws for the state when no county specified
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+            }
+        }
+
+        // Display state laws
+        function displayStateLaws(laws, location) {
+            const resultsDiv = document.getElementById('stateLawsResults');
+            const locationSpan = document.getElementById('selectedLocation');
+            const grid = document.getElementById('stateLawsGrid');
+            
+            locationSpan.textContent = location;
+            
+            if (laws.length === 0) {
+                grid.innerHTML = '<div class="loading">No archaeological laws found for this location. Check with local authorities for specific regulations.</div>';
+            } else {
+                grid.innerHTML = laws.map(law => `
+                    <div class="law-card" onclick="openLawModal('${law.id}', 'state')">
+                        <div class="law-icon">${law.icon}</div>
+                        <h3>${law.title}</h3>
+                        <div class="law-year">${law.year}</div>
+                        <p class="law-summary">${law.summary}</p>
+                        <div class="law-tags">
+                            ${law.tags.map(tag => `<span class="law-tag">${tag}</span>`).join('')}
+                        </div>
+                        <a href="#" class="expand-btn">Learn More →</a>
+                    </div>
+                `).join('');
+            }
+            
+            resultsDiv.style.display = 'block';
+        }
+
+        // Populate state dropdown
+        function populateStateDropdown() {
+            const stateSelect = document.getElementById('stateSelect');
+            usStates.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            });
+        }
+
+        // Setup state lookup functionality
+        function setupStateLookup() {
+            const lookupBtn = document.getElementById('lookupBtn');
+            const stateSelect = document.getElementById('stateSelect');
+            const countyInput = document.getElementById('countyInput');
+            
+            lookupBtn.addEventListener('click', async () => {
+                const selectedState = stateSelect.value;
+                const countyValue = countyInput.value.trim();
+                
+                if (!selectedState) {
+                    alert('Please select a state');
+                    return;
+                }
+                
+                lookupBtn.disabled = true;
+                lookupBtn.textContent = 'Looking up laws...';
+                
+                try {
+                    const stateLaws = await fetchStateLaws(selectedState, countyValue);
+                    const location = countyValue ? `${countyValue}, ${selectedState}` : selectedState;
+                    displayStateLaws(stateLaws, location);
+                } catch (error) {
+                    console.error('Error looking up state laws:', error);
+                    alert('Error looking up laws. Please try again.');
+                } finally {
+                    lookupBtn.disabled = false;
+                    lookupBtn.textContent = 'Look Up Laws';
+                }
+            });
+        }
+
+        // Update modal function to handle both federal and state laws
+        window.openLawModal = function(lawId, type = 'federal') {
+            let law;
+            if (type === 'state') {
+                // Find in sample state laws (fallback)
+                law = sampleStateLaws.find(l => l.id === lawId);
+            } else {
+                law = allLaws.find(l => l.id === lawId);
+            }
+            
+            if (!law) return;
+            
+            const modal = document.getElementById('lawModal');
+            const content = document.getElementById('modalContent');
+            
+            content.innerHTML = `
+                <div class="law-icon" style="margin-bottom: 1rem;">${law.icon}</div>
+                <h2 style="color: #2c3e50; margin-bottom: 0.5rem;">${law.title}</h2>
+                <p style="color: #7f8c8d; margin-bottom: 1.5rem; font-weight: 500;">Enacted: ${law.year}</p>
+                
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Summary</h3>
+                <p style="margin-bottom: 1.5rem; line-height: 1.6;">${law.summary}</p>
+                
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Significance</h3>
+                <p style="margin-bottom: 1.5rem; line-height: 1.6;">${law.significance}</p>
+                
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Enforcement</h3>
+                <p style="margin-bottom: 1.5rem; line-height: 1.6;">${law.enforcement}</p>
+                
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Full Text (Excerpt)</h3>
+                <p style="font-style: italic; line-height: 1.6; color: #555;">${law.fullText}</p>
+                
+                <div style="margin-top: 1.5rem;">
+                    ${law.tags.map(tag => `<span class="law-tag">${tag}</span>`).join('')}
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        };
+
+        // Initialize page
+        async function initializePage() {
+            allLaws = await fetchLaws();
+            displayLaws(allLaws);
+            setupSearch();
+            populateStateDropdown();
+            setupStateLookup();
+        }
+
+        // Load when page loads
+        window.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>

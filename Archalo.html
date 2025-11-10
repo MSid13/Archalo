@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archalo - Archaeological Discovery Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fafafa;
+        }
+        
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            color: #ecf0f1;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: clamp(1rem, 3vw, 2rem);
+        }
+        
+        .nav-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            transform: translateY(-1px);
+        }
+        
+        /* Mobile menu toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #ecf0f1;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Artifact of the day section */
+        .artifact-of-day {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: clamp(2rem, 5vw, 4rem) 2rem;
+            text-align: center;
+        }
+        
+        .artifact-of-day h2 {
+            color: #2c3e50;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        .artifact-placeholder {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .artifact-placeholder p {
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+        }
+        
+        .artifact-content {
+            display: grid;
+            grid-template-columns: minmax(250px, 1fr) 2fr;
+            gap: clamp(1.5rem, 4vw, 3rem);
+            align-items: center;
+            text-align: left;
+        }
+        
+        .artifact-image {
+            width: 100%;
+            max-width: 350px;
+            height: clamp(200px, 25vw, 250px);
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 0 auto;
+            display: block;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .artifact-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .artifact-info h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        
+        .artifact-info p {
+            color: #555;
+            margin-bottom: 0.8rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            line-height: 1.6;
+        }
+        
+        .artifact-info p strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .loading {
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+        }
+        
+        /* Features section */
+        .content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: clamp(3rem, 6vw, 5rem) 2rem;
+        }
+
+        /* Hero Content Section */
+        .hero-content {
+            text-align: center;
+            margin-bottom: clamp(4rem, 8vw, 6rem);
+        }
+
+        .hero-content h2 {
+            color: #2c3e50;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .hero-description {
+            color: #555;
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            line-height: 1.7;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            min-width: 200px;
+            justify-content: center;
+        }
+
+        .cta-button.primary {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .cta-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        }
+
+        .cta-button.secondary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .cta-button.secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: clamp(4rem, 8vw, 6rem);
+        }
+        
+        .feature {
+            text-align: center;
+            padding: clamp(2rem, 4vw, 3rem);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            background: white;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #3498db, #e74c3c);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .feature:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        
+        .feature h3 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            font-weight: 600;
+        }
+        
+        .feature p {
+            color: #666;
+            font-size: clamp(0.95rem, 2vw, 1.1rem);
+            line-height: 1.7;
+        }
+
+        /* About Section */
+        .about-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+            padding: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 2rem;
+        }
+
+        .about-section h2 {
+            color: #2c3e50;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .about-text p {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .disclaimer {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .disclaimer h4 {
+            color: #856404;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .disclaimer p {
+            color: #856404;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            color: #e74c3c;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* Responsive breakpoints */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #2c3e50, #34495e);
+                flex-direction: column;
+                padding: 1rem 2rem;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .artifact-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+            
+            .artifact-image {
+                max-width: 280px;
+                height: 200px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .artifact-of-day {
+                padding: 2rem 1rem;
+            }
+            
+            .content {
+                padding: 2rem 1rem;
+            }
+            
+            .features {
+                gap: 1.5rem;
+            }
+            
+            .feature {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .artifact-content {
+                gap: 4rem;
+            }
+            
+            .artifact-image {
+                max-width: 400px;
+                height: 280px;
+            }
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Focus styles for accessibility */
+        .nav-links a:focus,
+        .mobile-menu-toggle:focus {
+            outline: 2px solid #3498db;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Archalo</div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+            <ul class="nav-links">
+                <li><a href="Archalo.html">Home</a></li>
+                <li><a href="laws.html">Laws</a></li>
+                <li><a href="artifactHelp.html">I Found an Artifact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="artifact-of-day">
+        <h2>Artifact of the Day</h2>
+        <div class="artifact-placeholder" id="artifact-container">
+            <p class="loading">Loading today's artifact...</p>
+        </div>
+    </section>
+    
+    <section class="content">
+        <!-- Hero Content Section -->
+        <div class="hero-content">
+            <h2>Welcome to Archalo</h2>
+            <p class="hero-description">Your comprehensive guide to archaeological discovery. Found an artifact? Don't know what to do next? We'll support you through every step with location-specific guidance, legal requirements, and expert contact information.</p>
+            
+            <div class="quick-actions">
+                <a href="artifactHelp.html" class="cta-button primary">🔍 I Found an Artifact</a>
+                <a href="laws.html" class="cta-button secondary">⚖️ View Legal Guidelines</a>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🏛️</div>
+                <h3>Archaeological Resources</h3>
+                <p>Access comprehensive information about archaeological sites, discoveries, and historical significance with curated content from leading institutions.</p>
+            </div>
+
+        <!-- About Section -->
+        <div class="about-section">
+            <h2>About Archalo</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Archalo is developed by the <strong>FLL Owlcheologists Team #41991</strong>, dedicated to bridging the gap between archaeological discovery and proper reporting procedures.</p>
+                    
+                    <p>Our platform combines real-time location data with comprehensive legal databases to provide accurate, jurisdiction-specific guidance for archaeological finds.</p>
+                    
+                    <div class="disclaimer">
+                        <h4>⚠️ Important Disclaimer</h4>
+                        <p>We strive to provide the most accurate data available, however, we cannot guarantee its completeness or accuracy. Our guidance is advisory only. We are not responsible for any consequences resulting from the use of this information. Always verify with authorities.</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIE7hK6HCD0-qTb1Eq9P7DufAMhk-PLzs",
+            authDomain: "fll-ftc-interest-app.firebaseapp.com",
+            projectId: "fll-ftc-interest-app",
+            storageBucket: "fll-ftc-interest-app.firebasestorage.app",
+            messagingSenderId: "1027540612916",
+            appId: "1:1027540612916:web:e0e0a20226a184fd4dd761",
+            measurementId: "G-09ZZMH0N13"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        const SMITHSONIAN_API_KEY = "KKiTrGw8uKnEZTiBmCV4gBbkT3Y2KYRGjLL6gKmR";
+
+        // Get today's date string (YYYY-MM-DD)
+        function getTodayString() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        // Generate deterministic random number based on date
+        function getDeterministicRandom(seed) {
+            const x = Math.sin(seed) * 10000;
+            return x - Math.floor(x);
+        }
+
+        // Get date-based seed for consistent daily selection
+        function getDateSeed() {
+            const today = getTodayString();
+            return today.split('-').reduce((acc, part) => acc + parseInt(part), 0);
+        }
+
+        // Fetch random artifact from Smithsonian API
+        async function fetchRandomArtifact() {
+            try {
+                // First, get total number of records
+                const searchUrl = `https://api.si.edu/openaccess/api/v1.0/search?api_key=${SMITHSONIAN_API_KEY}&q=*&rows=0`;
+                const searchResponse = await fetch(searchUrl);
+                const searchData = await searchResponse.json();
+                
+                if (searchData.response && searchData.response.rowCount > 0) {
+                    // Get a deterministic offset based on today's date
+                    const totalRecords = Math.min(searchData.response.rowCount, 10000); // Limit for performance
+                    const dateSeed = getDateSeed();
+                    const randomOffset = Math.floor(getDeterministicRandom(dateSeed) * totalRecords);
+                    
+                    // Fetch artifact with image
+                    const artifactUrl = `https://api.si.edu/openaccess/api/v1.0/search?api_key=${SMITHSONIAN_API_KEY}&q=*&rows=1&start=${randomOffset}&online_media_type=Images`;
+                    const artifactResponse = await fetch(artifactUrl);
+                    const artifactData = await artifactResponse.json();
+                    
+                    if (artifactData.response && artifactData.response.rows.length > 0) {
+                        const artifact = artifactData.response.rows[0];
+                        return {
+                            id: artifact.id,
+                            title: artifact.title || "Unknown Artifact",
+                            description: artifact.content?.freetext?.notes?.[0]?.content || "No description available",
+                            image: artifact.content?.descriptiveNonRepeating?.online_media?.media?.[0]?.content || "",
+                            date: artifact.content?.indexedStructured?.date?.[0] || "Date unknown",
+                            culture: artifact.content?.indexedStructured?.culture?.[0] || "Culture unknown"
+                        };
+                    }
+                }
+                throw new Error("No artifacts found");
+            } catch (error) {
+                console.error("Error fetching artifact:", error);
+                return null;
+            }
+        }
+
+        // Get or set today's artifact
+        async function getTodaysArtifact() {
+            const today = getTodayString();
+            const docRef = doc(db, "artifactOfDay", today);
+            
+            try {
+                console.log("Checking Firestore for artifact on date:", today);
+                console.log("Project ID:", firebaseConfig.projectId);
+                console.log("Document path:", `artifactOfDay/${today}`);
+                
+                const docSnap = await getDoc(docRef);
+                console.log("Firestore read successful");
+                
+                if (docSnap.exists()) {
+                    console.log("Found existing artifact in Firestore");
+                    return docSnap.data().artifact;
+                } else {
+                    console.log("No document exists for today, fetching new artifact from API");
+                    
+                    // Fetch new artifact
+                    const artifact = await fetchRandomArtifact();
+                    
+                    if (artifact) {
+                        console.log("Fetched artifact:", artifact.title);
+                        
+                        // Save to Firestore
+                        console.log("Saving new artifact to Firestore...");
+                        const docData = { 
+                            artifact: artifact, 
+                            date: today,
+                            timestamp: new Date().toISOString()
+                        };
+                        
+                        await setDoc(docRef, docData);
+                        console.log("Successfully saved to Firestore!");
+                        
+                        // Verify the save
+                        const verifyDoc = await getDoc(docRef);
+                        if (verifyDoc.exists()) {
+                            console.log("Verification: Document exists in Firestore");
+                            return verifyDoc.data().artifact;
+                        } else {
+                            console.warn("Verification: Document NOT found in Firestore after save");
+                        }
+                        
+                        return artifact;
+                    } else {
+                        console.error("Failed to fetch artifact from API");
+                        return null;
+                    }
+                }
+            } catch (error) {
+                console.error("Firestore operation failed:", error);
+                console.error("Error details:", {
+                    code: error.code,
+                    message: error.message
+                });
+                
+                // Check if it's a permissions error
+                if (error.code === 'permission-denied') {
+                    console.error("PERMISSION DENIED: Check Firestore security rules");
+                    console.log("Suggested Firestore rules for testing:");
+                    console.log(`
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+                    `);
+                }
+                
+                return {
+                    title: "Database Error",
+                    description: "Unable to connect to database. Please check Firestore configuration and security rules.",
+                    image: "",
+                    date: "Unknown",
+                    culture: "Unknown"
+                };
+            }
+        }
+
+        // Display artifact in the UI
+        function displayArtifact(artifact) {
+            const container = document.getElementById('artifact-container');
+            
+            if (!artifact) {
+                container.innerHTML = '<p class="loading">Unable to load artifact. Please try again later.</p>';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="artifact-content">
+                    <div>
+                        ${artifact.image ? `<img src="${artifact.image}" alt="${artifact.title}" class="artifact-image" onerror="this.style.display='none'">` : '<div class="artifact-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">No Image Available</div>'}
+                    </div>
+                    <div class="artifact-info">
+                        <h3>${artifact.title}</h3>
+                        <p><strong>Date:</strong> ${artifact.date}</p>
+                        <p><strong>Culture:</strong> ${artifact.culture}</p>
+                        <p><strong>Description:</strong> ${artifact.description.substring(0, 200)}${artifact.description.length > 200 ? '...' : ''}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize artifact of the day
+        async function initArtifactOfDay() {
+            try {
+                console.log("Starting artifact initialization...");
+                const artifact = await getTodaysArtifact();
+                console.log("Artifact received:", artifact);
+                displayArtifact(artifact);
+            } catch (error) {
+                console.error("Error initializing artifact:", error);
+                const container = document.getElementById('artifact-container');
+                container.innerHTML = '<p class="loading">Error loading artifact. Please refresh the page.</p>';
+            }
+        }
+
+        // Load artifact when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log("Page loaded, initializing artifact...");
+            initArtifactOfDay();
+        });
+
+        // Mobile menu toggle functionality
+        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('nav');
+            const navLinks = document.querySelector('.nav-links');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (!nav.contains(event.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

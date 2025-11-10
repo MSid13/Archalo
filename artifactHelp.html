@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Found an Artifact - Archalo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fafafa;
+        }
+        
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            color: #ecf0f1;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: clamp(1rem, 3vw, 2rem);
+        }
+        
+        .nav-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            transform: translateY(-1px);
+        }
+        
+        /* Hero section */
+        .hero {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: clamp(3rem, 6vw, 5rem) 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        .hero p {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        /* Main content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: clamp(3rem, 6vw, 5rem) 2rem;
+        }
+        
+        .location-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .location-section h2 {
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            text-align: center;
+        }
+        
+        .location-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .location-option {
+            padding: 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .location-option:hover, .location-option.active {
+            border-color: #3498db;
+            background-color: #f8f9fa;
+        }
+        
+        .location-option h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .location-form {
+            display: block; /* Change from none to block to show by default */
+            margin-top: 2rem;
+        }
+        
+        .location-form.active {
+            display: block;
+        }
+        
+        .location-form.inactive {
+            display: none;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group input {
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            border-color: #3498db;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .location-btn {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+        
+        .location-btn:hover {
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+        
+        .results-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+            display: none;
+        }
+        
+        .results-section.active {
+            display: block;
+        }
+        
+        .property-info {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .property-info h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .info-value {
+            color: #2c3e50;
+            font-weight: 500;
+            word-wrap: break-word;
+        }
+        
+        .guidance-section {
+            margin-top: 2rem;
+        }
+        
+        .guidance-section h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .contact-card {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .contact-card h4 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-info {
+            color: #856404;
+        }
+        
+        .emergency-note {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #721c24;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .location-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Archalo</div>
+            <ul class="nav-links">
+                <li><a href="Archalo.html">Home</a></li>
+                <li><a href="laws.html">Laws</a></li>
+                <li><a href="artifactHelp.html" class="active">I Found an Artifact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>I Found an Artifact!</h1>
+        <p>Get location-specific guidance on what to do when you discover archaeological artifacts</p>
+    </section>
+
+    <section class="main-container">
+        <div class="location-section">
+            <h2>First, let's determine your location</h2>
+            
+            <div class="location-options">
+                <div class="location-option" id="manualOption">
+                    <h3>📍 Enter Coordinates</h3>
+                    <p>Manually input latitude and longitude</p>
+                </div>
+                <div class="location-option" id="gpsOption">
+                    <h3>🌐 Use Current Location</h3>
+                    <p>Allow GPS access to get precise location</p>
+                </div>
+            </div>
+            
+            <div id="manualForm" class="location-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="latitude">Latitude:</label>
+                        <input type="number" id="latitude" step="any" placeholder="47.6062" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="longitude">Longitude:</label>
+                        <input type="number" id="longitude" step="any" placeholder="-122.3321" required>
+                    </div>
+                </div>
+                <button class="btn" onclick="lookupLocation()">Find Property Information</button>
+                <button class="btn" onclick="console.log('Test button works!'); alert('Button test successful!');" style="background: #e74c3c; margin-top: 0.5rem;">🔥 TEST BUTTON 🔥</button>
+            </div>
+            
+            <div id="gpsForm" class="location-form">
+                <button class="btn location-btn" onclick="getCurrentLocation()">Get My Current Location</button>
+            </div>
+        </div>
+        
+        <div id="resultsSection" class="results-section">
+            <div id="loadingIndicator" class="loading">
+                Looking up property information...
+            </div>
+            
+            <div id="propertyResults" style="display: none;">
+                <div class="property-info">
+                    <h3>Property Information</h3>
+                    <div class="info-grid" id="propertyInfoGrid">
+                        <!-- Property info will be populated here -->
+                    </div>
+                </div>
+                
+                <div class="guidance-section">
+                    <h3>What to do next:</h3>
+                    <div id="guidanceContent">
+                        <!-- Guidance content will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIE7hK6HCD0-qTb1Eq9P7DufAMhk-PLzs",
+            authDomain: "fll-ftc-interest-app.firebaseapp.com",
+            projectId: "fll-ftc-interest-app",
+            storageBucket: "fll-ftc-interest-app.firebasestorage.app",
+            messagingSenderId: "1027540612916",
+            appId: "1:1027540612916:web:e0e0a20226a184fd4dd761",
+            measurementId: "G-09ZZMH0N13"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Location option selection
+        document.getElementById('manualOption').addEventListener('click', function() {
+            selectLocationOption('manual');
+        });
+
+        document.getElementById('gpsOption').addEventListener('click', function() {
+            selectLocationOption('gps');
+        });
+
+        function selectLocationOption(type) {
+            // Remove active class from all options
+            document.querySelectorAll('.location-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            // Hide all forms
+            document.querySelectorAll('.location-form').forEach(form => {
+                form.classList.remove('active');
+                form.classList.add('inactive');
+            });
+            
+            // Activate selected option
+            if (type === 'manual') {
+                document.getElementById('manualOption').classList.add('active');
+                document.getElementById('manualForm').classList.remove('inactive');
+                document.getElementById('manualForm').classList.add('active');
+            } else {
+                document.getElementById('gpsOption').classList.add('active');
+                document.getElementById('gpsForm').classList.remove('inactive');
+                document.getElementById('gpsForm').classList.add('active');
+            }
+        }
+
+        // Get current location using GPS
+        window.getCurrentLocation = function() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by this browser.');
+                return;
+            }
+
+            const btn = document.querySelector('.location-btn');
+            btn.disabled = true;
+            btn.textContent = 'Getting location...';
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    console.log(`GPS Location: ${lat}, ${lng}`);
+                    lookupLocationByCoords(lat, lng);
+                },
+                function(error) {
+                    console.error('Error getting location:', error);
+                    alert('Unable to get your location. Please try entering coordinates manually.');
+                    btn.disabled = false;
+                    btn.textContent = 'Get My Current Location';
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 60000
+                }
+            );
+        };
+
+        // Manual location lookup
+        window.lookupLocation = function() {
+            const lat = parseFloat(document.getElementById('latitude').value);
+            const lng = parseFloat(document.getElementById('longitude').value);
+            
+            if (isNaN(lat) || isNaN(lng)) {
+                alert('Please enter valid latitude and longitude values.');
+                return;
+            }
+            
+            if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+                alert('Please enter valid coordinate ranges (Lat: -90 to 90, Lng: -180 to 180).');
+                return;
+            }
+            
+            lookupLocationByCoords(lat, lng);
+        };
+
+        // Lookup location by coordinates
+        async function lookupLocationByCoords(lat, lng) {
+            console.log(`Looking up location: ${lat}, ${lng}`);
+            
+            // Show results section and loading
+            document.getElementById('resultsSection').classList.add('active');
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('propertyResults').style.display = 'none';
+            
+            try {
+                // Call King County Parcel API
+                const parcelData = await fetchParcelData(lat, lng);
+                
+                if (parcelData) {
+                    console.log('🎯 Parcel data received, processing...');
+                    // Check for specific instructions in database
+                    const specificInstructions = await checkForSpecificInstructions(parcelData);
+                    
+                    // Display results
+                    displayPropertyInfo(parcelData);
+                    displayGuidance(parcelData, specificInstructions);
+                } else {
+                    console.log('⚠️ No parcel data found for coordinates');
+                    displayDefaultGuidance('No property data found for these coordinates. The location might be outside King County or in an area not covered by the parcel database.');
+                }
+            } catch (error) {
+                console.error('💥 Error during lookup:', error);
+                displayDefaultGuidance(`Error during property lookup: ${error.message}`);
+            } finally {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                document.getElementById('propertyResults').style.display = 'block';
+                
+                // Reset buttons
+                const buttons = document.querySelectorAll('.btn');
+                buttons.forEach(btn => {
+                    btn.disabled = false;
+                    if (btn.classList.contains('location-btn')) {
+                        btn.textContent = 'Get My Current Location';
+                    }
+                });
+            }
+        }
+
+        // Fetch parcel data from King County API
+        async function fetchParcelData(lat, lng) {
+            try {
+                console.log('🌐 Making API call to King County...');
+                
+                // Try the correct King County Parcel API endpoint
+                let apiUrl = `https://gismaps.kingcounty.gov/arcgis/rest/services/Property/KingCo_Parcels/MapServer/0/query`;
+                let params = new URLSearchParams({
+                    f: 'json',
+                    geometry: `${lng},${lat}`,
+                    geometryType: 'esriGeometryPoint',
+                    inSR: '4326',
+                    spatialRel: 'esriSpatialRelIntersects',
+                    outFields: '*',
+                    returnGeometry: 'false'
+                });
+                
+                let fullUrl = `${apiUrl}?${params}`;
+                console.log('📍 API URL:', fullUrl);
+                
+                let response = await fetch(fullUrl);
+                console.log('📡 API Response status:', response.status);
+                
+                let data = await response.json();
+                console.log('📊 API Response data:', data);
+                
+                if (data.features && data.features.length > 0) {
+                    const attributes = data.features[0].attributes;
+                    console.log('✅ Found parcel data with attributes:', attributes);
+                    console.log('🔍 All available field names:', Object.keys(attributes));
+                    
+                    // Log specific fields we're looking for
+                    console.log('🔍 Field analysis:');
+                    console.log('  - TAXPAYER_NAME:', attributes.TAXPAYER_NAME);
+                    console.log('  - OWNER:', attributes.OWNER);
+                    console.log('  - TAXPAYER:', attributes.TAXPAYER);
+                    console.log('  - OWNER_NAME:', attributes.OWNER_NAME);
+                    console.log('  - TAX_NAME:', attributes.TAX_NAME);
+                    
+                    return attributes;
+                }
+                
+                // If that fails, try alternative endpoint
+                console.log('🔄 Trying alternative King County API...');
+                apiUrl = `https://services.arcgis.com/GlKOtdZYWjrWS3fL/arcgis/rest/services/KingCounty_Parcels_Geocortex/FeatureServer/0/query`;
+                fullUrl = `${apiUrl}?${params}`;
+                console.log('📍 Alternative API URL:', fullUrl);
+                
+                response = await fetch(fullUrl);
+                console.log('📡 Alternative API Response status:', response.status);
+                
+                data = await response.json();
+                console.log('📊 Alternative API Response data:', data);
+                
+                if (data.features && data.features.length > 0) {
+                    const attributes = data.features[0].attributes;
+                    console.log('✅ Found parcel data from alternative API:', attributes);
+                    console.log('🔍 All available field names:', Object.keys(attributes));
+                    return attributes;
+                }
+                
+                console.log('❌ No parcel data found in any API');
+                return null;
+                
+            } catch (error) {
+                console.error('💥 Error fetching parcel data:', error);
+                return null;
+            }
+        }
+
+        // Check for specific instructions in database
+        async function checkForSpecificInstructions(parcelData) {
+            try {
+                // Since we don't have owner info from the API, we'll check by parcel number only
+                const parcelNumber = parcelData.PIN || `${parcelData.MAJOR}-${parcelData.MINOR}` || '';
+                
+                console.log('=== DEBUGGING PROPERTY LOOKUP ===');
+                console.log('Parcel number:', parcelNumber);
+                console.log('Note: Owner information not available from public API');
+                console.log('Full parcel data:', parcelData);
+                
+                // Get all property instructions from database
+                const querySnapshot = await getDocs(collection(db, "propertyInstructions"));
+                
+                if (!querySnapshot.empty) {
+                    console.log('Found', querySnapshot.docs.length, 'property instruction documents');
+                    
+                    // Check each instruction for parcel number match only
+                    for (const doc of querySnapshot.docs) {
+                        const instruction = doc.data();
+                        console.log('Checking instruction:', instruction.id);
+                        
+                        // Check by parcel number
+                        if (parcelNumber && instruction.parcelNumber === parcelNumber) {
+                            console.log('✓ Found parcel number match');
+                            return instruction;
+                        }
+                    }
+                }
+                
+                console.log('❌ No specific instructions found for this parcel');
+                console.log('💡 Note: Without owner information, we can only match by specific parcel numbers in our database');
+                return null;
+            } catch (error) {
+                console.error('Error checking for specific instructions:', error);
+                return null;
+            }
+        }
+
+        // Display property information
+        function displayPropertyInfo(parcelData) {
+            const grid = document.getElementById('propertyInfoGrid');
+            
+            // Log all available fields for debugging
+            console.log('📊 All available parcel data fields:', Object.keys(parcelData));
+            console.log('📊 Full parcel data object:', parcelData);
+            
+            // The King County public API only provides basic parcel data for privacy reasons
+            const parcelNumber = parcelData.PIN || `${parcelData.MAJOR}-${parcelData.MINOR}` || 'Unknown';
+            
+            const info = [
+                { label: 'Parcel Number (PIN)', value: parcelNumber },
+                { label: 'Major Parcel ID', value: parcelData.MAJOR || 'Unknown' },
+                { label: 'Minor Parcel ID', value: parcelData.MINOR || 'Unknown' },
+                { label: 'Property Area (sq ft)', value: parcelData['Shape.STArea()'] ? Math.round(parcelData['Shape.STArea()']).toLocaleString() : 'Unknown' },
+                { label: 'Jurisdiction', value: 'King County' },
+                { label: 'Taxpayer Information', value: 'Not available via public API (privacy protected)' }
+            ];
+            
+            console.log('📊 Property info being displayed:', info);
+            
+            grid.innerHTML = info.map(item => `
+                <div class="info-item">
+                    <span class="info-label">${item.label}:</span>
+                    <span class="info-value">${item.value}</span>
+                </div>
+            `).join('');
+        }
+
+        // Display guidance based on property and instructions
+        function displayGuidance(parcelData, specificInstructions) {
+            const guidanceContent = document.getElementById('guidanceContent');
+            
+            if (specificInstructions) {
+                // Display specific instructions
+                guidanceContent.innerHTML = `
+                    <div class="contact-card">
+                        <h4>Special Instructions for This Property</h4>
+                        <p>${specificInstructions.instructions}</p>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <h4>Primary Contact</h4>
+                        <div class="contact-info">
+                            <p><strong>Name:</strong> ${specificInstructions.contactName}</p>
+                            <p><strong>Phone:</strong> ${specificInstructions.contactPhone}</p>
+                            <p><strong>Email:</strong> ${specificInstructions.contactEmail}</p>
+                        </div>
+                    </div>
+                    
+                    ${getDefaultGuidanceHTML()}
+                `;
+            } else {
+                // Display default guidance
+                displayDefaultGuidance();
+            }
+        }
+
+        // Display default guidance
+        function displayDefaultGuidance(errorInfo = null) {
+            const guidanceContent = document.getElementById('guidanceContent');
+            const propertyGrid = document.getElementById('propertyInfoGrid');
+            
+            // Show error info in property section if available
+            if (errorInfo) {
+                propertyGrid.innerHTML = `
+                    <div class="info-item">
+                        <span class="info-label">Status:</span>
+                        <span class="info-value">${errorInfo}</span>
+                    </div>
+                `;
+            }
+            
+            guidanceContent.innerHTML = getDefaultGuidanceHTML();
+        }
+
+        // Get default guidance HTML
+        function getDefaultGuidanceHTML() {
+            return `
+                <div class="emergency-note">
+                    <strong>⚠️ STOP! Do not disturb the artifact or the surrounding area.</strong>
+                </div>
+                
+                <div class="contact-card">
+                    <h4>King County Archaeologist</h4>
+                    <div class="contact-info">
+                        <p><strong>Phone:</strong> (206) 477-4251</p>
+                        <p><strong>Email:</strong> archaeology@kingcounty.gov</p>
+                        <p><strong>Office Hours:</strong> Monday-Friday, 8:30 AM - 4:30 PM</p>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <h4>Washington State Department of Archaeology & Historic Preservation (DAHP)</h4>
+                    <div class="contact-info">
+                        <p><strong>Phone:</strong> (360) 586-3065</p>
+                        <p><strong>Email:</strong> info@dahp.wa.gov</p>
+                        <p><strong>Website:</strong> dahp.wa.gov</p>
+                    </div>
+                </div>
+                
+                <h4>Immediate Steps to Take:</h4>
+                <ol style="margin: 1rem 0; padding-left: 2rem; line-height: 1.8;">
+                    <li><strong>Stop all work</strong> in the immediate area</li>
+                    <li><strong>Mark the location</strong> with flags or cones if available</li>
+                    <li><strong>Take photos</strong> of the artifact in place (do not move it)</li>
+                    <li><strong>Record GPS coordinates</strong> of the exact location</li>
+                    <li><strong>Contact the King County Archaeologist</strong> immediately</li>
+                    <li><strong>Secure the area</strong> to prevent disturbance</li>
+                </ol>
+                
+                <div class="emergency-note">
+                    <strong>Legal Notice:</strong> Disturbing archaeological sites or artifacts may be a violation of state and federal laws. Always contact authorities before taking any action.
+                </div>
+            `;
+        }
+
+        // Initialize sample property instructions
+        async function initializePropertyInstructions() {
+            const sampleInstructions = [
+                {
+                    id: "washington-state-parks",
+                    ownerName: "Washington State Parks",
+                    keywords: ["STATE PARKS", "WA STATE PARKS", "WASHINGTON STATE PARKS"],
+                    parcelNumber: "",
+                    instructions: "This is state park property. All archaeological discoveries must be reported immediately to both King County and Washington State Parks.",
+                    contactName: "State Parks Archaeology Division",
+                    contactPhone: "(360) 902-8500",
+                    contactEmail: "archaeology@parks.wa.gov"
+                },
+                {
+                    id: "city-of-redmond",
+                    ownerName: "City of Redmond",
+                    keywords: ["REDMOND", "CITY OF REDMOND", "REDMOND CITY OF", "REDMOND CITY", "REDMOND WA", "REDMOND WASHINGTON"],
+                    parcelNumber: "",
+                    instructions: "This property is within Redmond city limits. Contact both King County Archaeologist and Redmond Parks & Recreation Department for archaeological discoveries.",
+                    contactName: "Redmond Parks & Recreation",
+                    contactPhone: "(425) 556-2300",
+                    contactEmail: "parks@redmond.gov"
+                },
+                {
+                    id: "city-of-seattle",
+                    ownerName: "City of Seattle",
+                    keywords: ["SEATTLE", "CITY OF SEATTLE", "SEATTLE CITY OF", "SEATTLE CITY", "SEATTLE WA"],
+                    parcelNumber: "",
+                    instructions: "This property is within Seattle city limits. Contact Seattle Department of Neighborhoods Historic Preservation Program in addition to King County.",
+                    contactName: "Seattle Historic Preservation Program",
+                    contactPhone: "(206) 684-0228",
+                    contactEmail: "preservation@seattle.gov"
+                },
+                {
+                    id: "city-of-bellevue",
+                    ownerName: "City of Bellevue",
+                    keywords: ["BELLEVUE", "CITY OF BELLEVUE", "BELLEVUE CITY OF", "BELLEVUE CITY", "BELLEVUE WA"],
+                    parcelNumber: "",
+                    instructions: "This property is within Bellevue city limits. Contact Bellevue Planning and Community Development Department along with King County.",
+                    contactName: "Bellevue Planning & Community Development",
+                    contactPhone: "(425) 452-6800",
+                    contactEmail: "planning@bellevuewa.gov"
+                },
+                {
+                    id: "king-county",
+                    ownerName: "King County",
+                    keywords: ["KING COUNTY", "KC ", "KING CO", "COUNTY OF KING"],
+                    parcelNumber: "",
+                    instructions: "This is King County property. Follow standard King County archaeological discovery procedures with additional county property protocols.",
+                    contactName: "King County Facilities Management",
+                    contactPhone: "(206) 477-4251",
+                    contactEmail: "facilities@kingcounty.gov"
+                },
+                {
+                    id: "washington-state-dot",
+                    ownerName: "Washington State Department of Transportation",
+                    keywords: ["WSDOT", "WA DOT", "WASHINGTON DOT", "STATE DOT", "DEPARTMENT OF TRANSPORTATION", "TRANSPORTATION"],
+                    parcelNumber: "",
+                    instructions: "This is WSDOT property. Archaeological discoveries on transportation corridors require immediate notification to WSDOT Cultural Resources Program.",
+                    contactName: "WSDOT Cultural Resources Program",
+                    contactPhone: "(360) 705-7077",
+                    contactEmail: "CulturalResources@wsdot.wa.gov"
+                },
+                {
+                    id: "federal-property",
+                    ownerName: "Federal Government",
+                    keywords: ["FEDERAL", "U.S.", "UNITED STATES", "US GOVERNMENT", "FEDERAL GOVERNMENT", "USFWS", "NATIONAL PARK", "FOREST SERVICE", "USA"],
+                    parcelNumber: "",
+                    instructions: "This is federal property. Archaeological discoveries on federal land are protected under federal law and require immediate notification to the appropriate federal agency.",
+                    contactName: "Federal Archaeological Contact",
+                    contactPhone: "(206) 220-7990",
+                    contactEmail: "archaeology@fs.fed.us"
+                }
+            ];
+            
+            try {
+                for (const instruction of sampleInstructions) {
+                    await setDoc(doc(db, "propertyInstructions", instruction.id), instruction);
+                }
+                console.log("Property instructions initialized");
+            } catch (error) {
+                console.error("Error initializing property instructions:", error);
+            }
+        }
+
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded! Initializing...');
+            
+            initializePropertyInstructions();
+            
+            // Auto-fill coordinates for testing and make it obvious
+            const lat = document.getElementById('latitude');
+            const lng = document.getElementById('longitude');
+            if (lat && lng) {
+                lat.value = '47.632298764303414';
+                lng.value = '-122.0942729082814';
+                console.log('Pre-filled test coordinates for Redmond property');
+            }
+            
+            // Force select the manual option and make it visible
+            setTimeout(() => {
+                selectLocationOption('manual');
+                console.log('Manual option selected');
+            }, 100);
+        });
+
+        // Make sure functions are available globally - move outside the module
+        window.lookupLocation = function() {
+            console.log('🔥 LOOKUP BUTTON CLICKED! 🔥');
+            
+            const lat = parseFloat(document.getElementById('latitude').value);
+            const lng = parseFloat(document.getElementById('longitude').value);
+            
+            console.log('Manual lookup clicked with values:', lat, lng);
+            
+            if (isNaN(lat) || isNaN(lng)) {
+                console.error('Invalid coordinates!', {lat, lng});
+                alert('Please enter valid latitude and longitude values.');
+                return;
+            }
+            
+            if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+                console.error('Coordinates out of range!', {lat, lng});
+                alert('Please enter valid coordinate ranges (Lat: -90 to 90, Lng: -180 to 180).');
+                return;
+            }
+            
+            console.log('Calling lookupLocationByCoords...');
+            lookupLocationByCoords(lat, lng);
+        };
+
+        // Expose getCurrentLocation globally as well
+        window.getCurrentLocation = function() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by this browser.');
+                return;
+            }
+
+            const btn = document.querySelector('.location-btn');
+            btn.disabled = true;
+            btn.textContent = 'Getting location...';
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    console.log(`GPS Location: ${lat}, ${lng}`);
+                    lookupLocationByCoords(lat, lng);
+                },
+                function(error) {
+                    console.error('Error getting location:', error);
+                    alert('Unable to get your location. Please try entering coordinates manually.');
+                    btn.disabled = false;
+                    btn.textContent = 'Get My Current Location';
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 60000
+                }
+            );
+        };
+    </script>
+</body>
+</html>
