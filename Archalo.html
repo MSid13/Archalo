@@ -497,13 +497,6 @@
         </div>
 
         <!-- Features Grid -->
-        <div class="features">
-            <div class="feature">
-                <div class="feature-icon">🏛️</div>
-                <h3>Archaeological Resources</h3>
-                <p>Access comprehensive information about archaeological sites, discoveries, and historical significance with curated content from leading institutions.</p>
-            </div>
-
         <!-- About Section -->
         <div class="about-section">
             <h2>About Archalo</h2>
@@ -531,14 +524,15 @@
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
 
         // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
-            apiKey: "AIzaSyDIE7hK6HCD0-qTb1Eq9P7DufAMhk-PLzs",
-            authDomain: "fll-ftc-interest-app.firebaseapp.com",
-            projectId: "fll-ftc-interest-app",
-            storageBucket: "fll-ftc-interest-app.firebasestorage.app",
-            messagingSenderId: "1027540612916",
-            appId: "1:1027540612916:web:e0e0a20226a184fd4dd761",
-            measurementId: "G-09ZZMH0N13"
+            apiKey: "AIzaSyCCYpXOczp5nRRP1S2Gdb1ADjIAHeJQVq0",
+            authDomain: "owlcheologists.firebaseapp.com",
+            projectId: "owlcheologists",
+            storageBucket: "owlcheologists.firebasestorage.app",
+            messagingSenderId: "323297596743",
+            appId: "1:323297596743:web:c9455e40779b7c09522862",
+            measurementId: "G-2CFYWTQCQ4"
         };
 
         // Initialize Firebase
@@ -568,32 +562,115 @@
         // Fetch random artifact from Smithsonian API
         async function fetchRandomArtifact() {
             try {
-                // First, get total number of records
-                const searchUrl = `https://api.si.edu/openaccess/api/v1.0/search?api_key=${SMITHSONIAN_API_KEY}&q=*&rows=0`;
+                // Search for Native American physical artifacts (exclude books, documents, etc.)
+                const searchTopic = 'Native American AND (object OR artifact OR pottery OR basket OR tool OR weapon OR jewelry OR textile OR clothing OR ceremonial) NOT (book OR photograph OR print OR document OR manuscript OR paper OR page)';
+                console.log("Searching for artifacts with topic:", searchTopic);
+                
+                // First, get total number of records for this topic
+                const searchUrl = `https://api.si.edu/openaccess/api/v1.0/search?api_key=${SMITHSONIAN_API_KEY}&q=${encodeURIComponent(searchTopic)}&rows=0&online_media_type=Images`;
                 const searchResponse = await fetch(searchUrl);
                 const searchData = await searchResponse.json();
                 
                 if (searchData.response && searchData.response.rowCount > 0) {
-                    // Get a deterministic offset based on today's date
-                    const totalRecords = Math.min(searchData.response.rowCount, 10000); // Limit for performance
-                    const dateSeed = getDateSeed();
-                    const randomOffset = Math.floor(getDeterministicRandom(dateSeed) * totalRecords);
+                    console.log(`Found ${searchData.response.rowCount} artifacts for topic: ${searchTopic}`);
+                    
+                    // Get a truly random offset each time we fetch
+                    // This ensures a different artifact if the database is cleared
+                    const totalRecords = Math.min(searchData.response.rowCount, 10000);
+                    const randomOffset = Math.floor(Math.random() * totalRecords);
+                    
+                    console.log(`Fetching artifact at offset ${randomOffset} of ${totalRecords}`);
                     
                     // Fetch artifact with image
-                    const artifactUrl = `https://api.si.edu/openaccess/api/v1.0/search?api_key=${SMITHSONIAN_API_KEY}&q=*&rows=1&start=${randomOffset}&online_media_type=Images`;
+                    const artifactUrl = `https://api.si.edu/openaccess/api/v1.0/search?api_key=${SMITHSONIAN_API_KEY}&q=${encodeURIComponent(searchTopic)}&rows=1&start=${randomOffset}&online_media_type=Images`;
                     const artifactResponse = await fetch(artifactUrl);
                     const artifactData = await artifactResponse.json();
                     
-                    if (artifactData.response && artifactData.response.rows.length > 0) {
+                    if (artifactData.response && artifactData.response.rows && artifactData.response.rows.length > 0) {
                         const artifact = artifactData.response.rows[0];
-                        return {
+                        console.log("Raw artifact data:", artifact);
+                        
+                        // Extract data following the API structure
+                        const content = artifact.content || {};
+                        const freetext = content.freetext || {};
+                        const indexedStructured = content.indexedStructured || {};
+                        const descriptiveNonRepeating = content.descriptiveNonRepeating || {};
+                        const onlineMedia = descriptiveNonRepeating.online_media || {};
+                        
+                        // Get description from notes or summary
+                        let description = "No description available";
+                        if (freetext.notes && freetext.notes.length > 0) {
+                            // Find summary or first available note
+                            const summaryNote = freetext.notes.find(note => note.label === "Summary");
+                            const firstNote = freetext.notes[0];
+                            description = (summaryNote || firstNote)?.content || description;
+                        } else if (freetext.physicalDescription && freetext.physicalDescription.length > 0) {
+                            description = freetext.physicalDescription[0].content;
+                        }
+                        
+                        // Get image - check multiple possible locations
+                        let imageUrl = "";
+                        if (onlineMedia.media && onlineMedia.media.length > 0) {
+                            // Try to get the highest quality image available
+                            const mediaItem = onlineMedia.media[0];
+                            imageUrl = mediaItem.content || mediaItem.idsId || mediaItem.thumbnail || "";
+                            
+                            // If we have an idsId, construct the full image URL
+                            if (mediaItem.idsId && !imageUrl.startsWith('http')) {
+                                imageUrl = `https://ids.si.edu/ids/deliveryService?id=${mediaItem.idsId}&max=800`;
+                            }
+                        }
+                        
+                        // Fallback: check for resources array
+                        if (!imageUrl && onlineMedia.mediaCount > 0 && descriptiveNonRepeating.online_visual_material) {
+                            const visualMaterial = descriptiveNonRepeating.online_visual_material;
+                            if (visualMaterial.length > 0 && visualMaterial[0].idsId) {
+                                imageUrl = `https://ids.si.edu/ids/deliveryService?id=${visualMaterial[0].idsId}&max=800`;
+                            }
+                        }
+                        
+                        console.log("Extracted image URL:", imageUrl);
+                        
+                        // Get culture information
+                        let culture = "Unknown";
+                        if (indexedStructured.culture && indexedStructured.culture.length > 0) {
+                            culture = indexedStructured.culture.join(", ");
+                        } else if (freetext.name && freetext.name.length > 0) {
+                            const cultureName = freetext.name.find(n => n.label === "Culture/People" || n.label === "Culture");
+                            if (cultureName) culture = cultureName.content;
+                        }
+                        
+                        // Get date
+                        let date = "Date unknown";
+                        if (indexedStructured.date && indexedStructured.date.length > 0) {
+                            date = indexedStructured.date.join(", ");
+                        } else if (freetext.date && freetext.date.length > 0) {
+                            date = freetext.date[0].content;
+                        }
+                        
+                        // Get place/location
+                        let place = "";
+                        if (indexedStructured.place && indexedStructured.place.length > 0) {
+                            place = indexedStructured.place.slice(0, 2).join(", ");
+                        } else if (freetext.place && freetext.place.length > 0) {
+                            place = freetext.place[0].content;
+                        }
+                        
+                        const artifactObj = {
                             id: artifact.id,
-                            title: artifact.title || "Unknown Artifact",
-                            description: artifact.content?.freetext?.notes?.[0]?.content || "No description available",
-                            image: artifact.content?.descriptiveNonRepeating?.online_media?.media?.[0]?.content || "",
-                            date: artifact.content?.indexedStructured?.date?.[0] || "Date unknown",
-                            culture: artifact.content?.indexedStructured?.culture?.[0] || "Culture unknown"
+                            title: artifact.title || descriptiveNonRepeating.title?.content || "Unknown Artifact",
+                            description: description,
+                            image: imageUrl,
+                            date: date,
+                            culture: culture,
+                            place: place,
+                            unitCode: artifact.unitCode || "",
+                            recordLink: descriptiveNonRepeating.record_link || "",
+                            url: artifact.url || ""
                         };
+                        
+                        console.log("Processed artifact:", artifactObj);
+                        return artifactObj;
                     }
                 }
                 throw new Error("No artifacts found");
@@ -696,19 +773,83 @@ service cloud.firestore {
                 return;
             }
 
-            container.innerHTML = `
-                <div class="artifact-content">
-                    <div>
-                        ${artifact.image ? `<img src="${artifact.image}" alt="${artifact.title}" class="artifact-image" onerror="this.style.display='none'">` : '<div class="artifact-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">No Image Available</div>'}
-                    </div>
-                    <div class="artifact-info">
-                        <h3>${artifact.title}</h3>
-                        <p><strong>Date:</strong> ${artifact.date}</p>
-                        <p><strong>Culture:</strong> ${artifact.culture}</p>
-                        <p><strong>Description:</strong> ${artifact.description.substring(0, 200)}${artifact.description.length > 200 ? '...' : ''}</p>
-                    </div>
-                </div>
-            `;
+            // Build the HTML for artifact display
+            let artifactHTML = '<div class="artifact-content"><div>';
+            
+            // Image section
+            if (artifact.image) {
+                artifactHTML += `<img src="${artifact.image}" alt="${artifact.title}" class="artifact-image" onerror="this.style.display='none'">`;
+            } else {
+                artifactHTML += '<div class="artifact-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">🏺</div>';
+            }
+            
+            artifactHTML += '</div><div class="artifact-info">';
+            
+            // Title
+            artifactHTML += `<h3>${artifact.title}</h3>`;
+            
+            // Culture
+            if (artifact.culture && artifact.culture !== "Unknown") {
+                artifactHTML += `<p><strong>Culture:</strong> ${artifact.culture}</p>`;
+            }
+            
+            // Date
+            if (artifact.date && artifact.date !== "Date unknown") {
+                artifactHTML += `<p><strong>Date:</strong> ${artifact.date}</p>`;
+            }
+            
+            // Place
+            if (artifact.place) {
+                artifactHTML += `<p><strong>Location:</strong> ${artifact.place}</p>`;
+            }
+            
+            // Unit/Museum
+            if (artifact.unitCode) {
+                artifactHTML += `<p><strong>Collection:</strong> ${artifact.unitCode}</p>`;
+            }
+            
+            // Description
+            if (artifact.description && artifact.description !== "No description available") {
+                const maxLength = 300;
+                const truncatedDesc = artifact.description.length > maxLength 
+                    ? artifact.description.substring(0, maxLength) + '...' 
+                    : artifact.description;
+                artifactHTML += `<p><strong>Description:</strong> ${truncatedDesc}</p>`;
+            }
+            
+            // Link to full record - use record_link or construct from URL
+            // The Smithsonian URL structure has changed, so we'll use a search-based approach
+            let recordUrl;
+            if (artifact.url && artifact.url.includes('http')) {
+                // Use the artifact URL if it's a full URL
+                recordUrl = artifact.url;
+            } else if (artifact.recordLink && artifact.recordLink.includes('http')) {
+                // Only use recordLink if it's already a full URL
+                recordUrl = artifact.recordLink;
+            } else if (artifact.title) {
+                // Search for the artifact by title on Smithsonian collections
+                // This is more reliable than trying to construct object URLs
+                recordUrl = `https://collections.si.edu/search/?q=${encodeURIComponent(artifact.title)}`;
+            } else if (artifact.id) {
+                // Last resort: search by ID
+                recordUrl = `https://collections.si.edu/search/?q=${encodeURIComponent(artifact.id)}`;
+            }
+            
+            if (recordUrl) {
+                artifactHTML += `<p style="margin-top: 1.5rem;">
+                    <a href="${recordUrl}" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #3498db, #2980b9); color: white; text-decoration: none; font-weight: 600; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);"
+                       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(52, 152, 219, 0.4)';"
+                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(52, 152, 219, 0.3)';">
+                       View Full Record on Smithsonian →
+                    </a>
+                </p>`;
+            }
+            
+            artifactHTML += '</div></div>';
+            container.innerHTML = artifactHTML;
         }
 
         // Initialize artifact of the day
