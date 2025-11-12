@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>I Found an Artifact - Archalo</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    
     <style>
         * {
             margin: 0;
@@ -66,9 +77,108 @@
             transform: translateY(-1px);
         }
         
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #ecf0f1;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        /* Mobile Navigation */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .nav-links {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: linear-gradient(135deg, #2c3e50, #34495e);
+                width: 100%;
+                text-align: center;
+                transition: left 0.3s ease;
+                box-shadow: 0 10px 27px rgba(0,0,0,0.3);
+                padding: 1rem 0;
+                gap: 0;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                padding: 0.5rem 0;
+                width: 100%;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 1rem;
+                width: 100%;
+            }
+            
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .location-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .contact-fields {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
+        /* Tablet responsive */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .location-options {
+                gap: 1rem;
+            }
+            
+            .main-container {
+                padding: 2rem 1.5rem;
+            }
+        }
+        
         /* Hero section */
         .hero {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            background: linear-gradient(135deg, #d4704a, #c0603c);
             color: white;
             padding: clamp(3rem, 6vw, 5rem) 2rem;
             text-align: center;
@@ -311,6 +421,271 @@
             padding: 2rem;
         }
         
+        /* Map Styles */
+        .parcel-map-section {
+            margin: 2rem 0;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .parcel-map-section h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        
+        #parcelMap {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .map-info {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Admin Modal Styles */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .admin-modal.active {
+            display: flex;
+        }
+        
+        .admin-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .admin-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .admin-modal-header h2 {
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #95a5a6;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            background-color: #ecf0f1;
+            color: #e74c3c;
+        }
+        
+        .admin-login-form, .admin-panel {
+            display: none;
+        }
+        
+        .admin-login-form.active, .admin-panel.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .keyword-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .keyword-tag {
+            background-color: #3498db;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .keyword-tag button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+        
+        .contact-item {
+            background-color: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .contact-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .contact-item-header h5 {
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        .remove-contact-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-contact-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-1px);
+        }
+        
+        .contact-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .contact-fields .form-group {
+            margin-bottom: 0;
+        }
+        
+        .contact-fields .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .admin-user-info {
+            background-color: #e8f5e9;
+            border: 1px solid #81c784;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .admin-user-info p {
+            margin: 0.5rem 0;
+            color: #2e7d32;
+        }
+        
+        .btn-logout {
+            background-color: #e74c3c;
+            margin-top: 1rem;
+        }
+        
+        .btn-logout:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: #ecf0f1;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        
+        .footer-disclaimer {
+            max-width: 900px;
+            margin: 0 auto 1rem;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #bdc3c7;
+        }
+        
+        .admin-link {
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 1px dotted transparent;
+        }
+        
+        .admin-link:hover {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+        
         @media (max-width: 768px) {
             .location-options {
                 grid-template-columns: 1fr;
@@ -323,17 +698,112 @@
             .info-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .admin-modal-content {
+                padding: 1.5rem;
+                margin: 1rem;
+                max-width: 95%;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+            
+            /* Make buttons stack on mobile */
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            
+            /* Admin panel search section */
+            #searchBtn, #loadAllBtn {
+                width: 48%;
+                display: inline-block;
+                margin: 0.25rem 1%;
+            }
+            
+            /* Edit form buttons */
+            #editFormContainer .btn {
+                width: 100%;
+                margin: 0.5rem 0;
+                float: none !important;
+            }
+            
+            /* Hero section */
+            .hero {
+                padding: 2rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            /* Sample location buttons */
+            .btn[onclick*="loadSampleCoords"] {
+                font-size: 0.85rem;
+                padding: 0.5rem 0.8rem;
+            }
+        }
+        
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.3rem;
+            }
+            
+            .nav-container {
+                padding: 0 0.5rem;
+            }
+            
+            .main-container {
+                padding: 1.5rem 1rem;
+            }
+            
+            .location-section,
+            .results-section {
+                padding: 1rem;
+            }
+            
+            .admin-modal-content {
+                margin: 0.5rem;
+                padding: 1rem;
+            }
+            
+            /* Stack search buttons vertically on very small screens */
+            #searchBtn, #loadAllBtn {
+                width: 100%;
+                margin: 0.25rem 0;
+            }
+            
+            .form-group label {
+                font-size: 0.9rem;
+            }
+            
+            .form-group input,
+            .form-group textarea {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
     <nav>
         <div class="nav-container">
-            <div class="logo">Archalo</div>
-            <ul class="nav-links">
+            <a href="Archalo.html" style="text-decoration: none; color: inherit;">
+                <div class="logo">Archalo</div>
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
                 <li><a href="Archalo.html">Home</a></li>
                 <li><a href="laws.html">Laws</a></li>
                 <li><a href="artifactHelp.html" class="active">I Found an Artifact</a></li>
+                <li><a href="edu-resources.html">Educational Resources</a></li>
             </ul>
         </div>
     </nav>
@@ -370,7 +840,33 @@
                     </div>
                 </div>
                 <button class="btn" onclick="lookupLocation()">Find Property Information</button>
-                <button class="btn" onclick="console.log('Test button works!'); alert('Button test successful!');" style="background: #e74c3c; margin-top: 0.5rem;">🔥 TEST BUTTON 🔥</button>
+                
+                <!-- Sample Coordinates -->
+                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid #e0e0e0;">
+                    <p style="font-weight: 600; color: #2c3e50; margin-bottom: 1rem;">📍 Try Sample Locations:</p>
+                    <div style="display: grid; gap: 0.5rem;">
+                        <button class="btn" onclick="loadSampleCoords(46.8523, -121.7603, 'National Park Service')" 
+                                style="background: #27ae60; font-size: 0.9rem; padding: 0.6rem 1rem;">
+                            🏞️ National Park Service (Mt. Rainier)
+                        </button>
+                        <button class="btn" onclick="loadSampleCoords(48.052727359509, -121.3570518501979, 'National Forest Service')" 
+                                style="background: #16a085; font-size: 0.9rem; padding: 0.6rem 1rem;">
+                            🌲 National Forest Service (Mt. Baker-Snoqualmie)
+                        </button>
+                        <button class="btn" onclick="loadSampleCoords(47.55858371570509, -122.05892874774389, 'Washington State Parks')" 
+                                style="background: #2980b9; font-size: 0.9rem; padding: 0.6rem 1rem;">
+                            🏕️ Washington State Parks (Lake Sammamish State Park)
+                        </button>
+                        <button class="btn" onclick="loadSampleCoords(47.668265406752234, -122.1461806080578, 'City of Redmond Park')" 
+                                style="background: #8e44ad; font-size: 0.9rem; padding: 0.6rem 1rem;">
+                            🎡 City of Redmond Park (Grass Lawn Park)
+                        </button>
+                        <button class="btn" onclick="loadSampleCoords(47.6062, -122.3321, 'Private Property - King County')" 
+                                style="background: #95a5a6; font-size: 0.9rem; padding: 0.6rem 1rem;">
+                            🏠 Private Property (King County)
+                        </button>
+                    </div>
+                </div>
             </div>
             
             <div id="gpsForm" class="location-form">
@@ -384,28 +880,216 @@
             </div>
             
             <div id="propertyResults" style="display: none;">
-                <div class="property-info">
-                    <h3>Property Information</h3>
-                    <div class="info-grid" id="propertyInfoGrid">
-                        <!-- Property info will be populated here -->
-                    </div>
-                </div>
-                
                 <div class="guidance-section">
                     <h3>What to do next:</h3>
                     <div id="guidanceContent">
                         <!-- Guidance content will be populated here -->
                     </div>
                 </div>
+                
+                <!-- Parcel Map Section -->
+                <div id="parcelMapSection" class="parcel-map-section" style="display: none;">
+                    <h3>📍 Parcel Boundary</h3>
+                    <div id="parcelMap"></div>
+                    <div class="map-info">
+                        <strong>ℹ️ Map shows the property boundary.</strong> The highlighted area represents the parcel where the artifact was found.
+                    </div>
+                </div>
+                
+                <div class="property-info">
+                    <h3>Property Information</h3>
+                    <div class="info-grid" id="propertyInfoGrid">
+                        <!-- Property info will be populated here -->
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- Footer -->
+    <footer>
+        <div class="footer-disclaimer">
+            <p><strong>Disclaimer:</strong> We strive to provide the most accurate data available, however, we cannot guarantee its completeness or accuracy. Our guidance is advisory only. We are not responsible for any consequences resulting from the use of this information. Always verify with authorities.</p>
+        </div>
+        <a href="#" class="admin-link" id="adminLoginBtn">Login</a>
+    </footer>
+
+    <!-- Admin Modal -->
+    <div id="adminModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <h2>🔐 Admin Panel</h2>
+                <button class="close-modal" id="closeAdminModal">&times;</button>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="adminLoginForm" class="admin-login-form active">
+                <div class="form-group">
+                    <label for="adminEmail">Email</label>
+                    <input type="email" id="adminEmail" placeholder="admin@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter password" required>
+                </div>
+                <button class="btn" id="loginBtn">Login</button>
+            </div>
+            
+            <!-- Admin Panel (shown after login) -->
+            <div id="adminPanelContent" class="admin-panel">
+                <div class="admin-user-info">
+                    <p><strong>👤 Logged in as:</strong> <span id="userEmail"></span></p>
+                    <button class="btn btn-logout" id="logoutBtn">Logout</button>
+                </div>
+                
+                <!-- Search and Edit Section -->
+                <div style="background: #f8f9fa; padding: 2rem; border-radius: 12px; margin-bottom: 2rem; border: 2px solid #e0e0e0;">
+                    <h3 style="margin-bottom: 1rem;">🔍 Search & Edit Instructions</h3>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label for="searchInput">Search by Owner, Jurisdiction, or State</label>
+                        <input type="text" id="searchInput" placeholder="Type to search...">
+                        <small style="color: #7f8c8d;">Search across all property instructions</small>
+                    </div>
+                    <button type="button" class="btn" id="searchBtn" style="background: #3498db;">🔍 Search</button>
+                    <button type="button" class="btn" id="loadAllBtn" style="background: #95a5a6; margin-left: 0.5rem;">📋 Load All</button>
+                    
+                    <!-- Search Results -->
+                    <div id="searchResults" style="margin-top: 1.5rem; display: none;">
+                        <h4 style="color: #2c3e50; margin-bottom: 1rem;">Search Results</h4>
+                        <div id="searchResultsList" style="max-height: 400px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+                
+                <!-- Edit Form (hidden by default) -->
+                <div id="editFormContainer" style="display: none; background: #fff3cd; padding: 2rem; border-radius: 12px; margin-bottom: 2rem; border: 2px solid #ffc107;">
+                    <h3 style="margin-bottom: 1rem;">✏️ Edit Instruction</h3>
+                    <form id="editInstructionForm">
+                        <input type="hidden" id="editDocId">
+                        
+                        <div class="form-group">
+                            <label for="editOwner">Property Owner (optional)</label>
+                            <input type="text" id="editOwner" placeholder="e.g., City of Redmond">
+                            <small style="color: #7f8c8d;">For TIER 1 matching - specific property owner</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editJurisdiction">Jurisdiction (optional)</label>
+                            <input type="text" id="editJurisdiction" placeholder="e.g., King">
+                            <small style="color: #7f8c8d;">For TIER 2 matching - county or jurisdiction name</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editState">State Abbreviation (optional)</label>
+                            <input type="text" id="editState" placeholder="e.g., WA" maxlength="2" style="text-transform: uppercase;">
+                            <small style="color: #7f8c8d;">For TIER 2.5 matching - state-wide fallback</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editKeywords">Keywords (comma-separated)</label>
+                            <input type="text" id="editKeywords" placeholder="e.g., redmond, city of redmond">
+                            <small style="color: #7f8c8d;">Keywords to match against owner/jurisdiction</small>
+                            <div id="editKeywordPreview" class="keyword-list"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editSpecialInstructions">Special Instructions</label>
+                            <textarea id="editSpecialInstructions" placeholder="Enter special instructions (optional)" rows="3"></textarea>
+                        </div>
+                        
+                        <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                        
+                        <h4 style="color: #2c3e50; margin-bottom: 1rem;">📞 Contacts</h4>
+                        <div id="editContactsList"></div>
+                        <button type="button" class="btn" id="editAddContactBtn" style="background: #27ae60; margin-bottom: 1rem;">➕ Add Contact</button>
+                        
+                        <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                        
+                        <h4 style="color: #2c3e50; margin-bottom: 1rem;">📝 General Instructions</h4>
+                        <div class="form-group">
+                            <label for="editGeneralNotes">General Notes & Instructions (optional)</label>
+                            <textarea id="editGeneralNotes" placeholder="Enter any general instructions..." rows="4"></textarea>
+                        </div>
+                        
+                        <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                        
+                        <button type="submit" class="btn" style="background: #f39c12;">💾 Update Instruction</button>
+                        <button type="button" class="btn" id="cancelEditBtn" style="background: #95a5a6; margin-left: 0.5rem;">❌ Cancel</button>
+                        <button type="button" class="btn" id="deleteBtn" style="background: #e74c3c; float: right;">🗑️ Delete</button>
+                    </form>
+                </div>
+                
+                <h3>Add New Property Instructions</h3>
+                <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.95rem;">
+                    <strong>Note:</strong> Provide at least one of Owner, Jurisdiction, or State. 
+                    For state-wide entries (e.g., State Archaeologist), fill in State only and leave Owner/Jurisdiction blank.
+                </p>
+                <form id="addInstructionForm">
+                    <div class="form-group">
+                        <label for="instructionOwner">Property Owner (optional)</label>
+                        <input type="text" id="instructionOwner" placeholder="e.g., City of Redmond">
+                        <small style="color: #7f8c8d;">For TIER 1 matching - specific property owner</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="instructionJurisdiction">Jurisdiction (optional)</label>
+                        <input type="text" id="instructionJurisdiction" placeholder="e.g., King">
+                        <small style="color: #7f8c8d;">For TIER 2 matching - county or jurisdiction name</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="instructionState">State Abbreviation (optional)</label>
+                        <input type="text" id="instructionState" placeholder="e.g., WA" maxlength="2" style="text-transform: uppercase;">
+                        <small style="color: #7f8c8d;">For TIER 2.5 matching - state-wide fallback (e.g., State Archaeologist). Leave Owner & Jurisdiction blank for state-only entries.</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="instructionKeywords">Keywords (comma-separated)</label>
+                        <input type="text" id="instructionKeywords" placeholder="e.g., redmond, city of redmond, redmond city">
+                        <small style="color: #7f8c8d;">Keywords to match against owner/jurisdiction</small>
+                        <div id="keywordPreview" class="keyword-list"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="instructionSpecialInstructions">Special Instructions</label>
+                        <textarea id="instructionSpecialInstructions" placeholder="Enter special instructions (optional)" rows="3"></textarea>
+                        <small style="color: #7f8c8d;">Any additional guidance or warnings</small>
+                    </div>
+                    
+                    <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                    
+                    <h4 style="color: #2c3e50; margin-bottom: 1rem;">📞 Contacts</h4>
+                    <small style="color: #7f8c8d; display: block; margin-bottom: 1rem;">Add one or more contacts for this property</small>
+                    <div id="contactsList">
+                        <!-- Contacts will be added here dynamically -->
+                    </div>
+                    
+                    <button type="button" class="btn" id="addContactBtn" style="background: #27ae60; margin-bottom: 1rem;">
+                        ➕ Add Contact
+                    </button>
+                    
+                    <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                    
+                    <h4 style="color: #2c3e50; margin-bottom: 1rem;">📝 General Instructions</h4>
+                    <div class="form-group">
+                        <label for="instructionGeneralNotes">General Notes & Instructions (optional)</label>
+                        <textarea id="instructionGeneralNotes" placeholder="Enter any general instructions, procedures, or important information not specific to contacts..." rows="4"></textarea>
+                        <small style="color: #7f8c8d;">Additional guidance, procedures, legal requirements, or general information for this property</small>
+                    </div>
+                    
+                    <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                    
+                    <button type="submit" class="btn">💾 Save Instruction</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, query, where, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, query, where, getDocs, doc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         // Your web app's Firebase configuration
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -423,6 +1107,771 @@
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // ============== ADMIN AUTHENTICATION ==============
+        let currentUser = null;
+
+        // Check auth state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                console.log('User logged in:', user.email);
+                showAdminPanel(user);
+            } else {
+                currentUser = null;
+                console.log('User logged out');
+                showLoginForm();
+            }
+        });
+
+        // Admin modal controls
+        document.getElementById('adminLoginBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('adminModal').classList.add('active');
+        });
+
+        document.getElementById('closeAdminModal').addEventListener('click', function() {
+            document.getElementById('adminModal').classList.remove('active');
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('adminModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+
+        // Login functionality
+        document.getElementById('loginBtn').addEventListener('click', async function() {
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                console.log('Login successful:', userCredential.user.email);
+                // onAuthStateChanged will handle UI update
+            } catch (error) {
+                console.error('Login error:', error);
+                alert(`Login failed: ${error.message}`);
+            }
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async function() {
+            try {
+                await signOut(auth);
+                console.log('Logout successful');
+                // onAuthStateChanged will handle UI update
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert(`Logout failed: ${error.message}`);
+            }
+        });
+
+        // Show login form
+        function showLoginForm() {
+            document.getElementById('adminLoginForm').classList.add('active');
+            document.getElementById('adminPanelContent').classList.remove('active');
+        }
+
+        // Show admin panel
+        function showAdminPanel(user) {
+            document.getElementById('adminLoginForm').classList.remove('active');
+            document.getElementById('adminPanelContent').classList.add('active');
+            document.getElementById('userEmail').textContent = user.email;
+            
+            // Add first contact field automatically if no contacts exist
+            if (document.getElementById('contactsList').children.length === 0) {
+                addContactField();
+            }
+        }
+
+        // ============== CONTACT MANAGEMENT ==============
+        let contactCounter = 0;
+        
+        function addContactField() {
+            contactCounter++;
+            const contactsList = document.getElementById('contactsList');
+            
+            const contactItem = document.createElement('div');
+            contactItem.className = 'contact-item';
+            contactItem.dataset.contactId = contactCounter;
+            
+            contactItem.innerHTML = `
+                <div class="contact-item-header">
+                    <h5>Contact ${contactCounter}</h5>
+                    <button type="button" class="remove-contact-btn" onclick="removeContact(${contactCounter})">
+                        🗑️ Remove
+                    </button>
+                </div>
+                <div class="contact-fields">
+                    <div class="form-group">
+                        <label>Contact Name *</label>
+                        <input type="text" class="contact-name" placeholder="e.g., John Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role/Title</label>
+                        <input type="text" class="contact-role" placeholder="e.g., County Archaeologist">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="contact-email" placeholder="e.g., contact@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" class="contact-phone" placeholder="e.g., (555) 123-4567">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Physical Address</label>
+                        <input type="text" class="contact-address" placeholder="e.g., 123 Main St, City, State ZIP">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Special Instructions</label>
+                        <textarea class="contact-instructions" placeholder="e.g., Call between 9 AM - 5 PM" rows="2"></textarea>
+                    </div>
+                </div>
+            `;
+            
+            contactsList.appendChild(contactItem);
+        }
+        
+        window.removeContact = function(contactId) {
+            const contactItem = document.querySelector(`[data-contact-id="${contactId}"]`);
+            if (contactItem) {
+                contactItem.remove();
+            }
+        };
+        
+        function getContactsData() {
+            const contacts = [];
+            const contactItems = document.querySelectorAll('.contact-item');
+            
+            contactItems.forEach((item) => {
+                const name = item.querySelector('.contact-name').value.trim();
+                const role = item.querySelector('.contact-role').value.trim();
+                const email = item.querySelector('.contact-email').value.trim();
+                const phone = item.querySelector('.contact-phone').value.trim();
+                const address = item.querySelector('.contact-address').value.trim();
+                const instructions = item.querySelector('.contact-instructions').value.trim();
+                
+                if (name) { // Only add if name is provided
+                    contacts.push({
+                        name: name,
+                        role: role || '',
+                        email: email || '',
+                        phone: phone || '',
+                        address: address || '',
+                        specialInstructions: instructions || ''
+                    });
+                }
+            });
+            
+            return contacts;
+        }
+        // ============== END CONTACT MANAGEMENT ==============
+
+        // Initialize admin panel event listeners (called after DOM is ready)
+        function initializeAdminEventListeners() {
+            console.log('🔧 Initializing admin event listeners...');
+            
+            // Auto-uppercase state abbreviation input
+            const stateInput = document.getElementById('instructionState');
+            if (stateInput) {
+                stateInput.addEventListener('input', function(e) {
+                    this.value = this.value.toUpperCase();
+                });
+                console.log('✓ State input listener attached');
+            } else {
+                console.error('❌ instructionState element not found');
+            }
+
+            // Keyword preview
+            const keywordsInput = document.getElementById('instructionKeywords');
+            if (keywordsInput) {
+                keywordsInput.addEventListener('input', function() {
+                    const keywords = this.value.split(',').map(k => k.trim()).filter(k => k);
+                    const preview = document.getElementById('keywordPreview');
+                    preview.innerHTML = keywords.map(keyword => 
+                        `<span class="keyword-tag">${keyword}</span>`
+                    ).join('');
+                });
+                console.log('✓ Keywords input listener attached');
+            } else {
+                console.error('❌ instructionKeywords element not found');
+            }
+
+            // Add contact button handler
+            const addContactBtn = document.getElementById('addContactBtn');
+            if (addContactBtn) {
+                addContactBtn.addEventListener('click', function() {
+                    console.log('Add contact clicked');
+                    addContactField();
+                });
+                console.log('✓ Add contact button listener attached');
+            } else {
+                console.error('❌ addContactBtn element not found');
+            }
+
+            // Add instruction form submission
+            const form = document.getElementById('addInstructionForm');
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    console.log('🚀 Form submit event triggered!');
+                    e.preventDefault();
+
+                    if (!currentUser) {
+                        alert('You must be logged in to add instructions');
+                        return;
+                    }
+
+                    console.log('User authenticated:', currentUser.email);
+
+                    const owner = document.getElementById('instructionOwner').value.trim();
+                    const jurisdiction = document.getElementById('instructionJurisdiction').value.trim();
+                    const state = document.getElementById('instructionState').value.trim().toUpperCase();
+                    const keywordsInput = document.getElementById('instructionKeywords').value.trim();
+                    const specialInstructions = document.getElementById('instructionSpecialInstructions').value.trim();
+                    const generalNotes = document.getElementById('instructionGeneralNotes').value.trim();
+
+                    console.log('Form values:', { owner, jurisdiction, state, keywordsInput, specialInstructions, generalNotes });
+
+                    // Validation: Require at least owner, jurisdiction, OR state
+                    if (!owner && !jurisdiction && !state) {
+                        alert('Please provide at least one of: Owner, Jurisdiction, or State');
+                        return;
+                    }
+
+                    // Get contacts data
+                    const contacts = getContactsData();
+                    console.log('Contacts:', contacts);
+                    
+                    if (contacts.length === 0) {
+                        alert('Please add at least one contact');
+                        return;
+                    }
+
+                    // Parse keywords
+                    const keywords = keywordsInput.split(',')
+                        .map(k => k.trim().toLowerCase())
+                        .filter(k => k);
+
+                    console.log('Generating HTML content...');
+                    // Generate HTML content from contacts
+                    const htmlContent = generateHTMLFromContacts(contacts, specialInstructions, generalNotes);
+
+                    // Create instruction document
+                    const instructionData = {
+                        htmlContent: htmlContent,
+                        keywords: keywords,
+                        contacts: contacts,
+                        specialInstructions: specialInstructions,
+                        generalNotes: generalNotes,
+                        createdAt: new Date().toISOString(),
+                        createdBy: currentUser.email
+                    };
+
+                    // Add optional fields
+                    if (owner) instructionData.owner = owner;
+                    if (jurisdiction) instructionData.jurisdiction = jurisdiction;
+                    if (state) instructionData.state = state;
+
+                    console.log('Saving to Firebase...', instructionData);
+
+                    try {
+                        // Generate a unique ID
+                        const docId = `instruction_${Date.now()}`;
+                        await setDoc(doc(db, 'artifactInstructions', docId), instructionData);
+                        
+                        console.log('✅ Saved successfully!');
+                        alert('✅ Instruction added successfully!');
+                        
+                        // Reset form
+                        document.getElementById('addInstructionForm').reset();
+                        document.getElementById('keywordPreview').innerHTML = '';
+                        document.getElementById('contactsList').innerHTML = '';
+                        contactCounter = 0;
+                        
+                        console.log('Instruction added:', docId, instructionData);
+                    } catch (error) {
+                        console.error('❌ Error adding instruction:', error);
+                        alert(`Failed to add instruction: ${error.message}`);
+                    }
+                });
+                console.log('✓ Form submit listener attached');
+            } else {
+                console.error('❌ addInstructionForm element not found');
+            }
+            
+            // Search button
+            const searchBtn = document.getElementById('searchBtn');
+            if (searchBtn) {
+                searchBtn.addEventListener('click', function() {
+                    const searchTerm = document.getElementById('searchInput').value.trim();
+                    searchInstructions(searchTerm);
+                });
+                console.log('✓ Search button listener attached');
+            }
+            
+            // Load all button
+            const loadAllBtn = document.getElementById('loadAllBtn');
+            if (loadAllBtn) {
+                loadAllBtn.addEventListener('click', function() {
+                    searchInstructions('');
+                });
+                console.log('✓ Load all button listener attached');
+            }
+            
+            // Search input enter key
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchInstructions(this.value.trim());
+                    }
+                });
+                console.log('✓ Search input listener attached');
+            }
+            
+            // Edit form submit
+            const editForm = document.getElementById('editInstructionForm');
+            if (editForm) {
+                editForm.addEventListener('submit', updateInstruction);
+                console.log('✓ Edit form listener attached');
+            }
+            
+            // Edit keyword preview
+            const editKeywordsInput = document.getElementById('editKeywords');
+            if (editKeywordsInput) {
+                editKeywordsInput.addEventListener('input', function() {
+                    const keywords = this.value.split(',').map(k => k.trim()).filter(k => k);
+                    const preview = document.getElementById('editKeywordPreview');
+                    preview.innerHTML = keywords.map(keyword => 
+                        `<span class="keyword-tag">${keyword}</span>`
+                    ).join('');
+                });
+                console.log('✓ Edit keywords input listener attached');
+            }
+            
+            // Edit state auto-uppercase
+            const editStateInput = document.getElementById('editState');
+            if (editStateInput) {
+                editStateInput.addEventListener('input', function(e) {
+                    this.value = this.value.toUpperCase();
+                });
+                console.log('✓ Edit state input listener attached');
+            }
+            
+            // Edit add contact button
+            const editAddContactBtn = document.getElementById('editAddContactBtn');
+            if (editAddContactBtn) {
+                editAddContactBtn.addEventListener('click', function() {
+                    addEditContactField();
+                });
+                console.log('✓ Edit add contact button listener attached');
+            }
+            
+            // Cancel edit button
+            const cancelEditBtn = document.getElementById('cancelEditBtn');
+            if (cancelEditBtn) {
+                cancelEditBtn.addEventListener('click', cancelEdit);
+                console.log('✓ Cancel edit button listener attached');
+            }
+            
+            // Delete button
+            const deleteBtn = document.getElementById('deleteBtn');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', deleteInstruction);
+                console.log('✓ Delete button listener attached');
+            }
+            
+            console.log('✅ Admin event listeners initialization complete');
+        }
+
+        // Generate HTML content from contacts
+        function generateHTMLFromContacts(contacts, specialInstructions, generalNotes) {
+            let html = '<div class="emergency-note">\n';
+            html += '    <strong>⚠️ STOP! Do not disturb the artifact or the surrounding area.</strong>\n';
+            html += '</div>\n\n';
+            
+            if (specialInstructions) {
+                html += '<div class="contact-card" style="background: #fff3cd; border-color: #ffeaa7;">\n';
+                html += '    <h4>⚠️ Special Instructions</h4>\n';
+                html += `    <div class="contact-info"><p>${specialInstructions.replace(/\n/g, '<br>')}</p></div>\n`;
+                html += '</div>\n\n';
+            }
+            
+            contacts.forEach((contact, index) => {
+                html += '<div class="contact-card">\n';
+                html += `    <h4>📞 Contact ${index + 1}: ${contact.name}</h4>\n`;
+                html += '    <div class="contact-info">\n';
+                
+                if (contact.role) {
+                    html += `        <p><strong>Role:</strong> ${contact.role}</p>\n`;
+                }
+                if (contact.email) {
+                    html += `        <p><strong>Email:</strong> <a href="mailto:${contact.email}">${contact.email}</a></p>\n`;
+                }
+                if (contact.phone) {
+                    html += `        <p><strong>Phone:</strong> <a href="tel:${contact.phone}">${contact.phone}</a></p>\n`;
+                }
+                if (contact.address) {
+                    html += `        <p><strong>Address:</strong> ${contact.address}</p>\n`;
+                }
+                if (contact.specialInstructions) {
+                    html += `        <p><strong>Instructions:</strong> ${contact.specialInstructions}</p>\n`;
+                }
+                
+                html += '    </div>\n';
+                html += '</div>\n\n';
+            });
+            
+            html += '<h4>Immediate Steps to Take:</h4>\n';
+            html += '<ol style="margin: 1rem 0; padding-left: 2rem; line-height: 1.8;">\n';
+            html += '    <li><strong>Stop all work</strong> in the immediate area</li>\n';
+            html += '    <li><strong>Do not touch or move</strong> the artifact</li>\n';
+            html += '    <li><strong>Contact the above authority</strong> immediately</li>\n';
+            html += '    <li><strong>Mark the location</strong> with flags or cones if available</li>\n';
+            html += '    <li><strong>Take photos</strong> of the artifact in place (do not disturb)</li>\n';
+            html += '    <li><strong>Record GPS coordinates</strong> of the exact location</li>\n';
+            html += '    <li><strong>Secure the area</strong> to prevent disturbance by others</li>\n';
+            html += '    <li><strong>Document everything</strong> - date, time, weather, surrounding features</li>\n';
+            html += '</ol>\n';
+            
+            if (generalNotes) {
+                html += '\n<div class="contact-card" style="background: #e3f2fd; border-color: #90caf9;">\n';
+                html += '    <h4>📋 Additional Information</h4>\n';
+                html += `    <div class="contact-info">\n`;
+                html += `        <p>${generalNotes.replace(/\n/g, '<br>')}</p>\n`;
+                html += '    </div>\n';
+                html += '</div>\n';
+            }
+            
+            return html;
+        }
+
+        // ============== SEARCH AND EDIT FUNCTIONS ==============
+        let editContactCounter = 0;
+        let currentEditDocId = null;
+
+        // Search for instructions
+        async function searchInstructions(searchTerm = '') {
+            try {
+                const instructionsRef = collection(db, 'artifactInstructions');
+                const snapshot = await getDocs(instructionsRef);
+                
+                let results = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const searchLower = searchTerm.toLowerCase();
+                    
+                    // Search in owner, jurisdiction, and state
+                    const matchesSearch = !searchTerm || 
+                        (data.owner && data.owner.toLowerCase().includes(searchLower)) ||
+                        (data.jurisdiction && data.jurisdiction.toLowerCase().includes(searchLower)) ||
+                        (data.state && data.state.toLowerCase().includes(searchLower)) ||
+                        (data.keywords && data.keywords.some(k => k.toLowerCase().includes(searchLower)));
+                    
+                    if (matchesSearch) {
+                        results.push({
+                            id: doc.id,
+                            ...data
+                        });
+                    }
+                });
+                
+                displaySearchResults(results);
+            } catch (error) {
+                console.error('Error searching instructions:', error);
+                alert('Failed to search instructions: ' + error.message);
+            }
+        }
+
+        // Display search results
+        function displaySearchResults(results) {
+            const resultsContainer = document.getElementById('searchResults');
+            const resultsList = document.getElementById('searchResultsList');
+            
+            if (results.length === 0) {
+                resultsList.innerHTML = '<p style="color: #7f8c8d; text-align: center; padding: 2rem;">No results found</p>';
+                resultsContainer.style.display = 'block';
+                return;
+            }
+            
+            let html = '';
+            results.forEach(result => {
+                const owner = result.owner || 'N/A';
+                const jurisdiction = result.jurisdiction || 'N/A';
+                const state = result.state || 'N/A';
+                const contactCount = result.contacts ? result.contacts.length : 0;
+                
+                html += `
+                    <div style="background: white; padding: 1rem; margin-bottom: 0.5rem; border-radius: 8px; border: 1px solid #e0e0e0; cursor: pointer; transition: all 0.3s ease;"
+                         onmouseover="this.style.borderColor='#3498db'; this.style.boxShadow='0 2px 8px rgba(52,152,219,0.2)'"
+                         onmouseout="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none'"
+                         onclick="loadInstructionForEdit('${result.id}')">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div>
+                                <strong style="color: #2c3e50;">Owner:</strong> ${owner}<br>
+                                <strong style="color: #2c3e50;">Jurisdiction:</strong> ${jurisdiction}<br>
+                                <strong style="color: #2c3e50;">State:</strong> ${state}<br>
+                                <small style="color: #7f8c8d;">${contactCount} contact(s) • Created ${new Date(result.createdAt).toLocaleDateString()}</small>
+                            </div>
+                            <button class="btn" style="padding: 0.5rem 1rem; background: #3498db;">✏️ Edit</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            resultsList.innerHTML = html;
+            resultsContainer.style.display = 'block';
+        }
+
+        // Load instruction for editing
+        async function loadInstructionForEdit(docId) {
+            try {
+                const docRef = doc(db, 'artifactInstructions', docId);
+                const snapshot = await getDocs(query(collection(db, 'artifactInstructions'), where('__name__', '==', docId)));
+                
+                if (snapshot.empty) {
+                    alert('Instruction not found');
+                    return;
+                }
+                
+                const data = snapshot.docs[0].data();
+                currentEditDocId = docId;
+                
+                // Fill form fields
+                document.getElementById('editDocId').value = docId;
+                document.getElementById('editOwner').value = data.owner || '';
+                document.getElementById('editJurisdiction').value = data.jurisdiction || '';
+                document.getElementById('editState').value = data.state || '';
+                document.getElementById('editKeywords').value = (data.keywords || []).join(', ');
+                document.getElementById('editSpecialInstructions').value = data.specialInstructions || '';
+                document.getElementById('editGeneralNotes').value = data.generalNotes || '';
+                
+                // Update keyword preview
+                const keywords = (data.keywords || []).join(', ');
+                document.getElementById('editKeywordPreview').innerHTML = (data.keywords || []).map(keyword => 
+                    `<span class="keyword-tag">${keyword}</span>`
+                ).join('');
+                
+                // Load contacts
+                const contactsList = document.getElementById('editContactsList');
+                contactsList.innerHTML = '';
+                editContactCounter = 0;
+                
+                if (data.contacts && data.contacts.length > 0) {
+                    data.contacts.forEach(contact => {
+                        addEditContactField(contact);
+                    });
+                } else {
+                    addEditContactField();
+                }
+                
+                // Show edit form and scroll to it
+                document.getElementById('editFormContainer').style.display = 'block';
+                document.getElementById('editFormContainer').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                console.error('Error loading instruction:', error);
+                alert('Failed to load instruction: ' + error.message);
+            }
+        }
+
+        // Add contact field to edit form
+        function addEditContactField(contactData = null) {
+            editContactCounter++;
+            const contactsList = document.getElementById('editContactsList');
+            
+            const contactDiv = document.createElement('div');
+            contactDiv.className = 'contact-item';
+            contactDiv.id = `edit-contact-${editContactCounter}`;
+            contactDiv.style.cssText = 'background: #f8f9fa; padding: 1.5rem; margin-bottom: 1rem; border-radius: 8px; border: 2px solid #e0e0e0; position: relative;';
+            
+            contactDiv.innerHTML = `
+                <button type="button" class="remove-contact-btn" onclick="removeEditContact(${editContactCounter})" 
+                        style="position: absolute; top: 10px; right: 10px; background: #e74c3c; color: white; border: none; 
+                               border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 1.2rem; line-height: 1;">×</button>
+                <h5 style="margin-bottom: 1rem; color: #2c3e50;">Contact ${editContactCounter}</h5>
+                
+                <div class="form-group">
+                    <label>Contact Name *</label>
+                    <input type="text" class="edit-contact-name" placeholder="e.g., John Smith" value="${contactData?.name || ''}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Role/Title</label>
+                    <input type="text" class="edit-contact-role" placeholder="e.g., State Archaeologist" value="${contactData?.role || ''}">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="edit-contact-email" placeholder="e.g., contact@example.com" value="${contactData?.email || ''}">
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" class="edit-contact-phone" placeholder="e.g., (555) 123-4567" value="${contactData?.phone || ''}">
+                </div>
+                
+                <div class="form-group">
+                    <label>Physical Address</label>
+                    <textarea class="edit-contact-address" placeholder="Enter full address" rows="2">${contactData?.address || ''}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Special Instructions (Contact-specific)</label>
+                    <textarea class="edit-contact-instructions" placeholder="Any special notes for this contact" rows="2">${contactData?.specialInstructions || ''}</textarea>
+                </div>
+            `;
+            
+            contactsList.appendChild(contactDiv);
+        }
+
+        // Remove contact from edit form
+        function removeEditContact(contactId) {
+            const contactDiv = document.getElementById(`edit-contact-${contactId}`);
+            if (contactDiv) {
+                contactDiv.remove();
+            }
+        }
+
+        // Get contacts data from edit form
+        function getEditContactsData() {
+            const contactItems = document.querySelectorAll('#editContactsList .contact-item');
+            const contacts = [];
+            
+            contactItems.forEach((item) => {
+                const name = item.querySelector('.edit-contact-name')?.value.trim();
+                const role = item.querySelector('.edit-contact-role')?.value.trim();
+                const email = item.querySelector('.edit-contact-email')?.value.trim();
+                const phone = item.querySelector('.edit-contact-phone')?.value.trim();
+                const address = item.querySelector('.edit-contact-address')?.value.trim();
+                const specialInstructions = item.querySelector('.edit-contact-instructions')?.value.trim();
+                
+                if (name) {
+                    contacts.push({
+                        name,
+                        role: role || '',
+                        email: email || '',
+                        phone: phone || '',
+                        address: address || '',
+                        specialInstructions: specialInstructions || ''
+                    });
+                }
+            });
+            
+            return contacts;
+        }
+
+        // Update instruction
+        async function updateInstruction(e) {
+            e.preventDefault();
+            
+            if (!currentUser) {
+                alert('You must be logged in to update instructions');
+                return;
+            }
+            
+            const docId = document.getElementById('editDocId').value;
+            const owner = document.getElementById('editOwner').value.trim();
+            const jurisdiction = document.getElementById('editJurisdiction').value.trim();
+            const state = document.getElementById('editState').value.trim().toUpperCase();
+            const keywordsInput = document.getElementById('editKeywords').value.trim();
+            const specialInstructions = document.getElementById('editSpecialInstructions').value.trim();
+            const generalNotes = document.getElementById('editGeneralNotes').value.trim();
+            
+            // Validation
+            if (!owner && !jurisdiction && !state) {
+                alert('Please provide at least one of: Owner, Jurisdiction, or State');
+                return;
+            }
+            
+            const contacts = getEditContactsData();
+            if (contacts.length === 0) {
+                alert('Please add at least one contact');
+                return;
+            }
+            
+            const keywords = keywordsInput.split(',').map(k => k.trim().toLowerCase()).filter(k => k);
+            const htmlContent = generateHTMLFromContacts(contacts, specialInstructions, generalNotes);
+            
+            const instructionData = {
+                htmlContent: htmlContent,
+                keywords: keywords,
+                contacts: contacts,
+                specialInstructions: specialInstructions,
+                generalNotes: generalNotes,
+                updatedAt: new Date().toISOString(),
+                updatedBy: currentUser.email
+            };
+            
+            if (owner) instructionData.owner = owner;
+            if (jurisdiction) instructionData.jurisdiction = jurisdiction;
+            if (state) instructionData.state = state;
+            
+            try {
+                await updateDoc(doc(db, 'artifactInstructions', docId), instructionData);
+                alert('✅ Instruction updated successfully!');
+                
+                // Hide edit form and refresh search
+                document.getElementById('editFormContainer').style.display = 'none';
+                searchInstructions(document.getElementById('searchInput').value);
+                
+            } catch (error) {
+                console.error('Error updating instruction:', error);
+                alert('Failed to update instruction: ' + error.message);
+            }
+        }
+
+        // Delete instruction
+        async function deleteInstruction() {
+            if (!currentUser) {
+                alert('You must be logged in to delete instructions');
+                return;
+            }
+            
+            const docId = document.getElementById('editDocId').value;
+            const owner = document.getElementById('editOwner').value || 'N/A';
+            const jurisdiction = document.getElementById('editJurisdiction').value || 'N/A';
+            
+            if (!confirm(`Are you sure you want to delete this instruction?\n\nOwner: ${owner}\nJurisdiction: ${jurisdiction}\n\nThis action cannot be undone!`)) {
+                return;
+            }
+            
+            try {
+                await deleteDoc(doc(db, 'artifactInstructions', docId));
+                alert('✅ Instruction deleted successfully!');
+                
+                // Hide edit form and refresh search
+                document.getElementById('editFormContainer').style.display = 'none';
+                searchInstructions(document.getElementById('searchInput').value);
+                
+            } catch (error) {
+                console.error('Error deleting instruction:', error);
+                alert('Failed to delete instruction: ' + error.message);
+            }
+        }
+
+        // Cancel edit
+        function cancelEdit() {
+            document.getElementById('editFormContainer').style.display = 'none';
+            currentEditDocId = null;
+        }
+        
+        // Expose functions to global scope for inline onclick handlers
+        window.loadInstructionForEdit = loadInstructionForEdit;
+        window.removeEditContact = removeEditContact;
+        
+        // ============== END SEARCH AND EDIT FUNCTIONS ==============
+
+        // ============== END ADMIN AUTHENTICATION ==============
 
         // Location option selection
         document.getElementById('manualOption').addEventListener('click', function() {
@@ -522,15 +1971,21 @@
                 
                 if (parcelData) {
                     console.log('🎯 Parcel data received, processing...');
+                    
+                    // Add the search coordinates to parcelData since API doesn't return them
+                    parcelData.lat = lat;
+                    parcelData.long = lng;
+                    
                     // Check for specific instructions in database
                     const specificInstructions = await checkForSpecificInstructions(parcelData);
                     
                     // Display results
                     displayPropertyInfo(parcelData);
+                    displayParcelMap(parcelData); // Display the map with polygon
                     displayGuidance(parcelData, specificInstructions);
                 } else {
                     console.log('⚠️ No parcel data found for coordinates');
-                    displayDefaultGuidance('No property data found for these coordinates. The location might be outside King County or in an area not covered by the parcel database.');
+                    displayDefaultGuidance('No property data found for these coordinates. The location might be in an area not covered by the parcel database.');
                 }
             } catch (error) {
                 console.error('💥 Error during lookup:', error);
@@ -550,136 +2005,214 @@
             }
         }
 
-        // Fetch parcel data from King County API
+        // Fetch parcel data from new API
         async function fetchParcelData(lat, lng) {
             try {
-                console.log('🌐 Making API call to King County...');
+                console.log('🌐 Making API call to getPropertyInfo...');
                 
-                // Try the correct King County Parcel API endpoint
-                let apiUrl = `https://gismaps.kingcounty.gov/arcgis/rest/services/Property/KingCo_Parcels/MapServer/0/query`;
-                let params = new URLSearchParams({
-                    f: 'json',
-                    geometry: `${lng},${lat}`,
-                    geometryType: 'esriGeometryPoint',
-                    inSR: '4326',
-                    spatialRel: 'esriSpatialRelIntersects',
-                    outFields: '*',
-                    returnGeometry: 'false'
-                });
+                const apiUrl = `https://getpropertyinfo-gailic6cjq-uc.a.run.app/getPropertyInfo?lat=${lat}&long=${lng}`;
+                console.log('📍 API URL:', apiUrl);
                 
-                let fullUrl = `${apiUrl}?${params}`;
-                console.log('📍 API URL:', fullUrl);
-                
-                let response = await fetch(fullUrl);
+                const response = await fetch(apiUrl);
                 console.log('📡 API Response status:', response.status);
+                console.log('📡 API Response headers:', response.headers);
                 
-                let data = await response.json();
-                console.log('📊 API Response data:', data);
-                
-                if (data.features && data.features.length > 0) {
-                    const attributes = data.features[0].attributes;
-                    console.log('✅ Found parcel data with attributes:', attributes);
-                    console.log('🔍 All available field names:', Object.keys(attributes));
-                    
-                    // Log specific fields we're looking for
-                    console.log('🔍 Field analysis:');
-                    console.log('  - TAXPAYER_NAME:', attributes.TAXPAYER_NAME);
-                    console.log('  - OWNER:', attributes.OWNER);
-                    console.log('  - TAXPAYER:', attributes.TAXPAYER);
-                    console.log('  - OWNER_NAME:', attributes.OWNER_NAME);
-                    console.log('  - TAX_NAME:', attributes.TAX_NAME);
-                    
-                    return attributes;
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('❌ API Error Response:', errorText);
+                    throw new Error(`API returned status ${response.status}: ${errorText}`);
                 }
                 
-                // If that fails, try alternative endpoint
-                console.log('🔄 Trying alternative King County API...');
-                apiUrl = `https://services.arcgis.com/GlKOtdZYWjrWS3fL/arcgis/rest/services/KingCounty_Parcels_Geocortex/FeatureServer/0/query`;
-                fullUrl = `${apiUrl}?${params}`;
-                console.log('📍 Alternative API URL:', fullUrl);
+                const data = await response.json();
+                console.log('📊 API Response data (full):', JSON.stringify(data, null, 2));
                 
-                response = await fetch(fullUrl);
-                console.log('📡 Alternative API Response status:', response.status);
-                
-                data = await response.json();
-                console.log('📊 Alternative API Response data:', data);
-                
-                if (data.features && data.features.length > 0) {
-                    const attributes = data.features[0].attributes;
-                    console.log('✅ Found parcel data from alternative API:', attributes);
-                    console.log('🔍 All available field names:', Object.keys(attributes));
-                    return attributes;
+                // Normalize state field - API might return 'state_abbr' or 'state'
+                if (data && data.state_abbr && !data.state) {
+                    data.state = data.state_abbr;
+                    console.log('🔄 Normalized state_abbr to state:', data.state);
                 }
                 
-                console.log('❌ No parcel data found in any API');
+                // Check if we have actual property data
+                if (data && (data.owner || data.jurisdiction)) {
+                    console.log('✅ Property data received');
+                    console.log('  - Owner:', data.owner || 'Unknown');
+                    console.log('  - Jurisdiction:', data.jurisdiction || 'Unknown');
+                    console.log('  - State:', data.state || 'Unknown');
+                    return data;
+                }
+                
+                console.log('❌ No property data found - API returned:', data);
                 return null;
                 
             } catch (error) {
-                console.error('💥 Error fetching parcel data:', error);
+                console.error('💥 Error fetching property data:', error);
+                console.error('💥 Error details:', error.message);
                 return null;
             }
         }
 
-        // Check for specific instructions in database
-        async function checkForSpecificInstructions(parcelData) {
+        // Check for specific instructions in database - FOUR TIER FALLBACK
+        async function checkForSpecificInstructions(propertyData) {
             try {
-                // Since we don't have owner info from the API, we'll check by parcel number only
-                const parcelNumber = parcelData.PIN || `${parcelData.MAJOR}-${parcelData.MINOR}` || '';
+                const owner = (propertyData.owner || '').toLowerCase().trim();
+                const jurisdiction = (propertyData.jurisdiction || '').toLowerCase().trim();
+                const state = (propertyData.state || '').toUpperCase().trim();
                 
-                console.log('=== DEBUGGING PROPERTY LOOKUP ===');
-                console.log('Parcel number:', parcelNumber);
-                console.log('Note: Owner information not available from public API');
-                console.log('Full parcel data:', parcelData);
+                console.log('\n=== FOUR-TIER MATCHING LOGIC ===');
+                console.log('🔍 Property Owner:', `"${owner}"`);
+                console.log('🔍 Property Jurisdiction:', `"${jurisdiction}"`);
+                console.log('🔍 Property State:', `"${state}"`);
                 
-                // Get all property instructions from database
-                const querySnapshot = await getDocs(collection(db, "propertyInstructions"));
+                // Get all instructions from database
+                const querySnapshot = await getDocs(collection(db, "artifactInstructions"));
                 
-                if (!querySnapshot.empty) {
-                    console.log('Found', querySnapshot.docs.length, 'property instruction documents');
+                if (querySnapshot.empty) {
+                    console.log('❌ Database is empty - no instructions found');
+                    console.log('💡 Add documents to "artifactInstructions" collection via Admin Panel');
+                    return null;
+                }
+                
+                console.log(`\n📚 Database has ${querySnapshot.docs.length} instruction(s)`);
+                
+                let ownerMatch = null;
+                let jurisdictionMatch = null;
+                let stateMatch = null;
+                
+                // TIER 1, 2 & 2.5: Loop through all instructions to find best match
+                for (const docSnapshot of querySnapshot.docs) {
+                    const instruction = docSnapshot.data();
+                    const dbOwner = (instruction.owner || '').toLowerCase().trim();
+                    const dbJurisdiction = (instruction.jurisdiction || '').toLowerCase().trim();
+                    const dbState = (instruction.state || '').toUpperCase().trim();
+                    const keywords = (instruction.keywords || []).map(k => k.toLowerCase().trim());
                     
-                    // Check each instruction for parcel number match only
-                    for (const doc of querySnapshot.docs) {
-                        const instruction = doc.data();
-                        console.log('Checking instruction:', instruction.id);
+                    console.log(`\n📄 Checking: "${docSnapshot.id}"`);
+                    console.log('   Owner:', `"${dbOwner}"`, 'Jurisdiction:', `"${dbJurisdiction}"`, 'State:', `"${dbState}"`);
+                    console.log('   Keywords:', keywords);
+                    
+                    // STATE MATCHING: If instruction has a state, it MUST match the property's state
+                    if (dbState) {
+                        if (!state || state !== dbState) {
+                            console.log(`   ⏭️ SKIPPED: State mismatch (instruction requires "${dbState}", property is "${state}")`);
+                            continue; // Skip this instruction entirely
+                        } else {
+                            console.log(`   ✓ State match: "${dbState}"`);
+                        }
+                    }
+                    
+                    // TIER 1: Check Owner OR Keywords match
+                    if (owner && !ownerMatch) {
+                        // Direct owner match (bidirectional)
+                        if (dbOwner && (owner.includes(dbOwner) || dbOwner.includes(owner))) {
+                            console.log('   ✅ TIER 1: Owner name match!');
+                            ownerMatch = { ...instruction, matchType: 'owner', docId: docSnapshot.id };
+                            break; // Found owner match, stop searching
+                        }
                         
-                        // Check by parcel number
-                        if (parcelNumber && instruction.parcelNumber === parcelNumber) {
-                            console.log('✓ Found parcel number match');
-                            return instruction;
+                        // Keyword match with owner
+                        for (const keyword of keywords) {
+                            if (owner.includes(keyword)) {
+                                console.log(`   ✅ TIER 1: Keyword match! ("${keyword}" found in owner)`);
+                                ownerMatch = { ...instruction, matchType: 'keyword-owner', docId: docSnapshot.id };
+                                break;
+                            }
+                        }
+                        
+                        if (ownerMatch) break; // Stop after finding owner/keyword match
+                    }
+                    
+                    // TIER 2: Check Jurisdiction match (only if no owner match yet)
+                    // STRICT: Only match jurisdiction-only entries (no specific owner required)
+                    if (jurisdiction && !ownerMatch && !jurisdictionMatch) {
+                        // Only match if this is a jurisdiction-wide entry (no specific owner in DB)
+                        // OR if the entry has an owner but it doesn't match (skip it)
+                        
+                        if (!dbOwner || dbOwner === '') {
+                            // This is a jurisdiction-wide entry (applies to all properties in jurisdiction)
+                            if (dbJurisdiction && (jurisdiction.includes(dbJurisdiction) || dbJurisdiction.includes(jurisdiction))) {
+                                console.log('   ✅ TIER 2: Jurisdiction-wide match (no specific owner required)');
+                                jurisdictionMatch = { ...instruction, matchType: 'jurisdiction', docId: docSnapshot.id };
+                            }
+                            
+                            // Check keywords against jurisdiction for jurisdiction-wide entries
+                            if (!jurisdictionMatch) {
+                                for (const keyword of keywords) {
+                                    // Bidirectional keyword matching
+                                    if (jurisdiction.includes(keyword) || keyword.includes(jurisdiction)) {
+                                        console.log(`   ✅ TIER 2: Jurisdiction keyword match! ("${keyword}" matches "${jurisdiction}")`);
+                                        jurisdictionMatch = { ...instruction, matchType: 'keyword-jurisdiction', docId: docSnapshot.id };
+                                        break;
+                                    }
+                                }
+                            }
+                        } else {
+                            // This entry has a specific owner requirement, skip for TIER 2
+                            console.log(`   ⏭️ TIER 2: Skipped (entry requires specific owner: "${dbOwner}")`);
+                        }
+                    }
+                    
+                    // TIER 2.5: Check State-only match (State Archaeologist fallback)
+                    // Only if no owner/jurisdiction match, and entry has state but NO owner and NO jurisdiction
+                    if (state && !ownerMatch && !jurisdictionMatch && !stateMatch) {
+                        // This is a state-wide entry (e.g., State Archaeologist) - no owner or jurisdiction specified
+                        if ((!dbOwner || dbOwner === '') && (!dbJurisdiction || dbJurisdiction === '')) {
+                            if (dbState && state === dbState) {
+                                console.log('   ✅ TIER 2.5: State-wide match (State Archaeologist)');
+                                stateMatch = { ...instruction, matchType: 'state', docId: docSnapshot.id };
+                            }
                         }
                     }
                 }
                 
-                console.log('❌ No specific instructions found for this parcel');
-                console.log('💡 Note: Without owner information, we can only match by specific parcel numbers in our database');
-                return null;
+                // Return best match in priority order
+                if (ownerMatch) {
+                    console.log(`\n🎯 TIER 1 MATCH FOUND: ${ownerMatch.matchType}`);
+                    console.log('   Using:', ownerMatch.docId);
+                    return ownerMatch;
+                } else if (jurisdictionMatch) {
+                    console.log(`\n🎯 TIER 2 MATCH FOUND: ${jurisdictionMatch.matchType}`);
+                    console.log('   Using:', jurisdictionMatch.docId);
+                    return jurisdictionMatch;
+                } else if (stateMatch) {
+                    console.log(`\n🎯 TIER 2.5 MATCH FOUND: ${stateMatch.matchType}`);
+                    console.log('   Using:', stateMatch.docId);
+                    return stateMatch;
+                } else {
+                    console.log('\n⚠️ NO MATCH FOUND');
+                    console.log('📋 TIER 3: Falling back to default basic steps');
+                    return null;
+                }
+                
             } catch (error) {
-                console.error('Error checking for specific instructions:', error);
+                console.error('💥 Error checking database:', error);
                 return null;
             }
         }
 
         // Display property information
-        function displayPropertyInfo(parcelData) {
+        function displayPropertyInfo(propertyData) {
             const grid = document.getElementById('propertyInfoGrid');
             
-            // Log all available fields for debugging
-            console.log('📊 All available parcel data fields:', Object.keys(parcelData));
-            console.log('📊 Full parcel data object:', parcelData);
-            
-            // The King County public API only provides basic parcel data for privacy reasons
-            const parcelNumber = parcelData.PIN || `${parcelData.MAJOR}-${parcelData.MINOR}` || 'Unknown';
+            console.log('📊 Displaying property data:', propertyData);
             
             const info = [
-                { label: 'Parcel Number (PIN)', value: parcelNumber },
-                { label: 'Major Parcel ID', value: parcelData.MAJOR || 'Unknown' },
-                { label: 'Minor Parcel ID', value: parcelData.MINOR || 'Unknown' },
-                { label: 'Property Area (sq ft)', value: parcelData['Shape.STArea()'] ? Math.round(parcelData['Shape.STArea()']).toLocaleString() : 'Unknown' },
-                { label: 'Jurisdiction', value: 'King County' },
-                { label: 'Taxpayer Information', value: 'Not available via public API (privacy protected)' }
+                { label: 'Owner', value: propertyData.owner || 'Unknown' },
+                { label: 'Jurisdiction', value: propertyData.jurisdiction || 'Unknown' },
+                { label: 'Coordinates', value: `${propertyData.lat || 'N/A'}, ${propertyData.long || 'N/A'}` }
             ];
             
-            console.log('📊 Property info being displayed:', info);
+            // Add state if available
+            if (propertyData.state) {
+                info.push({ label: 'State', value: propertyData.state });
+            }
+            
+            // Add any additional fields from the API response
+            if (propertyData.address) {
+                info.push({ label: 'Address', value: propertyData.address });
+            }
+            if (propertyData.parcelNumber) {
+                info.push({ label: 'Parcel Number', value: propertyData.parcelNumber });
+            }
             
             grid.innerHTML = info.map(item => `
                 <div class="info-item">
@@ -689,31 +2222,219 @@
             `).join('');
         }
 
+        // Global map instance tracker
+        let parcelMapInstance = null;
+
+        // Display parcel polygon on map
+        function displayParcelMap(propertyData) {
+            const mapSection = document.getElementById('parcelMapSection');
+            
+            console.log('🗺️ displayParcelMap called with:', propertyData);
+            console.log('🗺️ Polygon field exists?', !!propertyData.polygon);
+            console.log('🗺️ Polygon value:', propertyData.polygon);
+            
+            // Check if polygon data exists
+            if (!propertyData.polygon) {
+                console.log('⚠️ No polygon data in API response - map will not display');
+                console.log('💡 The API needs to return a "polygon" field with WKT MULTIPOLYGON data');
+                mapSection.style.display = 'none';
+                return;
+            }
+            
+            console.log('🗺️ Polygon data found! Rendering map...');
+            console.log('Polygon WKT:', propertyData.polygon.substring(0, 100) + '...');
+            
+            // Remove existing map instance if it exists
+            if (parcelMapInstance) {
+                console.log('🗑️ Removing existing map instance...');
+                parcelMapInstance.remove();
+                parcelMapInstance = null;
+            }
+            
+            // Show map section FIRST
+            mapSection.style.display = 'block';
+            
+            // Wait for DOM to update before creating map
+            setTimeout(() => {
+                try {
+                    // Parse WKT MULTIPOLYGON
+                    const coordinates = parseWKT(propertyData.polygon);
+                    
+                    if (!coordinates || coordinates.length === 0) {
+                        console.error('❌ Failed to parse polygon coordinates');
+                        mapSection.style.display = 'none';
+                        return;
+                    }
+                    
+                    console.log('✅ Parsed', coordinates.length, 'coordinate points');
+                    console.log('First coordinate:', coordinates[0]);
+                    console.log('Last coordinate:', coordinates[coordinates.length - 1]);
+                    
+                    // Create the map with initial view (store in global variable)
+                    parcelMapInstance = L.map('parcelMap').setView([coordinates[0][0], coordinates[0][1]], 15);
+                    
+                    // Add OpenStreetMap tiles
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                        maxZoom: 19
+                    }).addTo(parcelMapInstance);
+                    
+                    console.log('Map created, adding polygon...');
+                    
+                    // Create polygon from coordinates
+                    const polygon = L.polygon(coordinates, {
+                        color: '#e74c3c',
+                        fillColor: '#e74c3c',
+                        fillOpacity: 0.3,
+                        weight: 3
+                    }).addTo(parcelMapInstance);
+                    
+                    console.log('Polygon added, fitting bounds...');
+                    console.log('Polygon bounds:', polygon.getBounds());
+                    
+                    // Fit map to polygon bounds with padding
+                    parcelMapInstance.fitBounds(polygon.getBounds(), { padding: [50, 50] });
+                    
+                    // Add marker at search location if available
+                    if (propertyData.lat && propertyData.long) {
+                        L.marker([propertyData.lat, propertyData.long])
+                            .addTo(parcelMapInstance)
+                            .bindPopup('📍 Search Location')
+                            .openPopup();
+                    }
+                    
+                    // Force map to recalculate size
+                    setTimeout(() => {
+                        parcelMapInstance.invalidateSize();
+                        console.log('✅ Map displayed successfully!');
+                    }, 100);
+                    
+                } catch (error) {
+                    console.error('💥 Error displaying map:', error);
+                    console.error('Error details:', error.message, error.stack);
+                    mapSection.style.display = 'none';
+                }
+            }, 100);
+        }
+
+        // Parse WKT MULTIPOLYGON format to Leaflet coordinates
+        function parseWKT(wkt) {
+            try {
+                console.log('🔍 Parsing WKT polygon...');
+                console.log('Raw WKT length:', wkt.length);
+                
+                // Remove "MULTIPOLYGON(((" prefix and ")))" suffix
+                const coordString = wkt
+                    .replace(/^MULTIPOLYGON\(\(\(/i, '')
+                    .replace(/\)\)\)$/, '')
+                    .trim();
+                
+                console.log('Cleaned coord string (first 200 chars):', coordString.substring(0, 200));
+                
+                // Split by coordinate pairs
+                const pairs = coordString.split(',');
+                console.log('Found', pairs.length, 'coordinate pairs');
+                
+                // Convert to [lat, lng] format (Leaflet expects lat first, but WKT is lng lat)
+                const coordinates = pairs.map((pair, index) => {
+                    // Remove extra whitespace and split by space
+                    const parts = pair.trim().split(/\s+/);
+                    
+                    if (parts.length !== 2) {
+                        console.warn(`⚠️ Coordinate pair ${index} has ${parts.length} parts:`, pair);
+                        return null;
+                    }
+                    
+                    const lng = parseFloat(parts[0]);
+                    const lat = parseFloat(parts[1]);
+                    
+                    if (isNaN(lng) || isNaN(lat)) {
+                        console.error(`❌ Invalid coordinate at index ${index}:`, parts);
+                        console.error(`   lng: ${parts[0]} -> ${lng}`);
+                        console.error(`   lat: ${parts[1]} -> ${lat}`);
+                        return null;
+                    }
+                    
+                    return [lat, lng]; // Swap for Leaflet
+                }).filter(coord => coord !== null); // Remove invalid coordinates
+                
+                console.log('✅ Successfully parsed', coordinates.length, 'valid coordinates');
+                
+                if (coordinates.length < 3) {
+                    console.error('❌ Not enough valid coordinates for a polygon (need at least 3)');
+                    return null;
+                }
+                
+                console.log('First 3 coordinates:', coordinates.slice(0, 3));
+                console.log('Last 3 coordinates:', coordinates.slice(-3));
+                
+                return coordinates;
+                
+            } catch (error) {
+                console.error('💥 Error parsing WKT:', error);
+                console.error('Error stack:', error.stack);
+                return null;
+            }
+        }
+
         // Display guidance based on property and instructions
-        function displayGuidance(parcelData, specificInstructions) {
+        function displayGuidance(propertyData, specificInstructions) {
             const guidanceContent = document.getElementById('guidanceContent');
             
-            if (specificInstructions) {
-                // Display specific instructions
+            if (specificInstructions && specificInstructions.htmlContent) {
+                // TIER 1, TIER 2, or TIER 2.5: Display custom instructions from database
+                console.log('📄 Displaying custom instructions');
+                console.log('Match type:', specificInstructions.matchType);
+                
+                const matchTypeLabels = {
+                    'owner': 'Owner Match',
+                    'keyword-owner': 'Keyword Match (Owner)',
+                    'jurisdiction': 'Jurisdiction Match',
+                    'keyword-jurisdiction': 'Keyword Match (Jurisdiction)',
+                    'state': 'State Archaeologist'
+                };
+                
+                const matchLabel = matchTypeLabels[specificInstructions.matchType] || specificInstructions.matchType;
+                
+                // Determine tier based on match type
+                let tier = 'TIER 3';
+                if (specificInstructions.matchType.includes('owner') || specificInstructions.matchType === 'owner') {
+                    tier = 'TIER 1';
+                } else if (specificInstructions.matchType.includes('jurisdiction') || specificInstructions.matchType === 'jurisdiction') {
+                    tier = 'TIER 2';
+                } else if (specificInstructions.matchType === 'state') {
+                    tier = 'TIER 2.5';
+                }
+                
+                // Display match information and contacts summary
+                let contactsSummary = '';
+                if (specificInstructions.contacts && specificInstructions.contacts.length > 0) {
+                    contactsSummary = `
+                        <p style="color: #155724; margin-top: 0.5rem;">
+                            <strong>Contacts Available:</strong> ${specificInstructions.contacts.length} contact(s) found
+                        </p>
+                    `;
+                }
+                
                 guidanceContent.innerHTML = `
-                    <div class="contact-card">
-                        <h4>Special Instructions for This Property</h4>
-                        <p>${specificInstructions.instructions}</p>
+                    <div class="contact-card" style="background: #d4edda; border-color: #c3e6cb;">
+                        <h4>✓ Custom Instructions Found</h4>
+                        <p style="color: #155724; margin-bottom: 0.5rem;">
+                            <strong>${tier}:</strong> ${matchLabel}
+                        </p>
+                        ${contactsSummary}
+                        <p style="color: #666; font-size: 0.9rem;">
+                            Document: ${specificInstructions.docId || 'N/A'}
+                        </p>
                     </div>
                     
-                    <div class="contact-card">
-                        <h4>Primary Contact</h4>
-                        <div class="contact-info">
-                            <p><strong>Name:</strong> ${specificInstructions.contactName}</p>
-                            <p><strong>Phone:</strong> ${specificInstructions.contactPhone}</p>
-                            <p><strong>Email:</strong> ${specificInstructions.contactEmail}</p>
-                        </div>
+                    <div class="custom-instructions-content" style="margin-top: 1.5rem;">
+                        ${specificInstructions.htmlContent}
                     </div>
-                    
-                    ${getDefaultGuidanceHTML()}
                 `;
             } else {
-                // Display default guidance
+                // TIER 3: Display default basic steps
+                console.log('📄 TIER 3: Displaying default basic steps');
                 displayDefaultGuidance();
             }
         }
@@ -736,7 +2457,7 @@
             guidanceContent.innerHTML = getDefaultGuidanceHTML();
         }
 
-        // Get default guidance HTML
+        // Get default guidance HTML - Generic for anywhere in the US
         function getDefaultGuidanceHTML() {
             return `
                 <div class="emergency-note">
@@ -744,129 +2465,56 @@
                 </div>
                 
                 <div class="contact-card">
-                    <h4>King County Archaeologist</h4>
+                    <h4>📞 Contact Your Local Authorities</h4>
                     <div class="contact-info">
-                        <p><strong>Phone:</strong> (206) 477-4251</p>
-                        <p><strong>Email:</strong> archaeology@kingcounty.gov</p>
-                        <p><strong>Office Hours:</strong> Monday-Friday, 8:30 AM - 4:30 PM</p>
+                        <p><strong>County Archaeologist or Planning Department</strong></p>
+                        <p>Search online for: "[Your County Name] archaeologist" or "[Your County Name] planning department"</p>
+                        <p style="margin-top: 1rem;"><strong>State Historic Preservation Office (SHPO)</strong></p>
+                        <p>Every state has a SHPO - search: "[Your State] historic preservation office"</p>
                     </div>
                 </div>
                 
                 <div class="contact-card">
-                    <h4>Washington State Department of Archaeology & Historic Preservation (DAHP)</h4>
+                    <h4>🏛️ Federal Resources</h4>
                     <div class="contact-info">
-                        <p><strong>Phone:</strong> (360) 586-3065</p>
-                        <p><strong>Email:</strong> info@dahp.wa.gov</p>
-                        <p><strong>Website:</strong> dahp.wa.gov</p>
+                        <p><strong>If on Federal Land:</strong></p>
+                        <p>National Park Service, Bureau of Land Management, U.S. Forest Service, etc.</p>
+                        <p style="margin-top: 1rem;"><strong>If Native American artifacts:</strong></p>
+                        <p>Contact local tribal authorities and NAGPRA coordinator</p>
                     </div>
                 </div>
                 
                 <h4>Immediate Steps to Take:</h4>
                 <ol style="margin: 1rem 0; padding-left: 2rem; line-height: 1.8;">
                     <li><strong>Stop all work</strong> in the immediate area</li>
+                    <li><strong>Do not touch or move</strong> the artifact</li>
                     <li><strong>Mark the location</strong> with flags or cones if available</li>
-                    <li><strong>Take photos</strong> of the artifact in place (do not move it)</li>
+                    <li><strong>Take photos</strong> of the artifact in place (do not disturb)</li>
                     <li><strong>Record GPS coordinates</strong> of the exact location</li>
-                    <li><strong>Contact the King County Archaeologist</strong> immediately</li>
-                    <li><strong>Secure the area</strong> to prevent disturbance</li>
+                    <li><strong>Contact local authorities</strong> (county archaeologist, SHPO, or tribal office)</li>
+                    <li><strong>Secure the area</strong> to prevent disturbance by others</li>
+                    <li><strong>Document everything</strong> - date, time, weather, surrounding features</li>
                 </ol>
                 
                 <div class="emergency-note">
-                    <strong>Legal Notice:</strong> Disturbing archaeological sites or artifacts may be a violation of state and federal laws. Always contact authorities before taking any action.
+                    <strong>⚖️ Legal Notice:</strong> Federal and state laws protect archaeological resources. The Archaeological Resources Protection Act (ARPA) and similar state laws make it illegal to excavate, remove, damage, or otherwise alter archaeological sites on public or tribal lands without a permit. Violations can result in criminal penalties including fines and imprisonment.
+                </div>
+                
+                <div class="contact-card" style="background: #e3f2fd; border-color: #90caf9;">
+                    <h4>📚 Learn More</h4>
+                    <div class="contact-info">
+                        <p>Visit the <a href="laws.html" style="color: #1976d2; font-weight: 600;">Federal Archaeology Laws</a> page to learn about your legal responsibilities.</p>
+                    </div>
                 </div>
             `;
-        }
-
-        // Initialize sample property instructions
-        async function initializePropertyInstructions() {
-            const sampleInstructions = [
-                {
-                    id: "washington-state-parks",
-                    ownerName: "Washington State Parks",
-                    keywords: ["STATE PARKS", "WA STATE PARKS", "WASHINGTON STATE PARKS"],
-                    parcelNumber: "",
-                    instructions: "This is state park property. All archaeological discoveries must be reported immediately to both King County and Washington State Parks.",
-                    contactName: "State Parks Archaeology Division",
-                    contactPhone: "(360) 902-8500",
-                    contactEmail: "archaeology@parks.wa.gov"
-                },
-                {
-                    id: "city-of-redmond",
-                    ownerName: "City of Redmond",
-                    keywords: ["REDMOND", "CITY OF REDMOND", "REDMOND CITY OF", "REDMOND CITY", "REDMOND WA", "REDMOND WASHINGTON"],
-                    parcelNumber: "",
-                    instructions: "This property is within Redmond city limits. Contact both King County Archaeologist and Redmond Parks & Recreation Department for archaeological discoveries.",
-                    contactName: "Redmond Parks & Recreation",
-                    contactPhone: "(425) 556-2300",
-                    contactEmail: "parks@redmond.gov"
-                },
-                {
-                    id: "city-of-seattle",
-                    ownerName: "City of Seattle",
-                    keywords: ["SEATTLE", "CITY OF SEATTLE", "SEATTLE CITY OF", "SEATTLE CITY", "SEATTLE WA"],
-                    parcelNumber: "",
-                    instructions: "This property is within Seattle city limits. Contact Seattle Department of Neighborhoods Historic Preservation Program in addition to King County.",
-                    contactName: "Seattle Historic Preservation Program",
-                    contactPhone: "(206) 684-0228",
-                    contactEmail: "preservation@seattle.gov"
-                },
-                {
-                    id: "city-of-bellevue",
-                    ownerName: "City of Bellevue",
-                    keywords: ["BELLEVUE", "CITY OF BELLEVUE", "BELLEVUE CITY OF", "BELLEVUE CITY", "BELLEVUE WA"],
-                    parcelNumber: "",
-                    instructions: "This property is within Bellevue city limits. Contact Bellevue Planning and Community Development Department along with King County.",
-                    contactName: "Bellevue Planning & Community Development",
-                    contactPhone: "(425) 452-6800",
-                    contactEmail: "planning@bellevuewa.gov"
-                },
-                {
-                    id: "king-county",
-                    ownerName: "King County",
-                    keywords: ["KING COUNTY", "KC ", "KING CO", "COUNTY OF KING"],
-                    parcelNumber: "",
-                    instructions: "This is King County property. Follow standard King County archaeological discovery procedures with additional county property protocols.",
-                    contactName: "King County Facilities Management",
-                    contactPhone: "(206) 477-4251",
-                    contactEmail: "facilities@kingcounty.gov"
-                },
-                {
-                    id: "washington-state-dot",
-                    ownerName: "Washington State Department of Transportation",
-                    keywords: ["WSDOT", "WA DOT", "WASHINGTON DOT", "STATE DOT", "DEPARTMENT OF TRANSPORTATION", "TRANSPORTATION"],
-                    parcelNumber: "",
-                    instructions: "This is WSDOT property. Archaeological discoveries on transportation corridors require immediate notification to WSDOT Cultural Resources Program.",
-                    contactName: "WSDOT Cultural Resources Program",
-                    contactPhone: "(360) 705-7077",
-                    contactEmail: "CulturalResources@wsdot.wa.gov"
-                },
-                {
-                    id: "federal-property",
-                    ownerName: "Federal Government",
-                    keywords: ["FEDERAL", "U.S.", "UNITED STATES", "US GOVERNMENT", "FEDERAL GOVERNMENT", "USFWS", "NATIONAL PARK", "FOREST SERVICE", "USA"],
-                    parcelNumber: "",
-                    instructions: "This is federal property. Archaeological discoveries on federal land are protected under federal law and require immediate notification to the appropriate federal agency.",
-                    contactName: "Federal Archaeological Contact",
-                    contactPhone: "(206) 220-7990",
-                    contactEmail: "archaeology@fs.fed.us"
-                }
-            ];
-            
-            try {
-                for (const instruction of sampleInstructions) {
-                    await setDoc(doc(db, "propertyInstructions", instruction.id), instruction);
-                }
-                console.log("Property instructions initialized");
-            } catch (error) {
-                console.error("Error initializing property instructions:", error);
-            }
         }
 
         // Initialize when page loads
         window.addEventListener('DOMContentLoaded', function() {
             console.log('Page loaded! Initializing...');
             
-            initializePropertyInstructions();
+            // Initialize admin panel event listeners
+            initializeAdminEventListeners();
             
             // Auto-fill coordinates for testing and make it obvious
             const lat = document.getElementById('latitude');
@@ -940,6 +2588,51 @@
                 }
             );
         };
+
+        // Load sample coordinates into the form
+        window.loadSampleCoords = function(lat, lng, locationName) {
+            console.log(`📍 Loading sample location: ${locationName}`);
+            console.log(`   Coordinates: ${lat}, ${lng}`);
+            
+            // Fill in the form fields
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+            
+            // Automatically trigger the lookup
+            lookupLocationByCoords(lat, lng);
+        };
+
+        // ============== HAMBURGER MENU ==============
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+            
+            // Close menu when clicking on a link
+            const navLinkItems = navLinks.querySelectorAll('a');
+            navLinkItems.forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideNav = navLinks.contains(event.target);
+                const isClickOnHamburger = hamburger.contains(event.target);
+                
+                if (!isClickInsideNav && !isClickOnHamburger && navLinks.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }
+            });
+        }
+        // ============== END HAMBURGER MENU ==============
     </script>
 </body>
 </html>

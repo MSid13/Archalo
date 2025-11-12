@@ -66,6 +66,38 @@
             transform: translateY(-1px);
         }
         
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #ecf0f1;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
         /* Mobile menu toggle */
         .mobile-menu-toggle {
             display: none;
@@ -208,14 +240,14 @@
         }
 
         .cta-button.primary {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            background: linear-gradient(135deg, #d4704a, #c0603c);
             color: white;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+            box-shadow: 0 4px 15px rgba(212, 112, 74, 0.3);
         }
 
         .cta-button.primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+            box-shadow: 0 8px 25px rgba(212, 112, 74, 0.4);
         }
 
         .cta-button.secondary {
@@ -255,7 +287,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(135deg, #3498db, #e74c3c);
+            background: linear-gradient(135deg, #d4704a, #3498db);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -353,7 +385,7 @@
         }
 
         .stat-number {
-            color: #e74c3c;
+            color: #d4704a;
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
@@ -367,24 +399,41 @@
         
         /* Responsive breakpoints */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: linear-gradient(135deg, #2c3e50, #34495e);
-                flex-direction: column;
-                padding: 1rem 2rem;
-                box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            }
-            
-            .nav-links.active {
+            .hamburger {
                 display: flex;
             }
             
-            .mobile-menu-toggle {
+            .nav-links {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: linear-gradient(135deg, #2c3e50, #34495e);
+                width: 100%;
+                text-align: center;
+                transition: left 0.3s ease;
+                box-shadow: 0 10px 27px rgba(0,0,0,0.3);
+                padding: 1rem 0;
+                gap: 0;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                padding: 0.5rem 0;
+                width: 100%;
+            }
+            
+            .nav-links a {
                 display: block;
+                padding: 1rem;
+                width: 100%;
+            }
+            
+            .mobile-menu-toggle {
+                display: none;
             }
             
             .artifact-content {
@@ -451,6 +500,37 @@
             }
         }
         
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: #ecf0f1;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        
+        .footer-disclaimer {
+            max-width: 900px;
+            margin: 0 auto 1rem;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #bdc3c7;
+        }
+        
+        .admin-link {
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 1px dotted transparent;
+        }
+        
+        .admin-link:hover {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+        
         /* Smooth scrolling */
         html {
             scroll-behavior: smooth;
@@ -467,12 +547,19 @@
 <body>
     <nav>
         <div class="nav-container">
-            <div class="logo">Archalo</div>
-            <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
-            <ul class="nav-links">
+            <a href="Archalo.html" style="text-decoration: none; color: inherit;">
+                <div class="logo">Archalo</div>
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
                 <li><a href="Archalo.html">Home</a></li>
                 <li><a href="laws.html">Laws</a></li>
                 <li><a href="artifactHelp.html">I Found an Artifact</a></li>
+                <li><a href="edu-resources.html">Educational Resources</a></li>
             </ul>
         </div>
     </nav>
@@ -515,6 +602,13 @@
             </div>
         </div>
     </section>
+
+    <footer>
+        <div class="footer-disclaimer">
+            <p><strong>Disclaimer:</strong> We strive to provide the most accurate data available, however, we cannot guarantee its completeness or accuracy. Our guidance is advisory only. We are not responsible for any consequences resulting from the use of this information. Always verify with authorities.</p>
+        </div>
+        <a href="#" class="admin-link" id="adminLoginBtn">Login</a>
+    </footer>
 
     <!-- Firebase SDKs -->
     <script type="module">
@@ -872,22 +966,37 @@ service cloud.firestore {
             initArtifactOfDay();
         });
 
-        // Mobile menu toggle functionality
-        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.toggle('active');
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const nav = document.querySelector('nav');
-            const navLinks = document.querySelector('.nav-links');
-            const toggle = document.querySelector('.mobile-menu-toggle');
+        // ============== HAMBURGER MENU ==============
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
             
-            if (!nav.contains(event.target)) {
-                navLinks.classList.remove('active');
-            }
-        });
+            // Close menu when clicking on a link
+            const navLinkItems = navLinks.querySelectorAll('a');
+            navLinkItems.forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideNav = navLinks.contains(event.target);
+                const isClickOnHamburger = hamburger.contains(event.target);
+                
+                if (!isClickInsideNav && !isClickOnHamburger && navLinks.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }
+            });
+        }
+        // ============== END HAMBURGER MENU ==============
     </script>
 </body>
 </html>
