@@ -640,16 +640,61 @@
 
         let isAuthenticated = false;
         let currentUser = null;
+        let userPermissions = {
+            deletion: true,
+            edu: true
+        };
+
+        // Load user permissions from Firebase
+        async function loadUserPermissions(email) {
+            try {
+                const configRef = doc(db, 'config', email);
+                const configSnap = await getDoc(configRef);
+                
+                if (configSnap.exists()) {
+                    const permissions = configSnap.data();
+                    userPermissions = {
+                        deletion: permissions.deletion !== false,
+                        edu: permissions.edu !== false
+                    };
+                    console.log('User permissions loaded:', userPermissions);
+                } else {
+                    // Default all to true if no config exists
+                    userPermissions = { deletion: true, edu: true };
+                    console.log('No permission config found, using defaults');
+                }
+            } catch (error) {
+                console.error('Error loading permissions:', error);
+                // Default to all permissions on error
+                userPermissions = { deletion: true, edu: true };
+            }
+        }
 
         // Authentication state listener
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
                 isAuthenticated = true;
                 currentUser = user;
+                
+                // Load permissions for this user
+                await loadUserPermissions(user.email);
+                
+                // Check if user has edu permission
+                if (!userPermissions.edu) {
+                    console.log('User does not have edu permission');
+                    alert('⛔ You do not have permission to access the Educational Resources admin panel.\n\nContact your administrator to request access.');
+                    // Sign out the user
+                    await signOut(auth);
+                    hideAdminControls();
+                    return;
+                }
+                
                 showAdminControls();
             } else {
                 isAuthenticated = false;
                 currentUser = null;
+                // Reset to default permissions when logged out
+                userPermissions = { deletion: true, edu: true };
                 hideAdminControls();
             }
         });
@@ -861,6 +906,12 @@
                 return;
             }
 
+            // Check edu permission for adding/editing resources
+            if (!userPermissions.edu) {
+                alert('⛔ You do not have permission to add or edit educational resources.\n\nContact your administrator to request access.');
+                return;
+            }
+
             const submitBtn = document.getElementById('submitBtn');
             const messageDiv = document.getElementById('submitMessage');
             
@@ -916,6 +967,12 @@
                 return;
             }
 
+            // Check edu permission
+            if (!userPermissions.edu) {
+                alert('⛔ You do not have permission to edit educational resources.\n\nContact your administrator to request access.');
+                return;
+            }
+
             try {
                 const resourceDoc = await getDoc(doc(db, 'educationalResources', resourceId));
                 
@@ -947,6 +1004,12 @@
         window.deleteResource = async function(resourceId) {
             if (!isAuthenticated) {
                 alert('You must be logged in to delete resources');
+                return;
+            }
+
+            // Check deletion permission
+            if (!userPermissions.deletion) {
+                alert('⛔ You do not have permission to delete resources.\n\nContact your administrator to request deletion access.');
                 return;
             }
 

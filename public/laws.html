@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federal Archaeology Laws - Archalo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fafafa;
+        }
+        
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            color: #ecf0f1;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: clamp(1rem, 3vw, 2rem);
+        }
+        
+        .nav-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            transform: translateY(-1px);
+        }
+        
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #ecf0f1;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        /* Hero section */
+        .hero {
+            background: linear-gradient(135deg, #d4a574, #8b6f47);
+            color: white;
+            padding: clamp(3rem, 6vw, 5rem) 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        .hero p {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        /* Laws container */
+        .laws-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: clamp(3rem, 6vw, 5rem) 2rem;
+        }
+        
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .search-bar input:focus {
+            border-color: #3498db;
+        }
+        
+        .laws-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .law-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .law-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .law-icon {
+            width: 60px;
+            height: 60px;
+            min-width: 60px;
+            min-height: 60px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            line-height: 1;
+            color: white;
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        
+        .law-card h3 {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+        
+        .law-year {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .law-summary {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .law-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .law-tag {
+            background: #ecf0f1;
+            color: #2c3e50;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .expand-btn {
+            color: #3498db;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .expand-btn:hover {
+            color: #2980b9;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            margin: 5vh auto;
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow-y: auto;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #7f8c8d;
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+        
+        .modal-close:hover {
+            background: #f8f9fa;
+            color: #2c3e50;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 3rem;
+        }
+        
+        /* State lookup section styles */
+        .state-lookup-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .lookup-form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            align-items: end;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-group select,
+        .form-group input {
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: #3498db;
+        }
+        
+        .lookup-btn {
+            grid-column: 1 / -1;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .lookup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .lookup-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .state-laws-results {
+            margin-top: 2rem;
+        }
+        
+        .state-laws-results h3 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            text-align: center;
+        }
+        
+        /* Admin Section */
+        .admin-section {
+            max-width: 1400px;
+            margin: 3rem auto 2rem;
+            padding: 0 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 2rem;
+        }
+
+        .admin-form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .admin-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .admin-form-group input,
+        .admin-form-group textarea,
+        .admin-form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .admin-form-group input:focus,
+        .admin-form-group textarea:focus,
+        .admin-form-group select:focus {
+            border-color: #3498db;
+        }
+
+        .admin-form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .submit-law-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .submit-law-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .submit-law-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auth-required {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            color: #856404;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            color: #155724;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            color: #721c24;
+        }
+        
+        /* Large screen optimization */
+        @media (min-width: 1400px) {
+            .law-icon {
+                width: 70px;
+                height: 70px;
+                min-width: 70px;
+                min-height: 70px;
+                font-size: 2.2rem;
+            }
+            
+            .laws-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .nav-links {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: linear-gradient(135deg, #2c3e50, #34495e);
+                width: 100%;
+                text-align: center;
+                transition: left 0.3s ease;
+                box-shadow: 0 10px 27px rgba(0,0,0,0.3);
+                padding: 1rem 0;
+                gap: 0;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                padding: 0.5rem 0;
+                width: 100%;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 1rem;
+                width: 100%;
+            }
+            
+            .laws-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .law-card {
+                padding: 1.5rem;
+            }
+            
+            .lookup-form {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: #ecf0f1;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        
+        .footer-disclaimer {
+            max-width: 900px;
+            margin: 0 auto 1rem;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #bdc3c7;
+        }
+        
+        .admin-link {
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 1px dotted transparent;
+        }
+        
+        .admin-link:hover {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="Archalo.html" style="text-decoration: none; color: inherit;">
+                <div class="logo">Archalo</div>
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="Archalo.html">Home</a></li>
+                <li><a href="laws.html" class="active">Laws</a></li>
+                <li><a href="artifactHelp.html">I Found an Artifact</a></li>
+                <li><a href="edu-resources.html">Educational Resources</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Archaeology Laws</h1>
+        <p>Comprehensive guide to United States federal laws governing archaeological resources, preservation, and discovery. There are some state and county laws listed.</p>
+    </section>
+
+    <section class="laws-container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search federal laws by name, year, or keyword...">
+        </div>
+        
+        <!-- State/County Laws Lookup Section -->
+        <div class="state-lookup-section">
+            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: clamp(1.8rem, 4vw, 2.5rem);">State & County Laws</h2>
+            <div class="lookup-form">
+                <div class="form-group">
+                    <label for="stateSelect">Select State:</label>
+                    <select id="stateSelect">
+                        <option value="">Choose a state...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="countyInput">Enter County (Optional):</label>
+                    <input type="text" id="countyInput" placeholder="e.g., Los Angeles County">
+                </div>
+                <button id="lookupBtn" class="lookup-btn">Look Up Laws</button>
+            </div>
+            
+            <div id="stateLawsResults" class="state-laws-results" style="display: none;">
+                <h3>Archaeological Laws for <span id="selectedLocation"></span></h3>
+                <div id="stateLawsGrid" class="laws-grid"></div>
+            </div>
+        </div>
+        
+        <div style="margin: 3rem 0; border-top: 2px solid #e0e0e0;"></div>
+        
+        <h2 style="text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: clamp(1.8rem, 4vw, 2.5rem);">Federal Laws</h2>
+        
+        <div id="lawsGrid" class="laws-grid">
+            <div class="loading">Loading federal archeology laws...</div>
+        </div>
+    </section>
+
+    <!-- Admin Section (Disguised as Disclaimer) -->
+    <section class="admin-section">
+        <p style="color: #7f8c8d; font-size: 0.9rem; max-width: 800px; margin: 0 auto; line-height: 1.6; cursor: pointer; transition: color 0.3s ease;" 
+           id="adminTrigger"
+           onmouseout="this.style.color='#7f8c8d'">
+            <em>Disclaimer: We strive to provide the most accurate data available, however, we cannot guarantee its completeness or accuracy. Our guidance is advisory only. We are not responsible for any consequences resulting from the use of this information. Always verify with authorities.</em>
+        </p>
+        <p style="color: #7f8c8d; font-size: 0.9rem; max-width: 800px; margin: 0 auto; line-height: 1.6; cursor: pointer; transition: color 0.3s ease;" 
+           id="adminTrigger"
+           onmouseout="this.style.color='#7f8c8d'">
+            <em>We do not have the ability to provide laws regarding finding of human remains at this time. STOP, PROTECT, AND NOTIFY</em>
+        </p>
+
+    </section>
+
+    <!-- Modal for law details -->
+    <div id="lawModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeLawModal()">&times;</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Admin Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <button class="modal-close" onclick="closeAdminLawModal()">&times;</button>
+            
+            <!-- Login Form -->
+            <div id="adminLoginForm" style="display: none;">
+                <h2 style="margin-bottom: 1.5rem; color: #2c3e50;">🔐 Admin Panel</h2>
+                <div style="margin-bottom: 1rem;">
+                    <label for="adminEmail" style="display: block; margin-bottom: 0.5rem; color: #2c3e50; font-weight: 600;">Email</label>
+                    <input type="email" id="adminEmail" placeholder="admin@example.com" required 
+                           style="width: 100%; padding: 0.8rem 1rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="adminPassword" style="display: block; margin-bottom: 0.5rem; color: #2c3e50; font-weight: 600;">Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter password" required
+                           style="width: 100%; padding: 0.8rem 1rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                </div>
+                <button id="loginBtn" style="width: 100%; padding: 1rem 2rem; background: linear-gradient(135deg, #3498db, #2980b9); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                    Login
+                </button>
+            </div>
+            
+            <!-- Admin Panel Content (shown after login) -->
+            <div id="adminPanelContent" style="display: none;">
+                <div style="background-color: #e8f5e9; border: 1px solid #81c784; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                    <p style="margin: 0.5rem 0; color: #2e7d32;"><strong>👤 Logged in as:</strong> <span id="userEmail"></span></p>
+                    <button id="logoutBtn" style="background-color: #e74c3c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 0.5rem;">
+                        Logout
+                    </button>
+                </div>
+                
+                <!-- Search and Edit Section -->
+                <div style="background-color: #fff3e0; border: 1px solid #ffb74d; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                    <h3 style="color: #e65100; margin-top: 0;">🔍 Search & Edit Laws</h3>
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <input type="text" id="lawSearchInput" placeholder="Search by title, year, or tags..." 
+                               style="flex: 1; padding: 0.8rem; border: 2px solid #ffb74d; border-radius: 6px; font-size: 0.95rem;">
+                        <button onclick="searchLaws()" style="padding: 0.8rem 1.5rem; background: linear-gradient(135deg, #ff9800, #f57c00); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                            Search
+                        </button>
+                    </div>
+                    <div id="lawSearchResults"></div>
+                </div>
+                
+                <!-- Edit Law Form (hidden by default) -->
+                <div id="editLawSection" style="display: none; background-color: #e3f2fd; border: 1px solid #64b5f6; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                    <h3 style="color: #1565c0; margin-top: 0;">✏️ Edit Law</h3>
+                    <input type="hidden" id="editLawId">
+                    
+                    <div class="admin-form-group">
+                        <label for="editLawType">Law Type:</label>
+                        <select id="editLawType">
+                            <option value="federal">Federal</option>
+                            <option value="state">State</option>
+                            <option value="county">County</option>
+                        </select>
+                    </div>
+
+                    <div id="editJurisdictionFields" style="display: none;">
+                        <div class="form-row">
+                            <div class="admin-form-group">
+                                <label for="editLawState">State:</label>
+                                <select id="editLawState">
+                                    <option value="">Select State...</option>
+                                </select>
+                            </div>
+                            <div class="admin-form-group" id="editCountyField" style="display: none;">
+                                <label for="editLawCounty">County (Optional):</label>
+                                <input type="text" id="editLawCounty" placeholder="e.g., Los Angeles County">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="editLawTitle">Law Title:</label>
+                        <input type="text" id="editLawTitle" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="admin-form-group">
+                            <label for="editLawYear">Year Enacted:</label>
+                            <input type="text" id="editLawYear" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="editLawIcon">Icon (emoji):</label>
+                            <input type="text" id="editLawIcon" maxlength="2">
+                        </div>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="editLawSummary">Summary:</label>
+                        <textarea id="editLawSummary" required></textarea>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="editLawSignificance">Significance:</label>
+                        <textarea id="editLawSignificance" required></textarea>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="editLawEnforcement">Enforcement:</label>
+                        <textarea id="editLawEnforcement" required></textarea>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="editLawFullText">Full Text (Excerpt):</label>
+                        <textarea id="editLawFullText" required></textarea>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="editLawTags">Tags (comma-separated):</label>
+                        <input type="text" id="editLawTags">
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="editLawNotes">Notes (Optional):</label>
+                        <textarea id="editLawNotes"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem;">
+                        <button onclick="updateLaw()" style="flex: 1; padding: 0.8rem; background: linear-gradient(135deg, #4caf50, #388e3c); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                            Update Law
+                        </button>
+                        <button onclick="cancelEdit()" style="padding: 0.8rem 1.5rem; background: #9e9e9e; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                            Cancel
+                        </button>
+                    </div>
+                    <div id="editMessage" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+            
+            <!-- Add Law Form (shown to authenticated users) -->
+            <div id="adminModalContent" style="display: none;">
+                <h2 style="color: #2c3e50; margin-bottom: 1rem;">Add New Law</h2>
+                
+                <div id="addLawForm">
+                    <h3 style="color: #2c3e50; margin-bottom: 1rem;">Law Details</h3>
+                    
+                    <div class="admin-form-group">
+                        <label for="lawType">Law Type:</label>
+                        <select id="lawType">
+                            <option value="federal">Federal</option>
+                            <option value="state">State</option>
+                            <option value="county">County</option>
+                        </select>
+                    </div>
+
+                    <div id="jurisdictionFields" style="display: none;">
+                        <div class="form-row">
+                            <div class="admin-form-group">
+                                <label for="lawState">State:</label>
+                                <select id="lawState">
+                                    <option value="">Select State...</option>
+                                </select>
+                            </div>
+                            <div class="admin-form-group" id="countyField" style="display: none;">
+                                <label for="lawCounty">County (Optional):</label>
+                                <input type="text" id="lawCounty" placeholder="e.g., Los Angeles County">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="lawTitle">Law Title:</label>
+                        <input type="text" id="lawTitle" placeholder="e.g., Archaeological Resources Protection Act" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="admin-form-group">
+                            <label for="lawYear">Year Enacted:</label>
+                            <input type="text" id="lawYear" placeholder="e.g., 1979" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="lawIcon">Icon (emoji):</label>
+                            <input type="text" id="lawIcon" placeholder="e.g., ⚖️" maxlength="2">
+                        </div>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="lawSummary">Summary:</label>
+                        <textarea id="lawSummary" placeholder="Brief summary of the law..." required></textarea>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="lawSignificance">Significance:</label>
+                        <textarea id="lawSignificance" placeholder="Why is this law important?" required></textarea>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="lawEnforcement">Enforcement:</label>
+                        <textarea id="lawEnforcement" placeholder="Who enforces this law?" required></textarea>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="lawFullText">Full Text (Excerpt):</label>
+                        <textarea id="lawFullText" placeholder="Full text or excerpt of the law..." required></textarea>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="lawTags">Tags (comma-separated):</label>
+                        <input type="text" id="lawTags" placeholder="e.g., ARPA, Permits, Federal Lands">
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="lawNotes">Notes (Optional):</label>
+                        <textarea id="lawNotes" placeholder="Additional notes or comments about this law..."></textarea>
+                    </div>
+                    
+                    <button onclick="submitLaw()" class="submit-law-btn" id="submitBtn">
+                        Add Law to Database
+                    </button>
+                    
+                    <div id="submitMessage" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-disclaimer">
+            <p><strong>Disclaimer:</strong> We strive to provide the most accurate data available, however, we cannot guarantee its completeness or accuracy. Our guidance is advisory only. We are not responsible for any consequences resulting from the use of this information. Always verify with authorities.</p>
+        </div>
+        <a href="#" class="admin-link" id="adminLoginBtn">Login</a>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, setDoc, getDoc, deleteDoc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCYpXOczp5nRRP1S2Gdb1ADjIAHeJQVq0",
+            authDomain: "owlcheologists.firebaseapp.com",
+            projectId: "owlcheologists",
+            storageBucket: "owlcheologists.firebasestorage.app",
+            messagingSenderId: "323297596743",
+            appId: "1:323297596743:web:c9455e40779b7c09522862",
+            measurementId: "G-2CFYWTQCQ4"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let allLaws = [];
+        let currentUser = null;
+        let isAuthenticated = false;
+        let userPermissions = {
+            laws: true,
+            deletion: true,
+            edu: true
+        };
+
+        // ============== PERMISSION CHECK ==============
+        // Load user permissions from Firebase
+        async function loadUserPermissions(email) {
+            try {
+                const configRef = doc(db, 'config', email);
+                const configSnap = await getDoc(configRef);
+                
+                if (configSnap.exists()) {
+                    const permissions = configSnap.data();
+                    userPermissions = {
+                        laws: permissions.laws !== false,
+                        deletion: permissions.deletion !== false,
+                        edu: permissions.edu !== false
+                    };
+                    console.log('User permissions loaded:', userPermissions);
+                } else {
+                    // Default all to true if no config exists
+                    userPermissions = { laws: true, deletion: true, edu: true };
+                    console.log('No permission config found, using defaults');
+                }
+            } catch (error) {
+                console.error('Error loading permissions:', error);
+                // Default to all permissions on error
+                userPermissions = { laws: true, deletion: true, edu: true };
+            }
+        }
+
+        // ============== ADMIN AUTHENTICATION ==============
+        // Check auth state
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                isAuthenticated = true;
+                console.log('User logged in:', user.email);
+                
+                // Load permissions for this user
+                await loadUserPermissions(user.email);
+                
+                // Check if user has laws permission
+                if (!userPermissions.laws) {
+                    console.log('User does not have laws permission');
+                    alert('⛔ You do not have permission to access the Laws admin panel.\n\nContact your administrator to request access.');
+                    // Sign out the user
+                    await signOut(auth);
+                    showLoginForm();
+                    return;
+                }
+                
+                // Show admin panel
+                showAdminPanel(user);
+            } else {
+                currentUser = null;
+                isAuthenticated = false;
+                console.log('User logged out');
+                // Reset to default permissions when logged out
+                userPermissions = { laws: true, deletion: true, edu: true };
+                showLoginForm();
+            }
+        });
+
+        // Show login form
+        function showLoginForm() {
+            const loginForm = document.getElementById('adminLoginForm');
+            const panelContent = document.getElementById('adminPanelContent');
+            const modalContent = document.getElementById('adminModalContent');
+            
+            if (loginForm) loginForm.style.display = 'block';
+            if (panelContent) panelContent.style.display = 'none';
+            if (modalContent) modalContent.style.display = 'none';
+        }
+
+        // Show admin panel
+        function showAdminPanel(user) {
+            const loginForm = document.getElementById('adminLoginForm');
+            const panelContent = document.getElementById('adminPanelContent');
+            const modalContent = document.getElementById('adminModalContent');
+            const userEmailSpan = document.getElementById('userEmail');
+            
+            if (loginForm) loginForm.style.display = 'none';
+            if (panelContent) panelContent.style.display = 'block';
+            if (modalContent) modalContent.style.display = 'block';
+            if (userEmailSpan) userEmailSpan.textContent = user.email;
+        }
+
+        // Open admin modal
+        function openAdminModal() {
+            // Check if user has permission to access admin panel
+            if (isAuthenticated && !userPermissions.laws) {
+                alert('⛔ You do not have permission to access the Laws admin panel.\n\nContact your administrator to request access.');
+                return;
+            }
+
+            const modal = document.getElementById('adminModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                if (isAuthenticated) {
+                    // Show the add law form
+                    showAdminPanel({ email: currentUser.email });
+                } else {
+                    // Show login form
+                    showLoginForm();
+                }
+            }
+        }
+
+        // Close admin modal
+        function closeAdminModal() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+        
+        // Alias for compatibility with onclick handler
+        window.closeAdminLawModal = closeAdminModal;
+
+        // Admin modal controls
+        document.getElementById('adminLoginBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            openAdminModal();
+        });
+
+        // Login functionality
+        document.getElementById('loginBtn').addEventListener('click', async function() {
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                console.log('Login successful:', userCredential.user.email);
+                // Keep the modal open to show the add law form
+                // The admin panel content will be visible now
+            } catch (error) {
+                console.error('Login error:', error);
+                alert(`Login failed: ${error.message}`);
+            }
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async function() {
+            try {
+                await signOut(auth);
+                console.log('Logout successful');
+                closeAdminModal();
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert(`Logout failed: ${error.message}`);
+            }
+        });
+        // ============== END ADMIN AUTHENTICATION ==============
+
+        // Sample law data - you can populate the database with this
+        const sampleLaws = [
+            {
+                id: "antiquities-act-1906",
+                title: "Antiquities Act",
+                year: "1906",
+                icon: "🏛️",
+                summary: "The first federal law to protect archaeological sites on public lands, establishing penalties for unauthorized excavation and artifact collection.",
+                fullText: "An Act for the preservation of American antiquities. Be it enacted by the Senate and House of Representatives of the United States of America in Congress assembled, That any person who shall appropriate, excavate, injure, or destroy any historic or prehistoric ruin or monument, or any object of antiquity, situated on lands owned or controlled by the Government of the United States, without the permission of the Secretary of the Department of the Government having jurisdiction over the lands on which such antiquities are situated, shall, upon conviction, be fined in a sum of not more than five hundred dollars or be imprisoned for a period of not more than ninety days, or shall suffer both fine and imprisonment, in the discretion of the court.",
+                tags: ["Historic Preservation", "Federal Lands", "Penalties"],
+                significance: "First comprehensive federal protection for archaeological resources",
+                enforcement: "National Park Service, Bureau of Land Management, U.S. Forest Service"
+            },
+            {
+                id: "archaeological-resources-protection-act-1979",
+                title: "Archaeological Resources Protection Act (ARPA)",
+                year: "1979",
+                icon: "⚖️",
+                summary: "Strengthens protection of archaeological resources on federal and Indian lands with enhanced penalties and permit requirements.",
+                fullText: "The Archaeological Resources Protection Act of 1979 provides enhanced protection for archaeological resources located on public lands and Indian lands. The Act establishes detailed requirements for permits to excavate or remove archaeological resources from federal or Indian lands, and strengthens the penalties for violations.",
+                tags: ["ARPA", "Indian Lands", "Permits", "Enhanced Penalties"],
+                significance: "Replaced and strengthened the Antiquities Act with specific archaeological focus",
+                enforcement: "Multiple federal agencies including DOI, USDA, DOD, TVA"
+            },
+            {
+                id: "national-historic-preservation-act-1966",
+                title: "National Historic Preservation Act (NHPA)",
+                year: "1966",
+                icon: "🏺",
+                summary: "Establishes the National Register of Historic Places and requires federal agencies to consider effects on historic properties.",
+                fullText: "The National Historic Preservation Act established a comprehensive national historic preservation program and created the National Register of Historic Places. Section 106 requires federal agencies to take into account the effects of their undertakings on historic properties.",
+                tags: ["NHPA", "Section 106", "National Register", "Historic Properties"],
+                significance: "Created framework for historic preservation review of federal projects",
+                enforcement: "Advisory Council on Historic Preservation, State Historic Preservation Officers"
+            },
+            {
+                id: "native-american-graves-protection-1990",
+                title: "Native American Graves Protection and Repatriation Act (NAGPRA)",
+                year: "1990",
+                icon: "🪶",
+                summary: "Requires museums and federal agencies to return Native American cultural items to lineal descendants and culturally affiliated tribes.",
+                fullText: "The Native American Graves Protection and Repatriation Act establishes the rights of Native American lineal descendants, Indian tribes, and Native Hawaiian organizations to Native American cultural items, including human remains, funerary objects, sacred objects, and objects of cultural patrimony.",
+                tags: ["NAGPRA", "Repatriation", "Native American", "Cultural Items"],
+                significance: "Addresses historical injustices and promotes tribal sovereignty over cultural heritage",
+                enforcement: "National Park Service, Review Committee"
+            },
+            {
+                id: "american-indian-religious-freedom-act-1978",
+                title: "American Indian Religious Freedom Act",
+                year: "1978",
+                icon: "🕊️",
+                summary: "Protects and preserves the traditional religious rights and cultural practices of American Indians, Eskimos, Aleuts, and Native Hawaiians.",
+                fullText: "Resolved that henceforth it shall be the policy of the United States to protect and preserve for American Indians their inherent right of freedom to believe, express, and exercise the traditional religions of the American Indian, Eskimo, Aleut, and Native Hawaiians, including but not limited to access to sites, use and possession of sacred objects, and the freedom to worship through ceremonials and traditional rites.",
+                tags: ["Religious Freedom", "Sacred Sites", "Traditional Practices"],
+                significance: "Recognizes and protects Native American religious practices and sacred sites",
+                enforcement: "Multiple federal agencies in consultation with tribes"
+            }
+        ];
+
+        // Initialize database with sample data
+        async function initializeLawsDatabase() {
+            try {
+                for (const law of sampleLaws) {
+                    await setDoc(doc(db, "archaeologyLaws", law.id), law);
+                }
+                console.log("Laws database initialized");
+            } catch (error) {
+                console.error("Error initializing laws database:", error);
+            }
+        }
+
+        // Fetch laws from database
+        async function fetchLaws() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "archaeologyLaws"));
+                const laws = [];
+                
+                if (querySnapshot.empty) {
+                    console.log("No laws found, initializing database...");
+                    await initializeLawsDatabase();
+                    return fetchLaws(); // Retry after initialization
+                }
+                
+                querySnapshot.forEach((doc) => {
+                    laws.push({ id: doc.id, ...doc.data() });
+                });
+                
+                return laws;
+            } catch (error) {
+                console.error("Error fetching laws:", error);
+                // Return sample data as fallback
+                return sampleLaws;
+            }
+        }
+
+        // Display laws in grid
+        function displayLaws(laws) {
+            const grid = document.getElementById('lawsGrid');
+            
+            // Filter to show only federal laws in the federal section
+            const federalLaws = laws.filter(law => !law.type || law.type === 'federal');
+            
+            if (federalLaws.length === 0) {
+                grid.innerHTML = '<div class="loading">No federal laws found matching your search.</div>';
+                return;
+            }
+            
+            grid.innerHTML = federalLaws.map(law => `
+                <div class="law-card" onclick="openLawModal('${law.id}')">
+                    <div class="law-icon">${law.icon}</div>
+                    <h3>${law.title}</h3>
+                    <div class="law-year">${law.year}</div>
+                    <p class="law-summary">${law.summary}</p>
+                    <div class="law-tags">
+                        ${law.tags.map(tag => `<span class="law-tag">${tag}</span>`).join('')}
+                    </div>
+                    <a href="#" class="expand-btn">Learn More →</a>
+                </div>
+            `).join('');
+        }
+
+        // Search functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                
+                // Filter federal laws only
+                const federalLaws = allLaws.filter(law => !law.type || law.type === 'federal');
+                
+                const filteredLaws = federalLaws.filter(law =>
+                    law.title.toLowerCase().includes(searchTerm) ||
+                    law.year.includes(searchTerm) ||
+                    law.summary.toLowerCase().includes(searchTerm) ||
+                    law.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+                );
+                displayLaws(filteredLaws);
+            });
+        }
+
+        // Modal functions
+        window.closeLawModal = function() {
+            document.getElementById('lawModal').style.display = 'none';
+        };
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('lawModal');
+            if (e.target === modal) {
+                closeLawModal();
+            }
+        });
+
+        // US States list
+        const usStates = [
+            'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
+            'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
+            'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
+            'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico',
+            'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania',
+            'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+            'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+        ];
+
+        // Sample state/county laws data
+        const sampleStateLaws = [
+            {
+                id: "california-ceqa",
+                state: "California",
+                county: "",
+                title: "California Environmental Quality Act (CEQA)",
+                year: "1970",
+                icon: "🏛️",
+                summary: "Requires environmental review of projects that may impact archaeological resources in California.",
+                fullText: "CEQA requires state and local agencies to identify the significant environmental effects of their actions and to avoid or mitigate those effects where feasible.",
+                tags: ["Environmental Review", "State Law", "Cultural Resources"],
+                significance: "Primary state law protecting archaeological resources through environmental review",
+                enforcement: "California Office of Historic Preservation"
+            },
+            {
+                id: "texas-antiquities-code",
+                state: "Texas",
+                county: "",
+                title: "Texas Antiquities Code",
+                year: "1969",
+                icon: "⭐",
+                summary: "Protects archaeological and historical sites on state lands and requires permits for investigations.",
+                fullText: "The Texas Antiquities Code protects all sites, objects, buildings, artifacts, implements, and locations of historical, anthropological, archaeological, paleontological, or scientific interest located on lands belonging to the State of Texas or any county, city, or political subdivision of the state.",
+                tags: ["State Protection", "Permits", "Public Lands"],
+                significance: "Comprehensive state protection for archaeological resources",
+                enforcement: "Texas Historical Commission"
+            },
+            {
+                id: "new-york-parks-law",
+                state: "New York",
+                county: "",
+                title: "New York State Parks, Recreation and Historic Preservation Law",
+                year: "1972",
+                icon: "🗽",
+                summary: "Establishes state historic preservation program and protects archaeological sites.",
+                fullText: "This law establishes the New York State historic preservation program and provides protection for archaeological and historic resources on state lands.",
+                tags: ["Historic Preservation", "State Program", "Archaeological Protection"],
+                significance: "Creates framework for state-level historic preservation",
+                enforcement: "New York State Historic Preservation Office"
+            },
+            {
+                id: "arizona-antiquities-act",
+                state: "Arizona",
+                county: "",
+                title: "Arizona Antiquities Act",
+                year: "1960",
+                icon: "🌵",
+                summary: "Protects archaeological sites and artifacts on state and school trust lands.",
+                fullText: "The Arizona Antiquities Act protects all paleontological specimens, archaeological sites, and historic properties on state lands and school trust lands.",
+                tags: ["State Lands", "School Trust Lands", "Archaeological Sites"],
+                significance: "Protects archaeological resources on Arizona state lands",
+                enforcement: "Arizona State Museum, Arizona State Parks"
+            },
+            {
+                id: "los-angeles-county-ordinance",
+                state: "California",
+                county: "Los Angeles County",
+                title: "Los Angeles County Cultural Resources Ordinance",
+                year: "2015",
+                icon: "🏙️",
+                summary: "County-level protection for archaeological and cultural resources in unincorporated areas.",
+                fullText: "This ordinance establishes procedures for the identification, evaluation, and protection of cultural resources in Los Angeles County unincorporated areas.",
+                tags: ["County Law", "Cultural Resources", "Local Protection"],
+                significance: "Local-level archaeological resource protection",
+                enforcement: "Los Angeles County Department of Regional Planning"
+            }
+        ];
+
+        // Initialize database with sample data
+        async function initializeStateLawsDatabase() {
+            try {
+                for (const law of sampleStateLaws) {
+                    await setDoc(doc(db, "stateLaws", law.id), law);
+                }
+                console.log("State laws database initialized");
+            } catch (error) {
+                console.error("Error initializing state laws database:", error);
+            }
+        }
+
+        // Fetch state/county laws
+        async function fetchStateLaws(state, county = '') {
+            try {
+                // Fetch from the main archaeologyLaws collection
+                const querySnapshot = await getDocs(collection(db, "archaeologyLaws"));
+                const laws = [];
+                
+                querySnapshot.forEach((doc) => {
+                    const lawData = doc.data();
+                    
+                    // Only include state and county laws (not federal)
+                    if (lawData.type === 'state' || lawData.type === 'county') {
+                        // Match state first
+                        if (lawData.state === state) {
+                            if (county) {
+                                // If county is specified, only show laws that match that county or are state-wide
+                                if (lawData.type === 'state' || 
+                                    (lawData.county && lawData.county.toLowerCase().includes(county.toLowerCase()))) {
+                                    laws.push({ id: doc.id, ...lawData });
+                                }
+                            } else {
+                                // If no county specified, show ALL laws for the state (state-wide + all counties)
+                                laws.push({ id: doc.id, ...lawData });
+                            }
+                        }
+                    }
+                });
+                
+                if (laws.length === 0) {
+                    console.log(`No state/county laws found for ${state}${county ? ', ' + county : ''}`);
+                }
+                
+                return laws;
+            } catch (error) {
+                console.error("Error fetching state laws:", error);
+                // Return filtered sample data as fallback
+                return sampleStateLaws.filter(law => {
+                    if (law.state === state) {
+                        if (county) {
+                            return !law.county || law.county.toLowerCase().includes(county.toLowerCase());
+                        } else {
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+            }
+        }
+
+        // Display state laws
+        function displayStateLaws(laws, location) {
+            const resultsDiv = document.getElementById('stateLawsResults');
+            const locationSpan = document.getElementById('selectedLocation');
+            const grid = document.getElementById('stateLawsGrid');
+            
+            locationSpan.textContent = location;
+            
+            if (laws.length === 0) {
+                grid.innerHTML = '<div class="loading">No state or county laws found for this location. Consider adding laws using the admin panel!</div>';
+                resultsDiv.style.display = 'block';
+                return;
+            }
+            
+            grid.innerHTML = laws.map(law => {
+                // Add a badge to show if it's state-wide or county-specific
+                const typeBadge = law.type === 'county' && law.county 
+                    ? `<span class="law-tag" style="background: #3498db; color: white;">${law.county}</span>`
+                    : `<span class="law-tag" style="background: #27ae60; color: white;">State-wide</span>`;
+                
+                return `
+                    <div class="law-card" onclick="openLawModal('${law.id}', 'state')">
+                        <div class="law-icon">${law.icon}</div>
+                        <h3>${law.title}</h3>
+                        <div class="law-year">${law.year}</div>
+                        ${typeBadge}
+                        <p class="law-summary">${law.summary}</p>
+                        <div class="law-tags">
+                            ${law.tags ? law.tags.map(tag => `<span class="law-tag">${tag}</span>`).join('') : ''}
+                        </div>
+                        <a href="#" class="expand-btn">Learn More →</a>
+                    </div>
+                `;
+            }).join('');
+            
+            resultsDiv.style.display = 'block';
+        }
+
+        // Populate state dropdown
+        function populateStateDropdown() {
+            const stateSelect = document.getElementById('stateSelect');
+            usStates.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            });
+        }
+
+        // Setup state lookup functionality
+        function setupStateLookup() {
+            const lookupBtn = document.getElementById('lookupBtn');
+            const stateSelect = document.getElementById('stateSelect');
+            const countyInput = document.getElementById('countyInput');
+            
+            lookupBtn.addEventListener('click', async () => {
+                const selectedState = stateSelect.value;
+                const countyValue = countyInput.value.trim();
+                
+                if (!selectedState) {
+                    alert('Please select a state');
+                    return;
+                }
+                
+                lookupBtn.disabled = true;
+                lookupBtn.textContent = 'Looking up laws...';
+                
+                try {
+                    const stateLaws = await fetchStateLaws(selectedState, countyValue);
+                    const location = countyValue ? `${countyValue}, ${selectedState}` : selectedState;
+                    displayStateLaws(stateLaws, location);
+                } catch (error) {
+                    console.error('Error looking up state laws:', error);
+                    alert('Error looking up laws. Please try again.');
+                } finally {
+                    lookupBtn.disabled = false;
+                    lookupBtn.textContent = 'Look Up Laws';
+                }
+            });
+        }
+
+        // Update modal function to handle both federal and state laws
+        window.openLawModal = function(lawId, type = 'federal') {
+            // Always search in allLaws since everything is stored there now
+            const law = allLaws.find(l => l.id === lawId);
+            
+            if (!law) {
+                console.error('Law not found:', lawId);
+                return;
+            }
+            
+            const modal = document.getElementById('lawModal');
+            const content = document.getElementById('modalContent');
+            
+            // Add jurisdiction badge for state/county laws
+            let jurisdictionBadge = '';
+            if (law.type === 'state' && law.state) {
+                jurisdictionBadge = `<span class="law-tag" style="background: #27ae60; color: white; font-size: 0.9rem; margin-bottom: 1rem; display: inline-block;">${law.state} - State Law</span>`;
+            } else if (law.type === 'county' && law.county && law.state) {
+                jurisdictionBadge = `<span class="law-tag" style="background: #3498db; color: white; font-size: 0.9rem; margin-bottom: 1rem; display: inline-block;">${law.county}, ${law.state} - County Law</span>`;
+            } else {
+                jurisdictionBadge = `<span class="law-tag" style="background: #e74c3c; color: white; font-size: 0.9rem; margin-bottom: 1rem; display: inline-block;">Federal Law</span>`;
+            }
+            
+            content.innerHTML = `
+                <div class="law-icon" style="margin-bottom: 1rem;">${law.icon}</div>
+                <h2 style="color: #2c3e50; margin-bottom: 0.5rem;">${law.title}</h2>
+                ${jurisdictionBadge}
+                <p style="color: #7f8c8d; margin-bottom: 1.5rem; font-weight: 500;">Enacted: ${law.year}</p>
+                
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Summary</h3>
+                <p style="margin-bottom: 1.5rem; line-height: 1.6;">${law.summary}</p>
+                
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Significance</h3>
+                <p style="margin-bottom: 1.5rem; line-height: 1.6;">${law.significance}</p>
+                
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Enforcement</h3>
+                <p style="margin-bottom: 1.5rem; line-height: 1.6;">${law.enforcement}</p>
+                
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Full Text (Excerpt)</h3>
+                <p style="font-style: italic; line-height: 1.6; color: #555;">${law.fullText}</p>
+                
+                ${law.notes ? `
+                    <h3 style="color: #2c3e50; margin-bottom: 0.5rem; margin-top: 1.5rem;">Notes</h3>
+                    <p style="line-height: 1.6; color: #555; background: #f8f9fa; padding: 1rem; border-radius: 8px; border-left: 4px solid #3498db;">${law.notes}</p>
+                ` : ''}
+                
+                <div style="margin-top: 1.5rem;">
+                    ${law.tags && law.tags.length > 0 ? law.tags.map(tag => `<span class="law-tag">${tag}</span>`).join('') : ''}
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        };
+
+        // Populate state dropdown in admin form
+        function populateStateDropdownForAdmin() {
+            const stateSelect = document.getElementById('lawState');
+            if (!stateSelect) return;
+            
+            // Clear existing options first
+            stateSelect.innerHTML = '<option value="">Select State</option>';
+            
+            usStates.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            });
+        }
+
+        // Handle law type change
+        document.addEventListener('DOMContentLoaded', () => {
+            populateStateDropdownForAdmin(); // Populate on page load
+            
+            const lawTypeSelect = document.getElementById('lawType');
+            const jurisdictionFields = document.getElementById('jurisdictionFields');
+            const countyField = document.getElementById('countyField');
+            
+            if (lawTypeSelect) {
+                lawTypeSelect.addEventListener('change', (e) => {
+                    if (e.target.value === 'federal') {
+                        jurisdictionFields.style.display = 'none';
+                        countyField.style.display = 'none';
+                    } else if (e.target.value === 'state') {
+                        jurisdictionFields.style.display = 'block';
+                        countyField.style.display = 'none';
+                    } else if (e.target.value === 'county') {
+                        jurisdictionFields.style.display = 'block';
+                        countyField.style.display = 'block';
+                    }
+                });
+            }
+        });
+
+        // Submit new law
+        window.submitLaw = async function() {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to add laws');
+                return;
+            }
+
+            // Check laws permission
+            if (!userPermissions.laws) {
+                alert('⛔ You do not have permission to add laws.\n\nContact your administrator to request access.');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const messageDiv = document.getElementById('submitMessage');
+            
+            // Get form values
+            const lawType = document.getElementById('lawType').value;
+            const title = document.getElementById('lawTitle').value.trim();
+            const year = document.getElementById('lawYear').value.trim();
+            const icon = document.getElementById('lawIcon').value.trim() || '📜';
+            const summary = document.getElementById('lawSummary').value.trim();
+            const significance = document.getElementById('lawSignificance').value.trim();
+            const enforcement = document.getElementById('lawEnforcement').value.trim();
+            const fullText = document.getElementById('lawFullText').value.trim();
+            const tagsInput = document.getElementById('lawTags').value.trim();
+            const notes = document.getElementById('lawNotes').value.trim();
+            
+            // Validate required fields
+            if (!title || !year || !summary || !significance || !enforcement || !fullText) {
+                messageDiv.innerHTML = '<div class="error-message">Please fill in all required fields</div>';
+                return;
+            }
+
+            // Get jurisdiction if state/county law
+            let state = '';
+            let county = '';
+            if (lawType === 'state' || lawType === 'county') {
+                state = document.getElementById('lawState').value;
+                if (!state) {
+                    messageDiv.innerHTML = '<div class="error-message">Please select a state</div>';
+                    return;
+                }
+                if (lawType === 'county') {
+                    county = document.getElementById('lawCounty').value.trim();
+                }
+            }
+
+            // Process tags
+            const tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag);
+
+            // Create law object
+            const lawId = title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + year;
+            const lawData = {
+                id: lawId,
+                title: title,
+                year: year,
+                icon: icon,
+                summary: summary,
+                significance: significance,
+                enforcement: enforcement,
+                fullText: fullText,
+                tags: tags,
+                type: lawType,
+                dateAdded: new Date().toISOString()
+            };
+
+            if (state) lawData.state = state;
+            if (county) lawData.county = county;
+            if (notes) lawData.notes = notes;
+
+            // Save to database
+            try {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Saving...';
+                
+                console.log('Attempting to save law:', lawData);
+                console.log('Database path: archaeologyLaws/' + lawId);
+                
+                // Save to the main archaeologyLaws collection
+                await setDoc(doc(db, 'archaeologyLaws', lawId), lawData);
+                
+                console.log('Law saved successfully!');
+                
+                // Verify the save
+                const savedDoc = await getDoc(doc(db, 'archaeologyLaws', lawId));
+                if (savedDoc.exists()) {
+                    console.log('Verification successful - document exists in database');
+                    messageDiv.innerHTML = '<div class="success-message">✓ Law added successfully to database!</div>';
+                } else {
+                    console.warn('Verification failed - document not found after save');
+                    messageDiv.innerHTML = '<div class="error-message">Warning: Law may not have been saved properly</div>';
+                    return;
+                }
+                
+                // Reset form
+                setTimeout(() => {
+                    document.getElementById('lawTitle').value = '';
+                    document.getElementById('lawYear').value = '';
+                    document.getElementById('lawIcon').value = '';
+                    document.getElementById('lawSummary').value = '';
+                    document.getElementById('lawSignificance').value = '';
+                    document.getElementById('lawEnforcement').value = '';
+                    document.getElementById('lawFullText').value = '';
+                    document.getElementById('lawTags').value = '';
+                    document.getElementById('lawNotes').value = '';
+                    if (document.getElementById('lawState')) {
+                        document.getElementById('lawState').value = '';
+                    }
+                    if (document.getElementById('lawCounty')) {
+                        document.getElementById('lawCounty').value = '';
+                    }
+                    messageDiv.innerHTML = '';
+                    
+                    // Reload laws
+                    initializePage();
+                    
+                    // Close modal after 2 seconds
+                    setTimeout(() => {
+                        closeAdminLawModal();
+                    }, 2000);
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error adding law:', error);
+                messageDiv.innerHTML = '<div class="error-message">Error adding law. Please try again.</div>';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Add Law to Database';
+            }
+        };
+
+        // Search laws in admin panel
+        window.searchLaws = async function() {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to search laws');
+                return;
+            }
+
+            const searchInput = document.getElementById('lawSearchInput');
+            const resultsDiv = document.getElementById('lawSearchResults');
+            const searchTerm = searchInput.value.trim().toLowerCase();
+
+            if (!searchTerm) {
+                resultsDiv.innerHTML = '<p style="color: #e65100;">Please enter a search term</p>';
+                return;
+            }
+
+            try {
+                resultsDiv.innerHTML = '<p>Searching...</p>';
+
+                const lawsRef = collection(db, 'archaeologyLaws');
+                const snapshot = await getDocs(lawsRef);
+                
+                const results = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const searchableText = `${data.title} ${data.year} ${(data.tags || []).join(' ')} ${data.type || ''} ${data.state || ''}`.toLowerCase();
+                    
+                    if (searchableText.includes(searchTerm)) {
+                        results.push({ id: doc.id, ...data });
+                    }
+                });
+
+                if (results.length === 0) {
+                    resultsDiv.innerHTML = '<p style="color: #e65100;">No laws found matching your search.</p>';
+                    return;
+                }
+
+                let html = `<h4 style="color: #e65100; margin-top: 0;">Found ${results.length} law(s):</h4>`;
+                results.forEach(law => {
+                    const jurisdiction = law.type === 'federal' ? 'Federal' : 
+                                       law.type === 'state' ? `State: ${law.state}` :
+                                       `County: ${law.county || law.state}`;
+                    html += `
+                        <div style="background: white; padding: 1rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 4px solid #ff9800;">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div style="flex: 1;">
+                                    <strong style="color: #e65100;">${law.icon || '⚖️'} ${law.title}</strong>
+                                    <div style="font-size: 0.9rem; color: #666; margin-top: 0.25rem;">
+                                        Year: ${law.year} | ${jurisdiction}
+                                    </div>
+                                    <div style="font-size: 0.85rem; color: #999; margin-top: 0.25rem;">
+                                        ID: ${law.id}
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button onclick="loadEditForm('${law.id}')" 
+                                            style="padding: 0.5rem 1rem; background: #2196f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                                        ✏️ Edit
+                                    </button>
+                                    <button onclick="deleteLaw('${law.id}')" 
+                                            style="padding: 0.5rem 1rem; background: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                                        🗑️ Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                resultsDiv.innerHTML = html;
+
+            } catch (error) {
+                console.error('Error searching laws:', error);
+                resultsDiv.innerHTML = '<p style="color: #e74c3c;">Error searching laws. Please try again.</p>';
+            }
+        };
+
+        // Load law data into edit form
+        window.loadEditForm = async function(lawId) {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to edit laws');
+                return;
+            }
+
+            // Check laws permission
+            if (!userPermissions.laws) {
+                alert('⛔ You do not have permission to edit laws.\n\nContact your administrator to request access.');
+                return;
+            }
+
+            try {
+                const lawDoc = await getDoc(doc(db, 'archaeologyLaws', lawId));
+                
+                if (!lawDoc.exists()) {
+                    alert('Law not found');
+                    return;
+                }
+
+                const law = lawDoc.data();
+                
+                // Populate edit form
+                document.getElementById('editLawId').value = lawId;
+                document.getElementById('editLawType').value = law.type || 'federal';
+                document.getElementById('editLawTitle').value = law.title || '';
+                document.getElementById('editLawYear').value = law.year || '';
+                document.getElementById('editLawIcon').value = law.icon || '';
+                document.getElementById('editLawSummary').value = law.summary || '';
+                document.getElementById('editLawSignificance').value = law.significance || '';
+                document.getElementById('editLawEnforcement').value = law.enforcement || '';
+                document.getElementById('editLawFullText').value = law.fullText || '';
+                document.getElementById('editLawTags').value = (law.tags || []).join(', ');
+                document.getElementById('editLawNotes').value = law.notes || '';
+                
+                // Handle jurisdiction fields
+                const editJurisdictionFields = document.getElementById('editJurisdictionFields');
+                const editCountyField = document.getElementById('editCountyField');
+                
+                if (law.type === 'state' || law.type === 'county') {
+                    editJurisdictionFields.style.display = 'block';
+                    populateStateDropdownForEdit();
+                    document.getElementById('editLawState').value = law.state || '';
+                    
+                    if (law.type === 'county') {
+                        editCountyField.style.display = 'block';
+                        document.getElementById('editLawCounty').value = law.county || '';
+                    } else {
+                        editCountyField.style.display = 'none';
+                    }
+                } else {
+                    editJurisdictionFields.style.display = 'none';
+                }
+                
+                // Show edit section
+                document.getElementById('editLawSection').style.display = 'block';
+                
+                // Scroll to edit form
+                document.getElementById('editLawSection').scrollIntoView({ behavior: 'smooth' });
+
+            } catch (error) {
+                console.error('Error loading law for edit:', error);
+                alert('Error loading law data. Please try again.');
+            }
+        };
+
+        // Update law
+        window.updateLaw = async function() {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to update laws');
+                return;
+            }
+
+            // Check laws permission
+            if (!userPermissions.laws) {
+                alert('⛔ You do not have permission to update laws.\n\nContact your administrator to request access.');
+                return;
+            }
+
+            const messageDiv = document.getElementById('editMessage');
+            const lawId = document.getElementById('editLawId').value;
+
+            if (!lawId) {
+                messageDiv.innerHTML = '<div class="error-message">No law selected for editing</div>';
+                return;
+            }
+
+            try {
+                const lawType = document.getElementById('editLawType').value;
+                const title = document.getElementById('editLawTitle').value.trim();
+                const year = document.getElementById('editLawYear').value.trim();
+                const icon = document.getElementById('editLawIcon').value.trim() || '⚖️';
+                const summary = document.getElementById('editLawSummary').value.trim();
+                const significance = document.getElementById('editLawSignificance').value.trim();
+                const enforcement = document.getElementById('editLawEnforcement').value.trim();
+                const fullText = document.getElementById('editLawFullText').value.trim();
+                const tagsInput = document.getElementById('editLawTags').value.trim();
+                const notes = document.getElementById('editLawNotes').value.trim();
+
+                // Validate required fields
+                if (!title || !year || !summary || !significance || !enforcement || !fullText) {
+                    messageDiv.innerHTML = '<div class="error-message">Please fill in all required fields</div>';
+                    return;
+                }
+
+                // Get jurisdiction if state/county law
+                let state = '';
+                let county = '';
+                if (lawType === 'state' || lawType === 'county') {
+                    state = document.getElementById('editLawState').value;
+                    if (!state) {
+                        messageDiv.innerHTML = '<div class="error-message">Please select a state</div>';
+                        return;
+                    }
+                    if (lawType === 'county') {
+                        county = document.getElementById('editLawCounty').value.trim();
+                    }
+                }
+
+                // Process tags
+                const tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag);
+
+                // Create updated law object
+                const lawData = {
+                    title: title,
+                    year: year,
+                    icon: icon,
+                    summary: summary,
+                    significance: significance,
+                    enforcement: enforcement,
+                    fullText: fullText,
+                    tags: tags,
+                    type: lawType,
+                    lastModified: new Date().toISOString()
+                };
+
+                if (state) lawData.state = state;
+                if (county) lawData.county = county;
+                if (notes) lawData.notes = notes;
+
+                // Update in Firestore
+                await setDoc(doc(db, 'archaeologyLaws', lawId), lawData, { merge: true });
+
+                messageDiv.innerHTML = '<div class="success-message">✓ Law updated successfully!</div>';
+
+                // Reload laws
+                setTimeout(() => {
+                    initializePage();
+                    cancelEdit();
+                    // Clear search to show updated results
+                    searchLaws();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error updating law:', error);
+                messageDiv.innerHTML = '<div class="error-message">Error updating law. Please try again.</div>';
+            }
+        };
+
+        // Delete law
+        window.deleteLaw = async function(lawId) {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to delete laws');
+                return;
+            }
+
+            // Check deletion permission
+            if (!userPermissions.deletion) {
+                alert('⛔ You do not have permission to delete laws.\n\nContact your administrator to request deletion access.');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete this law? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                await deleteDoc(doc(db, 'archaeologyLaws', lawId));
+                alert('Law deleted successfully!');
+                
+                // Reload laws and search results
+                initializePage();
+                searchLaws();
+
+            } catch (error) {
+                console.error('Error deleting law:', error);
+                alert('Error deleting law. Please try again.');
+            }
+        };
+
+        // Cancel edit
+        window.cancelEdit = function() {
+            document.getElementById('editLawSection').style.display = 'none';
+            document.getElementById('editMessage').innerHTML = '';
+        };
+
+        // Populate state dropdown for edit form
+        function populateStateDropdownForEdit() {
+            const stateSelect = document.getElementById('editLawState');
+            if (!stateSelect || stateSelect.options.length > 1) return;
+            
+            stateSelect.innerHTML = '<option value="">Select State...</option>';
+            
+            usStates.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            });
+        }
+
+        // Handle law type change in edit form
+        document.getElementById('editLawType').addEventListener('change', function() {
+            const editJurisdictionFields = document.getElementById('editJurisdictionFields');
+            const editCountyField = document.getElementById('editCountyField');
+            
+            if (this.value === 'state' || this.value === 'county') {
+                editJurisdictionFields.style.display = 'block';
+                populateStateDropdownForEdit();
+                
+                if (this.value === 'county') {
+                    editCountyField.style.display = 'block';
+                } else {
+                    editCountyField.style.display = 'none';
+                }
+            } else {
+                editJurisdictionFields.style.display = 'none';
+            }
+        });
+
+        // Initialize page
+        async function initializePage() {
+            allLaws = await fetchLaws();
+            displayLaws(allLaws);
+            setupSearch();
+            populateStateDropdown();
+            setupStateLookup();
+            
+            // Setup admin trigger (hidden in disclaimer)
+            const adminTrigger = document.getElementById('adminTrigger');
+            if (adminTrigger) {
+                adminTrigger.addEventListener('click', openAdminModal);
+            }
+        }
+
+        // Load when page loads
+        window.addEventListener('DOMContentLoaded', initializePage);
+
+        // ============== HAMBURGER MENU ==============
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+            
+            // Close menu when clicking on a link
+            const navLinkItems = navLinks.querySelectorAll('a');
+            navLinkItems.forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideNav = navLinks.contains(event.target);
+                const isClickOnHamburger = hamburger.contains(event.target);
+                
+                if (!isClickInsideNav && !isClickOnHamburger && navLinks.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }
+            });
+        }
+        // ============== END HAMBURGER MENU ==============
+    </script>
+</body>
+</html>
