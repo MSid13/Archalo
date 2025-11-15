@@ -789,8 +789,9 @@
                     
                     <div class="disclaimer">
                         <h4>⚠️ Important Disclaimer</h4>
-                        <p>We strive to provide the most accurate data available, however, we cannot guarantee its completeness or accuracy. Our guidance is advisory only. We are not responsible for any consequences resulting from the use of this information. Always verify with authorities.</p>
+                        <p>We strive to provide the most accurate and up-to-date data available; however, we cannot guarantee its completeness, accuracy, or fitness for any particular purpose. This guidance is advisory only and should never be relied upon as a substitute for official legal, regulatory, or professional advice. We assume no responsibility or liability for any losses, damages, or consequences resulting directly or indirectly from the use of this information. Users assume all risk and must always verify all information with the relevant governmental or legal authorities.</p>
                     </div>
+                    <br><br><p>If you find an inaccuracy/bug, please report it to us. Click <a href="https://forms.gle/NN3anqoQDDi9g5vD7">here</a> to report it.</p>
                 </div>
                 
             </div>
@@ -886,7 +887,7 @@
     <footer>
         <div class="footer-disclaimer">
             <p><strong>Disclaimer:</strong> We strive to provide the most accurate data available, however, we cannot guarantee its completeness or accuracy. Our guidance is advisory only. We are not responsible for any consequences resulting from the use of this information. Always verify with authorities.</p>
-            <p><br>If you find an error, please report it to us. Click <a href="">here</a>.</p>
+            <p><br>If you find an inaccuracy/bug, please report it to us. Click <a href="https://forms.gle/NN3anqoQDDi9g5vD7">here</a>.</p>
         </div>
         <a href="#" class="admin-link" id="adminLoginBtn">Login</a>
     </footer>
@@ -939,156 +940,219 @@
             }
         });
 
-        // Modal controls
-        const adminModal = document.getElementById('adminModal');
-        const adminLoginBtn = document.getElementById('adminLoginBtn');
-        const closeModal = document.getElementById('closeModal');
-        const cancelLogin = document.getElementById('cancelLogin');
+        // Initialize modal controls after DOM is loaded
+        window.addEventListener('DOMContentLoaded', () => {
+            // Modal controls
+            const adminModal = document.getElementById('adminModal');
+            const adminLoginBtn = document.getElementById('adminLoginBtn');
+            const closeModal = document.getElementById('closeModal');
+            const cancelLogin = document.getElementById('cancelLogin');
 
-        adminLoginBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            adminModal.classList.add('active');
-            document.getElementById('loginForm').classList.add('active');
-            document.getElementById('permissionsPanel').classList.remove('active');
-        });
-
-        closeModal.addEventListener('click', () => {
-            adminModal.classList.remove('active');
-        });
-
-        cancelLogin.addEventListener('click', () => {
-            adminModal.classList.remove('active');
-        });
-
-        // Close modal on outside click
-        adminModal.addEventListener('click', (e) => {
-            if (e.target === adminModal) {
-                adminModal.classList.remove('active');
-            }
-        });
-
-        // Login form submission
-        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('adminEmail').value.trim();
-            const password = document.getElementById('adminPassword').value;
-
-            if (!email || !password) {
-                alert('Please enter both email and password');
-                return;
+            if (adminLoginBtn) {
+                console.log('Admin login button found, attaching event listener');
+                adminLoginBtn.addEventListener('click', (e) => {
+                    console.log('Login button clicked!');
+                    e.preventDefault();
+                    console.log('Opening modal...');
+                    if (adminModal) {
+                        adminModal.classList.add('active');
+                        document.getElementById('loginForm').classList.add('active');
+                        document.getElementById('permissionsPanel').classList.remove('active');
+                        console.log('Modal should now be visible');
+                    } else {
+                        console.error('Admin modal not found!');
+                    }
+                });
+            } else {
+                console.error('Admin login button not found!');
             }
 
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                // Auth state change will handle showing the panel
-            } catch (error) {
-                console.error('Login error:', error);
-                alert('Login failed: ' + error.message);
+            if (closeModal) {
+                closeModal.addEventListener('click', () => {
+                    adminModal.classList.remove('active');
+                });
+            }
+
+            if (cancelLogin) {
+                cancelLogin.addEventListener('click', () => {
+                    adminModal.classList.remove('active');
+                });
+            }
+
+            // Close modal on outside click
+            if (adminModal) {
+                adminModal.addEventListener('click', (e) => {
+                    if (e.target === adminModal) {
+                        adminModal.classList.remove('active');
+                    }
+                });
+            }
+
+            // Login form submission
+            const adminLoginForm = document.getElementById('adminLoginForm');
+            if (adminLoginForm) {
+                console.log('Admin login form found, attaching submit listener');
+                adminLoginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    console.log('Login form submitted!');
+                    const email = document.getElementById('adminEmail').value.trim();
+                    const password = document.getElementById('adminPassword').value;
+
+                    console.log('Email entered:', email);
+                    if (!email || !password) {
+                        alert('Please enter both email and password');
+                        return;
+                    }
+
+                    try {
+                        console.log('Attempting to sign in...');
+                        await signInWithEmailAndPassword(auth, email, password);
+                        console.log('Sign in successful!');
+                        // Auth state change will handle showing the panel
+                    } catch (error) {
+                        console.error('Login error:', error);
+                        alert('Login failed: ' + error.message);
+                    }
+                });
+            } else {
+                console.error('Admin login form not found!');
             }
         });
 
         // Show permissions panel
         function showPermissionsPanel(user) {
-            document.getElementById('loginForm').classList.remove('active');
-            document.getElementById('permissionsPanel').classList.add('active');
-            document.getElementById('currentUserEmail').textContent = user.email;
-            loadRecentUsers();
+            console.log('showPermissionsPanel called for:', user.email);
+            const adminModal = document.getElementById('adminModal');
+            const loginForm = document.getElementById('loginForm');
+            const permissionsPanel = document.getElementById('permissionsPanel');
+            
+            if (loginForm && permissionsPanel) {
+                loginForm.classList.remove('active');
+                permissionsPanel.classList.add('active');
+                document.getElementById('currentUserEmail').textContent = user.email;
+                
+                // Ensure modal stays open
+                if (adminModal) {
+                    adminModal.classList.add('active');
+                    console.log('Permissions panel should now be visible');
+                }
+                
+                loadRecentUsers();
+            } else {
+                console.error('Login form or permissions panel not found!');
+            }
         }
 
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-                adminModal.classList.remove('active');
-                document.getElementById('loginForm').classList.add('active');
-                document.getElementById('permissionsPanel').classList.remove('active');
-                alert('Logged out successfully');
-            } catch (error) {
-                console.error('Logout error:', error);
-                alert('Logout failed: ' + error.message);
-            }
-        });
-
-        // Load user permissions
-        document.getElementById('loadUserBtn').addEventListener('click', async () => {
-            const email = document.getElementById('targetUserEmail').value.trim();
-            if (!email) {
-                alert('Please enter a user email');
-                return;
+        // Initialize permission management controls after DOM is loaded
+        window.addEventListener('DOMContentLoaded', () => {
+            // Logout
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    const adminModal = document.getElementById('adminModal');
+                    try {
+                        await signOut(auth);
+                        adminModal.classList.remove('active');
+                        document.getElementById('loginForm').classList.add('active');
+                        document.getElementById('permissionsPanel').classList.remove('active');
+                        alert('Logged out successfully');
+                    } catch (error) {
+                        console.error('Logout error:', error);
+                        alert('Logout failed: ' + error.message);
+                    }
+                });
             }
 
-            try {
-                const configRef = doc(db, 'config', email);
-                const configSnap = await getDoc(configRef);
+            // Load user permissions
+            const loadUserBtn = document.getElementById('loadUserBtn');
+            if (loadUserBtn) {
+                loadUserBtn.addEventListener('click', async () => {
+                    const email = document.getElementById('targetUserEmail').value.trim();
+                    if (!email) {
+                        alert('Please enter a user email');
+                        return;
+                    }
 
-                document.getElementById('editingUserEmail').textContent = email;
-                document.getElementById('permissionsForm').style.display = 'block';
+                    try {
+                        const configRef = doc(db, 'config', email);
+                        const configSnap = await getDoc(configRef);
 
-                if (configSnap.exists()) {
-                    const data = configSnap.data();
-                    document.getElementById('permLaws').checked = data.laws !== false;
-                    document.getElementById('permDeletion').checked = data.deletion !== false;
-                    document.getElementById('permFound').checked = data.found !== false;
-                    document.getElementById('permEdu').checked = data.edu !== false;
-                } else {
-                    // Default all to true if no config exists
-                    document.getElementById('permLaws').checked = true;
-                    document.getElementById('permDeletion').checked = true;
-                    document.getElementById('permFound').checked = true;
-                    document.getElementById('permEdu').checked = true;
-                }
-            } catch (error) {
-                console.error('Error loading user:', error);
-                alert('Error loading user: ' + error.message);
-            }
-        });
+                        document.getElementById('editingUserEmail').textContent = email;
+                        document.getElementById('permissionsForm').style.display = 'block';
 
-        // Save permissions
-        document.getElementById('savePermissionsBtn').addEventListener('click', async () => {
-            const email = document.getElementById('editingUserEmail').textContent;
-            if (!email) {
-                alert('No user loaded');
-                return;
-            }
-
-            const permissions = {
-                laws: document.getElementById('permLaws').checked,
-                deletion: document.getElementById('permDeletion').checked,
-                found: document.getElementById('permFound').checked,
-                edu: document.getElementById('permEdu').checked
-            };
-
-            try {
-                await setDoc(doc(db, 'config', email), permissions);
-                alert(`✅ Permissions saved for ${email}`);
-                loadRecentUsers();
-            } catch (error) {
-                console.error('Error saving permissions:', error);
-                alert('Error saving permissions: ' + error.message);
-            }
-        });
-
-        // Delete permissions config
-        document.getElementById('deletePermissionsBtn').addEventListener('click', async () => {
-            const email = document.getElementById('editingUserEmail').textContent;
-            if (!email) {
-                alert('No user loaded');
-                return;
+                        if (configSnap.exists()) {
+                            const data = configSnap.data();
+                            document.getElementById('permLaws').checked = data.laws !== false;
+                            document.getElementById('permDeletion').checked = data.deletion !== false;
+                            document.getElementById('permFound').checked = data.found !== false;
+                            document.getElementById('permEdu').checked = data.edu !== false;
+                        } else {
+                            // Default all to true if no config exists
+                            document.getElementById('permLaws').checked = true;
+                            document.getElementById('permDeletion').checked = true;
+                            document.getElementById('permFound').checked = true;
+                            document.getElementById('permEdu').checked = true;
+                        }
+                    } catch (error) {
+                        console.error('Error loading user:', error);
+                        alert('Error loading user: ' + error.message);
+                    }
+                });
             }
 
-            if (!confirm(`Delete permission config for ${email}?\n\nThis will reset all permissions to default (all enabled).`)) {
-                return;
+            // Save permissions
+            const savePermissionsBtn = document.getElementById('savePermissionsBtn');
+            if (savePermissionsBtn) {
+                savePermissionsBtn.addEventListener('click', async () => {
+                    const email = document.getElementById('editingUserEmail').textContent;
+                    if (!email) {
+                        alert('No user loaded');
+                        return;
+                    }
+
+                    const permissions = {
+                        laws: document.getElementById('permLaws').checked,
+                        deletion: document.getElementById('permDeletion').checked,
+                        found: document.getElementById('permFound').checked,
+                        edu: document.getElementById('permEdu').checked
+                    };
+
+                    try {
+                        await setDoc(doc(db, 'config', email), permissions);
+                        alert(`✅ Permissions saved for ${email}`);
+                        loadRecentUsers();
+                    } catch (error) {
+                        console.error('Error saving permissions:', error);
+                        alert('Error saving permissions: ' + error.message);
+                    }
+                });
             }
 
-            try {
-                await deleteDoc(doc(db, 'config', email));
-                alert(`✅ Permission config deleted for ${email}`);
-                document.getElementById('permissionsForm').style.display = 'none';
-                document.getElementById('targetUserEmail').value = '';
-                loadRecentUsers();
-            } catch (error) {
-                console.error('Error deleting config:', error);
-                alert('Error deleting config: ' + error.message);
+            // Delete permissions config
+            const deletePermissionsBtn = document.getElementById('deletePermissionsBtn');
+            if (deletePermissionsBtn) {
+                deletePermissionsBtn.addEventListener('click', async () => {
+                    const email = document.getElementById('editingUserEmail').textContent;
+                    if (!email) {
+                        alert('No user loaded');
+                        return;
+                    }
+
+                    if (!confirm(`Delete permission config for ${email}?\n\nThis will reset all permissions to default (all enabled).`)) {
+                        return;
+                    }
+
+                    try {
+                        await deleteDoc(doc(db, 'config', email));
+                        alert(`✅ Permission config deleted for ${email}`);
+                        document.getElementById('permissionsForm').style.display = 'none';
+                        document.getElementById('targetUserEmail').value = '';
+                        loadRecentUsers();
+                    } catch (error) {
+                        console.error('Error deleting config:', error);
+                        alert('Error deleting config: ' + error.message);
+                    }
+                });
             }
         });
 
