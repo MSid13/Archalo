@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archalo - Archaeological Discovery Platform</title>
+    <title>Archalo</title>
+    <link rel="icon" type="image/png" href="owlcheologists.png">
     <style>
         * {
             margin: 0;
@@ -736,6 +737,125 @@
         #loginForm.active, #permissionsPanel.active {
             display: block;
         }
+
+        /* Artifact Edit Buttons */
+        .artifact-edit-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-left: 0.5rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .artifact-edit-btn:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .artifact-edit-controls {
+            margin-top: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .artifact-edit-input {
+            width: 100%;
+            padding: 0.6rem;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .artifact-edit-textarea {
+            width: 100%;
+            padding: 0.6rem;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .artifact-save-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .artifact-save-btn:hover {
+            background: #229954;
+        }
+
+        .artifact-cancel-btn {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .artifact-cancel-btn:hover {
+            background: #7f8c8d;
+        }
+
+        /* Announcement Banner Markdown Styles */
+        #announcement-content {
+            color: #2c3e50;
+            font-size: 0.85rem;
+            text-align: center;
+            margin: 0;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        #announcement-content p {
+            margin: 0;
+            padding: 0;
+        }
+
+        #announcement-content a {
+            color: #2980b9;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        #announcement-content a:hover {
+            color: #3498db;
+        }
+
+        #announcement-content strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        #announcement-content em {
+            font-style: italic;
+        }
+
+        #announcement-content code {
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -757,7 +877,11 @@
             </ul>
         </div>
     </nav>
-
+    <div id="announcement-banner" style="background: linear-gradient(135deg, #e8f4f8, #d6e9f1); padding: 0.8rem 1.5rem; margin: 0; border-bottom: 2px solid rgba(52, 152, 219, 0.15);">
+        <div id="announcement-content" style="color: #2c3e50; font-size: 0.85rem; text-align: center; margin: 0; font-weight: 400; line-height: 1.4;">
+            📢 Loading announcement...
+        </div>
+    </div>
     <section class="artifact-of-day">
         <h2>Artifact of the Day</h2>
         <div class="artifact-placeholder" id="artifact-container">
@@ -782,22 +906,51 @@
         <div class="about-section">
             <h2>About Archalo</h2>
             <div class="about-content">
-                <div class="about-text">
-                    <p>Archalo is developed by the <strong>FLL Owlcheologists Team #41991</strong>, dedicated to bridging the gap between archaeological discovery and proper reporting procedures.</p>
-                    
-                    <p>Our platform combines real-time location data with comprehensive legal databases to provide accurate, jurisdiction-specific guidance for archaeological finds.</p>
-                    
-                    <div class="disclaimer">
-                        <h4>⚠️ Important Disclaimer</h4>
-                        <p>We strive to provide the most accurate and up-to-date data available; however, we cannot guarantee its completeness, accuracy, or fitness for any particular purpose. This guidance is advisory only and should never be relied upon as a substitute for official legal, regulatory, or professional advice. We assume no responsibility or liability for any losses, damages, or consequences resulting directly or indirectly from the use of this information. Users assume all risk and must always verify all information with the relevant governmental or legal authorities.</p>
-                    </div>
-                    <br><br><p>If you find an inaccuracy/bug, please report it to us. Click <a href="https://forms.gle/NN3anqoQDDi9g5vD7">here</a> to report it.</p>
+            <div class="about-text">
+                <p style="font-size: 1.2rem; color: #2c3e50; font-weight: 500; margin-bottom: 2rem;"></p>
+                Archalo is proudly developed by the <strong style="color: #d4704a;">FLL Owlcheologists Team #41991</strong>, 
+                dedicated to bridging the gap between archaeological discovery and proper reporting procedures.
+                </p>
+                
+                <div style="background: linear-gradient(135deg, #3498db15, #d4704a15); padding: 2rem; border-radius: 12px; border-left: 4px solid #d4704a; margin: 2rem 0;">
+                <h3 style="color: #2c3e50; margin-bottom: 1rem; font-size: 1.3rem;">📍 Our Mission</h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #444;">
+                    To empower the public to protect cultural heritage by simplifying the process of reporting 
+                    archaeological finds and providing essential legal and educational resources.
+                </p>
                 </div>
                 
+                <p style="font-size: 1.05rem; line-height: 1.8; color: #555; margin: 2rem 0;">
+                🌍 Our platform combines <strong>real-time location data</strong> with comprehensive legal databases 
+                to provide accurate, <strong>jurisdiction-specific guidance</strong> for archaeological finds.
+                </p>
+                
+                <div style="background: #fff3cd; border: 2px solid #ffeaa7; border-radius: 12px; padding: 1.5rem; margin-top: 2.5rem; text-align: center;">
+                <p style="color: #856404; font-size: 1rem; margin: 0;">
+                    <strong>Found an issue?</strong> Help us improve! 
+                    <a href="https://forms.gle/NN3anqoQDDi9g5vD7" 
+                       style="color: #d4704a; font-weight: 600; text-decoration: none; border-bottom: 2px solid #d4704a; transition: all 0.3s;"
+                       onmouseover="this.style.color='#c0603c'; this.style.borderColor='#c0603c';"
+                       onmouseout="this.style.color='#d4704a'; this.style.borderColor='#d4704a';">
+                    Report bugs or inaccuracies here →
+                    </a>
+                </p>
+                </div>
             </div>
-        </div>
+            
+            <div class="stats-grid">
+                <div class="stat-item" style="background: linear-gradient(135deg, #ffffff, #f8f9fa); border: 1px solid #e9ecef;">
+                <div class="stat-number">10+</div>
+                <div class="stat-label">States Covered & more coming soon</div>
+                </div>
+                <div class="stat-item" style="background: linear-gradient(135deg, #ffffff, #f8f9fa); border: 1px solid #e9ecef;">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Free to Use</div>
+                </div>
+            </div>
+            </div>
+        </div></div></a></p>
     </section>
-
     <!-- Admin Modal -->
     <div class="admin-modal" id="adminModal">
         <div class="admin-modal-content">
@@ -812,7 +965,7 @@
                         <input type="email" id="adminEmail" placeholder="admin@example.com" required>
                     </div>
                     <div class="form-group">
-                        <label for="adminPassword">Password</label>
+                        <label for="adminPassword">Password</p></label>
                         <input type="password" id="adminPassword" placeholder="Enter password" required>
                     </div>
                     <div class="modal-buttons">
@@ -822,13 +975,39 @@
                 </form>
             </div>
 
-            <!-- Permissions Panel (Only for admin@example.com) -->
+            <!-- Permi</a>ssions Panel (Only for admin@example.com) -->
             <div id="permissionsPanel">
-                <h2>👤 User Permissions Manager</h2>
+                <h2>👤 Admin Panel</h2>
                 <p style="color: #666; margin-bottom: 1.5rem;">
                     <strong>Logged in as:</strong> <span id="currentUserEmail"></span>
                     <button class="btn btn-secondary" id="logoutBtn" style="float: right; padding: 0.5rem 1rem; font-size: 0.9rem;">Logout</button>
                 </p>
+
+                <!-- Announcements Section -->
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                    <h3 style="margin-bottom: 1rem;">📢 Edit Announcement</h3>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
+                        Edit the announcement banner shown on the homepage. Supports Markdown formatting.
+                    </p>
+                    <div class="form-group">
+                        <label for="announcementText">Announcement Text (Markdown supported)</label>
+                        <textarea id="announcementText" 
+                                  rows="4" 
+                                  style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 0.9rem;"
+                                  placeholder="📢 **Example:** Your announcement here with [links](https://example.com)"></textarea>
+                        <small style="color: #666; display: block; margin-top: 0.5rem;">
+                            <strong>Markdown tips:</strong> **bold**, *italic*, [link text](url)
+                        </small>
+                    </div>
+                    <div class="modal-buttons" style="margin-top: 1rem;">
+                        <button class="btn btn-primary" id="saveAnnouncementBtn">💾 Save Announcement</button>
+                        <button class="btn btn-secondary" id="loadAnnouncementBtn">🔄 Load Current</button>
+                    </div>
+                    <div id="announcementPreview" style="margin-top: 1rem; padding: 1rem; background: white; border: 1px solid #ddd; border-radius: 6px; display: none;">
+                        <strong>Preview:</strong>
+                        <div id="announcementPreviewContent" style="margin-top: 0.5rem;"></div>
+                    </div>
+                </div>
 
                 <h3 style="margin-top: 2rem;">Edit User Permissions</h3>
                 <div class="form-group">
@@ -886,11 +1065,22 @@
 
     <footer>
         <div class="footer-disclaimer">
-            <p><strong>Disclaimer:</strong> We strive to provide the most accurate data available, however, we cannot guarantee its completeness or accuracy. Our guidance is advisory only. We are not responsible for any consequences resulting from the use of this information. Always verify with authorities.</p>
-            <p><br>If you find an inaccuracy/bug, please report it to us. Click <a href="https://forms.gle/NN3anqoQDDi9g5vD7">here</a>.</p>
+                        <p style="margin: 1rem 0; font-size: 0.95rem;">
+                <strong>Data Sources:</strong> To view the data sources and attributions used on this page, please visit our 
+                <a href="credits.html" style="color: #3498db; text-decoration: none; font-weight: 600; border-bottom: 2px solid transparent; transition: border-color 0.3s ease;" 
+                   onmouseover="this.style.borderColor='#3498db'" 
+                   onmouseout="this.style.borderColor='transparent'">
+                    Credits & Attributions
+                </a> page.
+            </p>
+            <p><strong>Disclaimer:</strong> We strive to provide the most accurate and up-to-date data available; however, we cannot guarantee its completeness, accuracy, or fitness for any particular purpose. This guidance is advisory only and should never be relied upon as a substitute for official legal, regulatory, or professional advice. We assume no responsibility or liability for any losses, damages, or consequences resulting directly or indirectly from the use of this information. Users assume all risk and must always verify all information with the relevant governmental or legal authorities.</p>
+            <p><br>Report data inaccuracies and/or website bugs <a href="https://forms.gle/NN3anqoQDDi9g5vD7" style="color: #3498db; text-decoration: underline; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.color='#5dade2'; this.style.textDecoration='none'" onmouseout="this.style.color='#3498db'; this.style.textDecoration='underline'">here</a>.</p>
         </div>
         <a href="#" class="admin-link" id="adminLoginBtn">Login</a>
     </footer>
+
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <!-- Firebase SDKs -->
     <script type="module">
@@ -918,6 +1108,95 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
+        // ============== ANNOUNCEMENT LOADING ==============
+        // Wait for marked.js to be available
+        function waitForMarked() {
+            return new Promise((resolve) => {
+                if (typeof marked !== 'undefined') {
+                    resolve();
+                } else {
+                    const checkInterval = setInterval(() => {
+                        if (typeof marked !== 'undefined') {
+                            clearInterval(checkInterval);
+                            resolve();
+                        }
+                    }, 50);
+                }
+            });
+        }
+
+        async function loadAnnouncement() {
+            // Wait for marked.js to load
+            await waitForMarked();
+            
+            try {
+                const announcementRef = doc(db, "main", "announcements");
+                const announcementSnap = await getDoc(announcementRef);
+                
+                if (announcementSnap.exists()) {
+                    const data = announcementSnap.data();
+                    const markdownContent = data.announcement || data.content || data.message;
+                    
+                    if (markdownContent) {
+                        // Parse markdown to HTML
+                        const htmlContent = marked.parse(markdownContent);
+                        
+                        // Update the announcement content
+                        const announcementDiv = document.getElementById('announcement-content');
+                        if (announcementDiv) {
+                            announcementDiv.innerHTML = htmlContent;
+                        }
+                    } else {
+                        // No content field, create default
+                        await createDefaultAnnouncement(announcementRef);
+                    }
+                } else {
+                    // Document doesn't exist, create it with default content
+                    console.log('Announcement document does not exist, creating default...');
+                    await createDefaultAnnouncement(announcementRef);
+                }
+            } catch (error) {
+                console.error('Error loading announcement:', error);
+                // Show default message on error
+                const announcementDiv = document.getElementById('announcement-content');
+                if (announcementDiv) {
+                    announcementDiv.innerHTML = '📢 Moderate use of the "Find Property Information" feature is requested.';
+                }
+            }
+        }
+
+        // Create default announcement in database
+        async function createDefaultAnnouncement(announcementRef) {
+            const defaultAnnouncement = '📢 Moderate use of the "Find Property Information" feature is requested.';
+            
+            try {
+                await setDoc(announcementRef, {
+                    announcement: defaultAnnouncement,
+                    createdAt: new Date().toISOString(),
+                    lastUpdated: new Date().toISOString()
+                });
+                
+                console.log('Default announcement created in database');
+                
+                // Display the default announcement
+                const announcementDiv = document.getElementById('announcement-content');
+                if (announcementDiv) {
+                    const htmlContent = marked.parse(defaultAnnouncement);
+                    announcementDiv.innerHTML = htmlContent;
+                }
+            } catch (error) {
+                console.error('Error creating default announcement:', error);
+                // Still show the message even if save fails
+                const announcementDiv = document.getElementById('announcement-content');
+                if (announcementDiv) {
+                    announcementDiv.innerHTML = defaultAnnouncement;
+                }
+            }
+        }
+
+        // Load announcement on page load
+        loadAnnouncement();
+
         // ============== ADMIN AUTHENTICATION & PERMISSIONS ==============
         let currentUser = null;
 
@@ -930,6 +1209,8 @@
                 // Show permissions panel only for admin@example.com
                 if (user.email === 'admin@example.com') {
                     showPermissionsPanel(user);
+                    // Refresh artifact display to show edit buttons
+                    initArtifactOfDay();
                 } else {
                     alert('Access denied. Only admin@example.com can manage permissions.');
                     signOut(auth);
@@ -937,6 +1218,8 @@
             } else {
                 currentUser = null;
                 console.log('User logged out');
+                // Refresh artifact display to hide edit buttons
+                initArtifactOfDay();
             }
         });
 
@@ -1043,8 +1326,119 @@
             }
         }
 
+        // ============== ANNOUNCEMENT MANAGEMENT ==============
+        // Load current announcement
+        async function loadCurrentAnnouncement() {
+            await waitForMarked();
+            
+            try {
+                const announcementRef = doc(db, "main", "announcements");
+                const announcementSnap = await getDoc(announcementRef);
+                
+                if (announcementSnap.exists()) {
+                    const data = announcementSnap.data();
+                    const markdownContent = data.announcement || data.content || data.message || '';
+                    
+                    // Set the textarea value
+                    const textarea = document.getElementById('announcementText');
+                    if (textarea) {
+                        textarea.value = markdownContent;
+                    }
+                    
+                    // Show preview
+                    if (markdownContent) {
+                        const previewDiv = document.getElementById('announcementPreview');
+                        const previewContent = document.getElementById('announcementPreviewContent');
+                        if (previewDiv && previewContent) {
+                            previewContent.innerHTML = marked.parse(markdownContent);
+                            previewDiv.style.display = 'block';
+                        }
+                    }
+                    
+                    alert('✅ Announcement loaded successfully!');
+                } else {
+                    alert('No announcement found in database.');
+                }
+            } catch (error) {
+                console.error('Error loading announcement:', error);
+                alert('Error loading announcement: ' + error.message);
+            }
+        }
+
+        // Save announcement
+        async function saveAnnouncement() {
+            await waitForMarked();
+            
+            const textarea = document.getElementById('announcementText');
+            if (!textarea) return;
+            
+            const markdownContent = textarea.value.trim();
+            
+            try {
+                const announcementRef = doc(db, "main", "announcements");
+                
+                await setDoc(announcementRef, {
+                    announcement: markdownContent,
+                    lastUpdated: new Date().toISOString()
+                });
+                
+                console.log('Announcement saved successfully');
+                
+                // Show preview
+                const previewDiv = document.getElementById('announcementPreview');
+                const previewContent = document.getElementById('announcementPreviewContent');
+                if (previewDiv && previewContent) {
+                    if (markdownContent) {
+                        previewContent.innerHTML = marked.parse(markdownContent);
+                        previewDiv.style.display = 'block';
+                    } else {
+                        previewDiv.style.display = 'none';
+                    }
+                }
+                
+                // Reload the announcement on the page
+                loadAnnouncement();
+                
+                alert('✅ Announcement saved successfully!');
+            } catch (error) {
+                console.error('Error saving announcement:', error);
+                alert('Error saving announcement: ' + error.message);
+            }
+        }
+
         // Initialize permission management controls after DOM is loaded
         window.addEventListener('DOMContentLoaded', () => {
+            // Announcement management buttons
+            const saveAnnouncementBtn = document.getElementById('saveAnnouncementBtn');
+            if (saveAnnouncementBtn) {
+                saveAnnouncementBtn.addEventListener('click', saveAnnouncement);
+            }
+
+            const loadAnnouncementBtn = document.getElementById('loadAnnouncementBtn');
+            if (loadAnnouncementBtn) {
+                loadAnnouncementBtn.addEventListener('click', loadCurrentAnnouncement);
+            }
+
+            // Live preview for announcement
+            const announcementText = document.getElementById('announcementText');
+            if (announcementText) {
+                announcementText.addEventListener('input', async () => {
+                    await waitForMarked();
+                    const markdownContent = announcementText.value.trim();
+                    const previewDiv = document.getElementById('announcementPreview');
+                    const previewContent = document.getElementById('announcementPreviewContent');
+                    
+                    if (previewDiv && previewContent) {
+                        if (markdownContent) {
+                            previewContent.innerHTML = marked.parse(markdownContent);
+                            previewDiv.style.display = 'block';
+                        } else {
+                            previewDiv.style.display = 'none';
+                        }
+                    }
+                });
+            }
+
             // Logout
             const logoutBtn = document.getElementById('logoutBtn');
             if (logoutBtn) {
@@ -1263,7 +1657,7 @@
                             // Find summary or first available note
                             const summaryNote = freetext.notes.find(note => note.label === "Summary");
                             const firstNote = freetext.notes[0];
-                            description = (summaryNote || firstNote)?.content || description;
+                            description = "Pending approval. Please check back later.";
                         } else if (freetext.physicalDescription && freetext.physicalDescription.length > 0) {
                             description = freetext.physicalDescription[0].content;
                         }
@@ -1432,16 +1826,35 @@ service cloud.firestore {
                 return;
             }
 
+            // Check if current user is admin
+            const isAdmin = currentUser && currentUser.email === 'admin@example.com';
+
             // Build the HTML for artifact display
             let artifactHTML = '<div class="artifact-content"><div>';
             
-            // Banner section
-            artifactHTML += '<div class="artifact-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; font-weight: 700; text-align: center; padding: 2rem; letter-spacing: 2px;">ARTIFACT OF THE DAY</div>';
+            // Banner section - show image if exists, otherwise gradient banner
+            if (artifact.image && artifact.image.trim() !== '') {
+                artifactHTML += `<div class="artifact-image" style="background-image: url('${artifact.image}'); background-size: cover; background-position: center; height: 300px; border-radius: 15px 15px 0 0;"></div>`;
+            } else {
+                artifactHTML += '<div class="artifact-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; font-weight: 700; text-align: center; padding: 2rem; letter-spacing: 2px;">ARTIFACT OF THE DAY</div>';
+            }
             
             artifactHTML += '</div><div class="artifact-info">';
             
-            // Title
-            artifactHTML += `<h3>${artifact.title}</h3>`;
+            // Title with edit button for admin
+            artifactHTML += `<div id="title-display">`;
+            artifactHTML += `<h3 id="artifact-title">${artifact.title}`;
+            if (isAdmin) {
+                artifactHTML += ` <button class="artifact-edit-btn" onclick="editArtifactTitle()">✏️ Edit</button>`;
+            }
+            artifactHTML += `</h3></div>`;
+            artifactHTML += `<div id="title-edit" style="display: none;">
+                <input type="text" id="title-input" class="artifact-edit-input" value="${artifact.title.replace(/"/g, '&quot;')}">
+                <div class="artifact-edit-controls">
+                    <button class="artifact-save-btn" onclick="saveArtifactTitle()">💾 Save</button>
+                    <button class="artifact-cancel-btn" onclick="cancelEditTitle()">❌ Cancel</button>
+                </div>
+            </div>`;
             
             // Culture
             if (artifact.culture && artifact.culture !== "Unknown") {
@@ -1463,13 +1876,27 @@ service cloud.firestore {
                 artifactHTML += `<p><strong>Collection:</strong> ${artifact.unitCode}</p>`;
             }
             
-            // Description
+            // Description with edit button for admin
             if (artifact.description && artifact.description !== "No description available") {
                 const maxLength = 300;
                 const truncatedDesc = artifact.description.length > maxLength 
                     ? artifact.description.substring(0, maxLength) + '...' 
                     : artifact.description;
-                artifactHTML += `<p><strong>Description:</strong> ${truncatedDesc}</p>`;
+                
+                artifactHTML += `<div id="description-display">`;
+                artifactHTML += `<p><strong>Description:</strong> <span id="artifact-description">${truncatedDesc}</span>`;
+                if (isAdmin) {
+                    artifactHTML += ` <button class="artifact-edit-btn" onclick="editArtifactDescription()">✏️ Edit</button>`;
+                }
+                artifactHTML += `</p></div>`;
+                artifactHTML += `<div id="description-edit" style="display: none;">
+                    <p><strong>Description:</strong></p>
+                    <textarea id="description-input" class="artifact-edit-textarea">${artifact.description.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+                    <div class="artifact-edit-controls">
+                        <button class="artifact-save-btn" onclick="saveArtifactDescription()">💾 Save</button>
+                        <button class="artifact-cancel-btn" onclick="cancelEditDescription()">❌ Cancel</button>
+                    </div>
+                </div>`;
             }
             
             // Link to full record - use record_link or construct from URL
@@ -1526,6 +1953,120 @@ service cloud.firestore {
             console.log("Page loaded, initializing artifact...");
             initArtifactOfDay();
         });
+
+        // ============== ARTIFACT EDITING FUNCTIONS ==============
+        
+        // Edit title
+        window.editArtifactTitle = function() {
+            document.getElementById('title-display').style.display = 'none';
+            document.getElementById('title-edit').style.display = 'block';
+            document.getElementById('title-input').focus();
+        }
+
+        // Cancel edit title
+        window.cancelEditTitle = function() {
+            document.getElementById('title-display').style.display = 'block';
+            document.getElementById('title-edit').style.display = 'none';
+        }
+
+        // Save title
+        window.saveArtifactTitle = async function() {
+            const newTitle = document.getElementById('title-input').value.trim();
+            
+            if (!newTitle) {
+                alert('Title cannot be empty');
+                return;
+            }
+
+            try {
+                const today = getTodayString();
+                const docRef = doc(db, "artifactOfDay", today);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    const artifactData = docSnap.data().artifact;
+                    artifactData.title = newTitle;
+                    
+                    await setDoc(docRef, {
+                        artifact: artifactData,
+                        date: today,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    console.log('Title updated successfully');
+                    
+                    // Update display
+                    document.getElementById('artifact-title').innerHTML = newTitle + 
+                        ` <button class="artifact-edit-btn" onclick="editArtifactTitle()">✏️ Edit</button>`;
+                    cancelEditTitle();
+                    
+                    alert('✅ Title updated successfully!');
+                } else {
+                    alert('Error: Artifact data not found');
+                }
+            } catch (error) {
+                console.error('Error saving title:', error);
+                alert('Error saving title: ' + error.message);
+            }
+        }
+
+        // Edit description
+        window.editArtifactDescription = function() {
+            document.getElementById('description-display').style.display = 'none';
+            document.getElementById('description-edit').style.display = 'block';
+            document.getElementById('description-input').focus();
+        }
+
+        // Cancel edit description
+        window.cancelEditDescription = function() {
+            document.getElementById('description-display').style.display = 'block';
+            document.getElementById('description-edit').style.display = 'none';
+        }
+
+        // Save description
+        window.saveArtifactDescription = async function() {
+            const newDescription = document.getElementById('description-input').value.trim();
+            
+            if (!newDescription) {
+                alert('Description cannot be empty');
+                return;
+            }
+
+            try {
+                const today = getTodayString();
+                const docRef = doc(db, "artifactOfDay", today);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    const artifactData = docSnap.data().artifact;
+                    artifactData.description = newDescription;
+                    
+                    await setDoc(docRef, {
+                        artifact: artifactData,
+                        date: today,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    console.log('Description updated successfully');
+                    
+                    // Update display
+                    const maxLength = 300;
+                    const truncatedDesc = newDescription.length > maxLength 
+                        ? newDescription.substring(0, maxLength) + '...' 
+                        : newDescription;
+                    
+                    document.getElementById('artifact-description').textContent = truncatedDesc;
+                    cancelEditDescription();
+                    
+                    alert('✅ Description updated successfully!');
+                } else {
+                    alert('Error: Artifact data not found');
+                }
+            } catch (error) {
+                console.error('Error saving description:', error);
+                alert('Error saving description: ' + error.message);
+            }
+        }
 
         // ============== HAMBURGER MENU ==============
         const hamburger = document.getElementById('hamburger');

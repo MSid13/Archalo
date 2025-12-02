@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Credits & Attributions</title>
+    <link rel="icon" type="image/png" href="owlcheologists.png">
     <style>
         * {
             margin: 0;
@@ -27,10 +28,44 @@
             padding: 2rem 0;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
         }
 
         header h1 {
             font-size: 2.5rem;
+        }
+
+        .home-btn {
+            position: absolute;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1.25rem;
+            border: 2px solid white;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .home-btn:hover {
+            background: white;
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .home-btn {
+                position: static;
+                transform: none;
+                display: inline-block;
+                margin-bottom: 1rem;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
         }
 
         main {
@@ -123,31 +158,51 @@
         footer {
             background: #34495e;
             color: white;
-            padding: 1.5rem;
+            padding: 2rem 1.5rem;
             text-align: center;
             margin-top: auto;
         }
 
-        .footer-content {
+        .footer-disclaimer {
             max-width: 900px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+            margin: 0 auto 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.8;
         }
 
-        #loginBtn {
-            background: transparent;
-            border: 2px solid white;
+        .footer-disclaimer p {
+            margin-bottom: 1rem;
+        }
+
+        .footer-disclaimer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .admin-link {
+            display: inline-block;
             color: white;
+            text-decoration: none;
             padding: 0.5rem 1.5rem;
+            border: 2px solid white;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-weight: 500;
         }
 
-        #loginBtn:hover {
+        .admin-link:hover {
             background: white;
             color: #34495e;
+        }
+
+        .admin-link.logged-in {
+            border-color: #27ae60;
+            background: #27ae60;
+        }
+
+        .admin-link.logged-in:hover {
+            background: #229954;
+            border-color: #229954;
+            color: white;
         }
 
         .modal {
@@ -240,6 +295,8 @@
 <body>
     <header>
         <h1>Credits & Attributions</h1>
+                <a href="/Archalo.html" style="text-decoration: none; color: inherit;">← Home</a>
+
     </header>
 
     <main>
@@ -255,17 +312,28 @@
                 <button class="btn-primary" onclick="saveContent()">Save Changes</button>
                 <button class="btn-secondary" onclick="cancelEdit()">Cancel</button>
             </div>
+
+            <hr style="margin: 2rem 0; border: none; border-top: 2px solid #ddd;">
+
+            <h2>Edit Announcements</h2>
+            <div id="announcementMessage" class="message"></div>
+            <div class="form-group">
+                <label for="mainAnnouncement">Main Announcement</label>
+                <textarea id="mainAnnouncement" 
+                          placeholder="Enter main announcement text..." 
+                          style="width: 100%; min-height: 150px; padding: 1rem; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; font-family: inherit; resize: vertical;"></textarea>
+            </div>
+            <div class="editor-actions">
+                <button class="btn-primary" onclick="saveAnnouncement()">Save Announcement</button>
+            </div>
         </div>
     </main>
 
     <footer>
-        <div class="footer-content">
-            <p>&copy; 2024 All Rights Reserved</p>
-            <div>
-                <span id="adminStatus"></span>
-                <button id="loginBtn" onclick="toggleAuth()">Admin Login</button>
-            </div>
+        <div class="footer-disclaimer">
+            <p><strong>Disclaimer:</strong> We strive to provide the most accurate and up-to-date data available; however, we cannot guarantee its completeness, accuracy, or fitness for any particular purpose. This guidance is advisory only and should never be relied upon as a substitute for official legal, regulatory, or professional advice. We assume no responsibility or liability for any losses, damages, or consequences resulting directly or indirectly from the use of this information. Users assume all risk and must always verify all information with the relevant governmental or legal authorities.</p>
         </div>
+        <a href="#" id="adminLoginBtn" class="admin-link" style="border: none;" onclick="toggleAuth(); return false;">Login</a>
     </footer>
 
     <!-- Login Modal -->
@@ -297,36 +365,73 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <script>
-        // Firebase configuration - REPLACE WITH YOUR CONFIG
+        // Firebase configuration
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyCCYpXOczp5nRRP1S2Gdb1ADjIAHeJQVq0",
+            authDomain: "owlcheologists.firebaseapp.com",
+            projectId: "owlcheologists",
+            storageBucket: "owlcheologists.firebasestorage.app",
+            messagingSenderId: "323297596743",
+            appId: "1:323297596743:web:c9455e40779b7c09522862",
+            measurementId: "G-2CFYWTQCQ4"
         };
 
+        // Check if Firebase is configured
+        const isFirebaseConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
+
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+        let auth, db;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            db = firebase.firestore();
+        } catch (error) {
+            console.error('Firebase initialization error:', error);
+        }
 
         let currentUser = null;
         const ADMIN_EMAIL = 'admin@example.com';
         const CREDITS_DOC_ID = 'credits-content';
+        const ARTIFACT_DOC_ID = 'current-artifact';
+        const ANNOUNCEMENTS_DOC_ID = 'announcements';
 
         // Configure marked.js options
-        marked.setOptions({
-            breaks: true,
-            gfm: true
-        });
+        if (typeof marked !== 'undefined') {
+            marked.setOptions({
+                breaks: true,
+                gfm: true
+            });
+        }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            loadContent();
-            setupAuthListener();
+            if (!isFirebaseConfigured) {
+                showConfigurationError();
+            } else {
+                loadContent();
+                setupAuthListener();
+            }
         });
+
+        // Show configuration error
+        function showConfigurationError() {
+            const contentDiv = document.getElementById('content');
+            contentDiv.className = '';
+            contentDiv.innerHTML = `
+                <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 1.5rem; border-radius: 4px; color: #856404;">
+                    <h3 style="margin-bottom: 1rem;">⚠️ Firebase Not Configured</h3>
+                    <p style="margin-bottom: 1rem;">Please configure Firebase to use this page:</p>
+                    <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Go to <a href="https://console.firebase.google.com" target="_blank" style="color: #0066cc;">Firebase Console</a></li>
+                        <li>Create a new project or use an existing one</li>
+                        <li>Enable Authentication (Email/Password)</li>
+                        <li>Enable Firestore Database</li>
+                        <li>Copy your Firebase config and replace the placeholder values in this file</li>
+                    </ol>
+                </div>
+            `;
+            document.getElementById('loginBtn').disabled = true;
+        }
 
         // Auth state listener
         function setupAuthListener() {
@@ -338,37 +443,80 @@
 
         // Update UI based on auth state
         function updateUIForAuth(user) {
-            const loginBtn = document.getElementById('loginBtn');
-            const adminStatus = document.getElementById('adminStatus');
+            const loginBtn = document.getElementById('adminLoginBtn');
             const editorContainer = document.getElementById('editor-container');
 
             if (user && user.email === ADMIN_EMAIL) {
-                loginBtn.textContent = 'Logout';
-                adminStatus.innerHTML = '<span class="admin-badge">Admin</span>';
-                loginBtn.onclick = logout;
+                loginBtn.textContent = 'Logout (Admin)';
+                loginBtn.className = 'admin-link logged-in';
+                loginBtn.onclick = function(e) { 
+                    e.preventDefault(); 
+                    logout(); 
+                };
             } else {
-                loginBtn.textContent = 'Admin Login';
-                loginBtn.onclick = toggleAuth;
-                adminStatus.innerHTML = '';
+                loginBtn.textContent = 'Login';
+                loginBtn.className = 'admin-link';
+                loginBtn.onclick = function(e) { 
+                    e.preventDefault(); 
+                    toggleAuth(); 
+                };
                 editorContainer.classList.remove('active');
             }
         }
 
         // Load content from Firestore
         async function loadContent() {
+            const contentDiv = document.getElementById('content');
+            
+            if (!isFirebaseConfigured) {
+                showConfigurationError();
+                return;
+            }
+
             try {
                 const doc = await db.collection('credits').doc(CREDITS_DOC_ID).get();
-                const contentDiv = document.getElementById('content');
 
                 if (doc.exists) {
                     const markdown = doc.data().markdown || '';
+                    contentDiv.className = '';
                     contentDiv.innerHTML = marked.parse(markdown);
                 } else {
-                    contentDiv.innerHTML = '<p><em>No credits content available yet.</em></p>';
+                    // Show default content when no document exists
+                    contentDiv.className = '';
+                    contentDiv.innerHTML = `
+                        <h2>Credits & Attributions</h2>
+                        <p><em>No credits content has been added yet. Admin can login to add content.</em></p>
+                        <hr style="margin: 2rem 0;">
+                        <h3>Sample Credits Template:</h3>
+                        <ul>
+                            <li><strong>Project Name</strong> - Description</li>
+                            <li><strong>Libraries Used</strong> - Firebase, Marked.js</li>
+                            <li><strong>Icons & Images</strong> - Attribution here</li>
+                        </ul>
+                    `;
                 }
             } catch (error) {
                 console.error('Error loading content:', error);
-                document.getElementById('content').innerHTML = '<p>Error loading content. Please try again later.</p>';
+                contentDiv.className = '';
+                
+                // Provide more specific error messages
+                let errorMessage = 'Error loading content. ';
+                
+                if (error.code === 'permission-denied') {
+                    errorMessage += 'Please check your Firestore security rules. Make sure read access is allowed.';
+                    errorMessage += '<br><br><strong>Suggested Firestore Rules:</strong><pre style="background: #f4f4f4; padding: 1rem; border-radius: 4px; overflow-x: auto;">rules_version = \'2\';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /credits/{document} {\n      allow read: if true;\n      allow write: if request.auth != null && request.auth.token.email == \'admin@example.com\';\n    }\n  }\n}</pre>';
+                } else if (error.code === 'unavailable') {
+                    errorMessage += 'Cannot connect to Firestore. Please check your internet connection.';
+                } else {
+                    errorMessage += `${error.message || 'Please try again later.'}`;
+                }
+                
+                contentDiv.innerHTML = `
+                    <div style="background: #f8d7da; border: 1px solid #f5c6cb; padding: 1.5rem; border-radius: 4px; color: #721c24;">
+                        <h3 style="margin-bottom: 1rem;">${errorMessage}</h3>
+                        <button class="btn-primary" onclick="loadContent()" style="margin-top: 1rem;">Retry</button>
+                    </div>
+                `;
             }
         }
 
@@ -446,11 +594,31 @@
                     editor.value = '# Credits & Attributions\n\nAdd your credits here...';
                 }
 
+                // Load announcement too
+                await loadAnnouncement();
+
                 document.getElementById('editor-container').classList.add('active');
                 editor.focus();
             } catch (error) {
                 console.error('Error loading editor:', error);
                 showMessage('editorMessage', 'Error loading editor content.', 'error');
+            }
+        }
+
+        // Load announcement when editor opens
+        async function loadAnnouncement() {
+            try {
+                const doc = await db.collection('config').doc(ANNOUNCEMENTS_DOC_ID).get();
+                const textarea = document.getElementById('mainAnnouncement');
+                
+                if (doc.exists) {
+                    textarea.value = doc.data().main || '';
+                } else {
+                    textarea.value = '';
+                }
+            } catch (error) {
+                console.error('Error loading announcement:', error);
+                showMessage('announcementMessage', 'Error loading announcement: ' + error.message, 'error');
             }
         }
 
@@ -482,6 +650,33 @@
             }
         }
 
+        // Save announcement
+        async function saveAnnouncement() {
+            if (!currentUser || currentUser.email !== ADMIN_EMAIL) {
+                showMessage('announcementMessage', 'Unauthorized access.', 'error');
+                return;
+            }
+
+            const mainText = document.getElementById('mainAnnouncement').value;
+
+            try {
+                await db.collection('config').doc(ANNOUNCEMENTS_DOC_ID).set({
+                    main: mainText,
+                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedBy: currentUser.email
+                });
+
+                showMessage('announcementMessage', 'Announcement saved successfully!', 'success');
+                
+                setTimeout(() => {
+                    hideMessage('announcementMessage');
+                }, 3000);
+            } catch (error) {
+                console.error('Error saving announcement:', error);
+                showMessage('announcementMessage', 'Error saving announcement: ' + error.message, 'error');
+            }
+        }
+
         // Cancel edit
         function cancelEdit() {
             document.getElementById('editor-container').classList.remove('active');
@@ -503,8 +698,9 @@
 
         // Close modal when clicking outside
         window.onclick = function(event) {
-            const modal = document.getElementById('loginModal');
-            if (event.target === modal) {
+            const loginModal = document.getElementById('loginModal');
+            
+            if (event.target === loginModal) {
                 closeModal();
             }
         }

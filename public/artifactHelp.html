@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>I Found an Artifact - Archalo</title>
+    <link rel="icon" type="image/png" href="owlcheologists.png">
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -923,10 +924,20 @@
     <!-- Footer -->
     <footer>
         <div class="footer-disclaimer">
-            <p>The data sources on this page include OpenStreetMap contributors (licensed under ODbL) and ReportAll API.</p>
+            <p style="margin: 1rem 0; font-size: 0.95rem;">
+                <strong>Data Sources:</strong> To view the data sources and attributions used on this page, please visit our 
+                <a href="credits.html" style="color: #3498db; text-decoration: none; font-weight: 600; border-bottom: 2px solid transparent; transition: border-color 0.3s ease;" 
+                   onmouseover="this.style.borderColor='#3498db'" 
+                   onmouseout="this.style.borderColor='transparent'">
+                    Credits & Attributions
+                </a> page.
+            </p>
+            <br></p>
             <p><strong>Disclaimer:</strong> We strive to provide the most accurate and up-to-date data available; however, we cannot guarantee its completeness, accuracy, or fitness for any particular purpose. This guidance is advisory only and should never be relied upon as a substitute for official legal, regulatory, or professional advice. We assume no responsibility or liability for any losses, damages, or consequences resulting directly or indirectly from the use of this information. Users assume all risk and must always verify all information with the relevant governmental or legal authorities.
 
 </p>
+            <p><br>Report data inaccuracies and/or website bugs <a href="https://forms.gle/NN3anqoQDDi9g5vD7" style="color: #3498db; text-decoration: underline; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.color='#5dade2'; this.style.textDecoration='none'" onmouseout="this.style.color='#3498db'; this.style.textDecoration='underline'">here</a>.</p>
+
         </div>
         <a href="#" class="admin-link" id="adminLoginBtn">Login</a>
     </footer>
@@ -957,7 +968,7 @@
                 <div class="admin-user-info">
                     <p><strong>👤 Logged in as:</strong> <span id="userEmail"></span></p>
                     <button class="btn btn-logout" id="logoutBtn">Logout</button>
-                    <br><br><p> ⚠️ <b> Please ensure to verify the information is accurate before you create, edit, or delete laws.</b></p>
+                    <br><br><p> ⚠️ <b> Please ensure to verify the information is accurate before you create, edit, or delete location-specific instructions.</b></p>
                 </div>
                 
                 <!-- Search and Edit Section -->
@@ -1685,38 +1696,57 @@
         let currentEditDocId = null;
 
         // Search for instructions
-        async function searchInstructions(searchTerm = '') {
-            try {
-                const instructionsRef = collection(db, 'artifactInstructions');
-                const snapshot = await getDocs(instructionsRef);
-                
-                let results = [];
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const searchLower = searchTerm.toLowerCase();
-                    
-                    // Search in owner, jurisdiction, and state
-                    const matchesSearch = !searchTerm || 
-                        (data.owner && data.owner.toLowerCase().includes(searchLower)) ||
-                        (data.jurisdiction && data.jurisdiction.toLowerCase().includes(searchLower)) ||
-                        (data.state && data.state.toLowerCase().includes(searchLower)) ||
-                        (data.keywords && data.keywords.some(k => k.toLowerCase().includes(searchLower)));
-                    
-                    if (matchesSearch) {
-                        results.push({
-                            id: doc.id,
-                            ...data
-                        });
-                    }
-                });
-                
-                displaySearchResults(results);
-            } catch (error) {
-                console.error('Error searching instructions:', error);
-                alert('Failed to search instructions: ' + error.message);
+// Search for instructions
+async function searchInstructions(searchTerm = '') {
+    try {
+        const instructionsRef = collection(db, 'artifactInstructions');
+        const snapshot = await getDocs(instructionsRef);
+        
+        let results = [];
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            const docId = doc.id;
+            
+            if (!searchTerm) {
+                // Load all if no search term
+                results.push({ id: docId, ...data });
+                return;
             }
-        }
-
+            
+            const term = searchTerm.toLowerCase().trim();
+            
+            // Check if searching by document ID (exact match)
+            if (docId.toLowerCase() === term) {
+                results.push({ id: docId, ...data });
+                return;
+            }
+            
+            // Check if document ID starts with search term (partial match)
+            if (docId.toLowerCase().startsWith(term)) {
+                results.push({ id: docId, ...data });
+                return;
+            }
+            
+            // Otherwise search in other fields
+            const owner = (data.owner || '').toLowerCase();
+            const jurisdiction = (data.jurisdiction || '').toLowerCase();
+            const state = (data.state || '').toLowerCase();
+            const keywords = (data.keywords || []).map(k => k.toLowerCase());
+            
+            if (owner.includes(term) || 
+                jurisdiction.includes(term) || 
+                state.includes(term) ||
+                keywords.some(k => k.includes(term))) {
+                results.push({ id: docId, ...data });
+            }
+        });
+        
+        displaySearchResults(results);
+    } catch (error) {
+        console.error('Error searching instructions:', error);
+        alert('Failed to search instructions: ' + error.message);
+    }
+}
         // Display search results
         function displaySearchResults(results) {
             const resultsContainer = document.getElementById('searchResults');

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Educational Resources - Archalo</title>
+    <link rel="icon" type="image/png" href="owlcheologists.png">
     <style>
         * {
             margin: 0;
@@ -16,6 +17,7 @@
             line-height: 1.6;
             background: linear-gradient(135deg, #d4a574 0%, #8b6f47 100%);
             min-height: 100vh;
+            overflow-x: hidden;
         }
         
         /* Navigation */
@@ -141,11 +143,19 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
         
         .resource-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .resource-card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .resource-icon {
@@ -165,12 +175,15 @@
             font-size: 0.95rem;
             line-height: 1.6;
             margin-bottom: 1rem;
+            flex: 1;
         }
         
         .resource-card .read-more {
             color: #8b6f47;
             font-weight: 600;
             font-size: 0.9rem;
+            margin-top: auto;
+            display: block;
         }
         
         /* Admin Buttons on Cards */
@@ -237,6 +250,60 @@
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+                /* Search Bar Styles */
+        .search-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            font-size: 1.1rem;
+            border: 3px solid white;
+            border-radius: 50px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .search-box input:focus {
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border-color: #8b6f47;
+        }
+        
+        .search-box input::placeholder {
+            color: #999;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3rem;
+            color: #8b6f47;
+        }
+        
+        .search-results-count {
+            text-align: center;
+            color: white;
+            font-size: 0.95rem;
+            margin-top: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .search-results-count.show {
+            opacity: 1;
         }
         
         .modal-close {
@@ -325,6 +392,9 @@
             padding: 2rem 1rem;
             margin-top: 3rem;
             text-align: center;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            margin-right: calc(-50vw + 50%);
         }
         
         .footer-disclaimer {
@@ -521,8 +591,50 @@
         <h1>📚 Educational Resources</h1>
         <p>Explore comprehensive guides, tutorials, and educational materials about archaeological preservation and heritage protection</p>
     </div>
-
+    <div class="search-container">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Search educational resources by title or content...">
+        </div>
+        <div class="search-results-count" id="searchResultsCount"></div>
+    </div>
     <div class="resources-container">
+        <!-- Featured Resource Link -->
+        <div style="max-width: 600px; margin: 0 auto 2rem auto;">
+            <div style="background: white; 
+                        border-radius: 12px; 
+                        padding: 1.25rem; 
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+                        border-left: 4px solid #8b6f47;
+                        transition: all 0.3s ease;
+                        cursor: pointer;"
+                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0,0,0,0.12)'"
+                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.08)'">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="font-size: 1.5rem;">📚</span>
+                        <div>
+                            <h3 style="margin: 0; color: #2c3e50; font-size: 1rem;">Educational Resources Collections</h3>
+                            <p style="margin: 0.1rem 0 0 0; color: #777; font-size: 0.85rem;">Curated resources</p>
+                        </div>
+                    </div>
+                    <a href="https://archalo.org/edu-resources.html?id=educational-resources-collections-1764124602066" 
+                       style="background: #8b6f47; 
+                              color: white; 
+                              text-decoration: none; 
+                              padding: 0.5rem 1rem; 
+                              border-radius: 6px; 
+                              font-weight: 600;
+                              font-size: 0.85rem;
+                              transition: all 0.2s ease;"
+                       onmouseover="this.style.background='#6b5537'"
+                       onmouseout="this.style.background='#8b6f47'">
+                        View →
+                    </a>
+                </div>
+            </div>
+        </div>
+        
         <div class="resources-grid" id="resourcesGrid">
             <!-- Resources will be dynamically loaded here -->
             <div class="resource-card" style="text-align: center; color: #999;">
@@ -559,7 +671,7 @@
                     <button id="logoutBtn" style="background-color: #e74c3c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 0.5rem;">
                         Logout
                     </button>
-                    <br><br><p> ⚠️ <b> Please ensure to verify the information is accurate before you create, edit, or delete laws.</b></p>
+                    <br><br><p> ⚠️ <b> Please ensure to verify the information is accurate before you create, edit, or delete educational resources.</b></p>
 
                 </div>
                 
@@ -615,8 +727,19 @@
 
     <footer>
         <div class="footer-disclaimer">
+                     <p style="margin: 1rem 0; font-size: 0.95rem;">
+                <strong>Data Sources:</strong> To view the data sources and attributions used on this page, please visit our 
+                <a href="credits.html" style="color: #3498db; text-decoration: none; font-weight: 600; border-bottom: 2px solid transparent; transition: border-color 0.3s ease;" 
+                   onmouseover="this.style.borderColor='#3498db'" 
+                   onmouseout="this.style.borderColor='transparent'">
+                    Credits & Attributions
+                </a> page.
+            </p>
+   
             <p><strong>Disclaimer:</strong> We strive to provide the most accurate and up-to-date data available; however, we cannot guarantee its completeness, accuracy, or fitness for any particular purpose. This guidance is advisory only and should never be relied upon as a substitute for official legal, regulatory, or professional advice. We assume no responsibility or liability for any losses, damages, or consequences resulting directly or indirectly from the use of this information. Users assume all risk and must always verify all information with the relevant governmental or legal authorities.</p>
         </div>
+                    <p><br>Report data inaccuracies and/or website bugs <a href="https://forms.gle/NN3anqoQDDi9g5vD7" style="color: #3498db; text-decoration: underline; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.color='#5dade2'; this.style.textDecoration='none'" onmouseout="this.style.color='#3498db'; this.style.textDecoration='underline'">here</a>.</p>
+
         <a href="#" class="admin-link" id="adminLoginBtn">Login</a>
     </footer>
 
@@ -820,11 +943,14 @@
                     
                     const card = document.createElement('div');
                     card.className = 'resource-card';
+                    card.setAttribute('data-resource-id', doc.id);
                     card.innerHTML = `
-                        <div class="resource-icon">${resource.icon || '📖'}</div>
-                        <h3>${resource.title}</h3>
-                        <p class="resource-preview">${preview}</p>
-                        <span class="read-more">Read more →</span>
+                        <div class="resource-card-content">
+                            <div class="resource-icon">${resource.icon || '📖'}</div>
+                            <h3>${resource.title}</h3>
+                            <p class="resource-preview">${preview}</p>
+                            <span class="read-more">Read more →</span>
+                        </div>
                         <div class="admin-controls ${isAuthenticated ? 'show' : ''}">
                             <button class="edit-btn" onclick="editResource('${doc.id}')">✏️ Edit</button>
                             <button class="delete-btn" onclick="deleteResource('${doc.id}')">🗑️ Delete</button>
@@ -840,6 +966,9 @@
                     resourcesGrid.appendChild(card);
                 });
 
+                // After loading resources, check if URL has a resource ID to open
+                checkAndOpenResourceFromURL();
+
             } catch (error) {
                 console.error('Error loading resources:', error);
                 document.getElementById('resourcesGrid').innerHTML = `
@@ -851,6 +980,31 @@
                 `;
             }
         }
+
+        // Check URL for resource ID and open it automatically
+        function checkAndOpenResourceFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const resourceId = urlParams.get('id');
+            
+            if (resourceId) {
+                console.log('Opening resource from URL:', resourceId);
+                // Small delay to ensure DOM is ready
+                setTimeout(() => {
+                    viewResource(resourceId);
+                }, 100);
+            }
+        }
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.resourceId) {
+                // User went back to a resource
+                viewResource(event.state.resourceId);
+            } else {
+                // User went back to the main list
+                closeResourceModal();
+            }
+        });
 
         // Extract preview from markdown content
         function extractPreview(content) {
@@ -875,12 +1029,19 @@
                 const resourceDoc = await getDoc(doc(db, 'educationalResources', resourceId));
                 
                 if (!resourceDoc.exists()) {
-                    alert('Resource not found');
+                    alert('Resource not found. The resource may have been removed or the link is incorrect.');
+                    // Clean up URL
+                    const newUrl = `${window.location.pathname}`;
+                    window.history.replaceState({}, '', newUrl);
                     return;
                 }
 
                 const resource = resourceDoc.data();
                 const htmlContent = marked.parse(resource.content);
+                
+                // Update URL with query parameter
+                const newUrl = `${window.location.pathname}?id=${resourceId}`;
+                window.history.pushState({ resourceId: resourceId }, '', newUrl);
                 
                 document.getElementById('resourceDetailContent').innerHTML = `
                     <div style="text-align: center; font-size: 3rem; margin-bottom: 1rem;">${resource.icon || '📖'}</div>
@@ -892,13 +1053,40 @@
 
             } catch (error) {
                 console.error('Error viewing resource:', error);
-                alert('Error loading resource details');
+                alert('Error loading resource details: ' + error.message);
+                // Clean up URL on error
+                const newUrl = `${window.location.pathname}`;
+                window.history.replaceState({}, '', newUrl);
             }
+        };
+
+        // Copy share link to clipboard
+        window.copyShareLink = function(resourceId) {
+            const shareUrl = `${window.location.origin}${window.location.pathname}?id=${resourceId}`;
+            
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                // Show success feedback
+                const button = event.target;
+                const originalText = button.innerHTML;
+                button.innerHTML = '✓ Link Copied!';
+                button.style.background = '#27ae60';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.style.background = '#3498db';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                alert('Failed to copy link. Please copy manually: ' + shareUrl);
+            });
         };
 
         // Close resource detail modal
         window.closeResourceModal = function() {
             document.getElementById('resourceModal').style.display = 'none';
+            // Remove query parameter from URL
+            const newUrl = `${window.location.pathname}`;
+            window.history.pushState({}, '', newUrl);
         };
 
         // Submit resource (add or update)
@@ -1084,6 +1272,66 @@
                 }
             });
         }
+                // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchResultsCount = document.getElementById('searchResultsCount');
+        let allResourceCards = [];
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase().trim();
+                
+                // Get all resource cards if not already cached
+                if (allResourceCards.length === 0) {
+                    allResourceCards = Array.from(document.querySelectorAll('.resource-card'));
+                }
+                
+                if (searchTerm === '') {
+                    // Show all cards
+                    allResourceCards.forEach(card => {
+                        card.style.display = 'block';
+                    });
+                    searchResultsCount.classList.remove('show');
+                    return;
+                }
+                
+                let visibleCount = 0;
+                
+                allResourceCards.forEach(card => {
+                    const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
+                    const preview = card.querySelector('.resource-preview')?.textContent.toLowerCase() || '';
+                    
+                    if (title.includes(searchTerm) || preview.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Show results count
+                if (visibleCount === 0) {
+                    searchResultsCount.textContent = '❌ No resources found matching your search';
+                } else if (visibleCount === 1) {
+                    searchResultsCount.textContent = `✓ Found 1 resource`;
+                } else {
+                    searchResultsCount.textContent = `✓ Found ${visibleCount} resources`;
+                }
+                searchResultsCount.classList.add('show');
+            });
+        }
+
+        // Update cache when resources are loaded
+        const originalLoadResources = loadResources;
+        loadResources = async function() {
+            await originalLoadResources();
+            // Reset cache after resources are reloaded
+            allResourceCards = [];
+            if (searchInput) {
+                searchInput.value = '';
+                searchResultsCount.classList.remove('show');
+            }
+        };
     </script>
 </body>
 </html>

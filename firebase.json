@@ -6,15 +6,42 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "redirects": [
+    "rewrites": [
+      {
+        "source": "/laws",
+        "destination": "/laws.html"
+      },
+      {
+        "source": "/artifactHelp",
+        "destination": "/artifactHelp.html"
+      },
+      {
+        "source": "/edu-resources",
+        "destination": "/edu-resources.html"
+      },
+      {
+        "source": "/credits",
+        "destination": "/credits.html"
+      },
       {
         "source": "/",
+        "destination": "/Archalo.html"
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/index.html",
         "destination": "/Archalo.html",
         "type": 301
       },
       {
-        "source": "/index.html",
-        "destination": "/Archalo.html",
+        "source": "/feedback",
+        "destination": "https://forms.gle/QsAZcC3v9v6xbyw79",
+        "type": 301
+      },
+      {
+        "source": "/guide",
+        "destination": "/edu-resources.html?id=website-guide-1764127149518",
         "type": 301
       }
     ]
