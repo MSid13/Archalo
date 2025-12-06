@@ -1,18 +1,18 @@
-# Archalo 🏺
+# Archalo 
 
 **Your comprehensive guide to archaeological discovery and responsible artifact reporting.**
 
 
-## 📖 About
+## About
 
 Archalo is a web platform developed by the **FLL Owlcheologists Team #41991** to bridge the gap between archaeological discovery and proper reporting procedures. When someone discovers an artifact, they often don't know what to do next. Archalo provides instant, location-specific guidance on who to contact and what steps to take.
 
 ### Mission
 To empower the public to protect cultural heritage by simplifying the process of reporting archaeological finds and providing essential legal and educational resources.
 
-## ✨ Features
+## Features
 
-### 🔍 I Found an Artifact Tool
+### I Found an Artifact Tool
 - **Location-based guidance**: Enter GPS coordinates or use your current location
 - **Property lookup**: Integrates with parcel data APIs to determine jurisdiction
 - **Smart matching system**: 4-tier fallback system for finding relevant contacts
@@ -25,25 +25,25 @@ To empower the public to protect cultural heritage by simplifying the process of
 - **Historical timelines**: Displays property and regional history for context
 - **Relevant laws**: Shows state and county-specific archaeological laws
 
-### ⚖️ Laws Database
+### Laws Database
 - **Federal laws**: Archaeological Resources Protection Act (ARPA) and related legislation
 - **State laws**: State-specific archaeological protection laws
 - **County laws**: County-level regulations and ordinances
 - **Search functionality**: Filter by state and county
 - **Admin panel**: Authenticated users can add, edit, and delete laws
 
-### 📚 Educational Resources
+### Educational Resources
 - Interactive learning materials about archaeology
 - Artifact identification guides
 - Cultural heritage protection information
 
-### 🔐 Admin System
+### Admin System
 - **Secure authentication**: Firebase Auth with email/password
 - **Permission system**: Granular permissions (laws, deletion, artifact instructions, education)
 - **Content management**: Add/edit/delete artifact instructions and laws
 - **Search & filter**: Find and manage existing entries
 
-## 🏗️ Architecture
+## Architecture
 
 ![Archalo Architecture](docs/archalo_architecture.svg)
 
@@ -67,7 +67,7 @@ To empower the public to protect cultural heritage by simplifying the process of
 - **Leaflet.js** - Interactive mapping with OpenStreetMap tiles
 - **Firebase Functions** - Application function used to call ReportAll USA Parcel API. 
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 - Node.js and npm (for Firebase CLI)
@@ -94,7 +94,7 @@ firebase serve
 
 Access at `http://localhost:5000`
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Archalo/
@@ -114,14 +114,14 @@ Archalo/
 └── README.md                 # This file
 ```
 
-## 🔒 Security & Privacy
+## Security & Privacy
 
 - **Owner information hidden**: Property owner names are masked as "XXXXXX" to prevent misuse
 - **Firebase App Check**: Protects against abuse and ensures requests come from legitimate clients
 - **Admin authentication**: Secure login required for content management
 - **Permission system**: Granular access control for different admin functions
 
-## 🗂️ Database Schema
+## Database Schema
 
 ### `artifactInstructions` Collection
 ```javascript
@@ -164,18 +164,18 @@ Archalo/
 }
 ```
 
-## 🤝 Contributing
+## Contributing
 
 This project is maintained by the FLL Owlcheologists Team. If you find bugs or have suggestions:
 
 1. Report issues via [Google Form](https://forms.gle/NN3anqoQDDi9g5vD7)
 2. Submit pull requests on GitHub
 
-## 📄 License
+## License
 
 Please refer to the repository for licensing information.
 
-## 🙏 Credits
+## Credits
 
 - **Team**: FLL Owlcheologists Team #41991
 
