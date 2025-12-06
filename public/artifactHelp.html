@@ -452,6 +452,134 @@
             color: #666;
         }
         
+        /* Relevant Laws Section Styles */
+        .relevant-laws-section {
+            margin: 2rem 0;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .relevant-laws-section h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .laws-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .law-item {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .law-item:hover {
+            background: #e8f4f8;
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+        }
+        
+        .law-item.federal {
+            border-left-color: #e74c3c;
+        }
+        
+        .law-item.state {
+            border-left-color: #27ae60;
+        }
+        
+        .law-item.local {
+            border-left-color: #f39c12;
+        }
+        
+        .law-title {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .law-type {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+        
+        .law-type.federal {
+            background: #fee;
+            color: #e74c3c;
+        }
+        
+        .law-type.state {
+            background: #efe;
+            color: #27ae60;
+        }
+        
+        .law-type.local {
+            background: #ffeaa7;
+            color: #f39c12;
+        }
+        
+        .law-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+        
+        .law-details {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .law-details.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .law-full-text {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            color: #2c3e50;
+            line-height: 1.6;
+            margin-top: 0.5rem;
+        }
+        
+        .law-reference {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .law-reference a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .law-reference a:hover {
+            text-decoration: underline;
+        }
+        
         /* Admin Modal Styles */
         .admin-modal {
             display: none;
@@ -748,6 +876,209 @@
             }
         }
         
+        /* Timeline Styles */
+        .timeline-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-section h3 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 1rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #3498db, #2c3e50);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            left: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #3498db;
+            z-index: 1;
+        }
+        
+        .timeline-marker.historic {
+            border-color: #e74c3c;
+        }
+        
+        .timeline-marker.modern {
+            border-color: #27ae60;
+        }
+        
+        .timeline-content {
+            background: #f8f9fa;
+            padding: 1.25rem;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-content:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-content.historic {
+            border-left-color: #e74c3c;
+        }
+        
+        .timeline-content.modern {
+            border-left-color: #27ae60;
+        }
+        
+        .timeline-year {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        
+        .timeline-tag {
+            background: #3498db;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .timeline-tag.purchase {
+            background: #27ae60;
+        }
+        
+        .timeline-tag.resident {
+            background: #e67e22;
+        }
+        
+        .timeline-tag.event {
+            background: #9b59b6;
+        }
+        
+        /* Responsive Timeline */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 15px;
+            }
+            
+            .timeline-item {
+                padding-left: 45px;
+            }
+            
+            .timeline-marker {
+                left: 6px;
+                width: 20px;
+                height: 20px;
+            }
+            
+            .timeline-year {
+                font-size: 1.1rem;
+            }
+            
+            .timeline-title {
+                font-size: 1rem;
+            }
+            
+            .timeline-content {
+                padding: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .timeline-section {
+                padding: 1rem;
+            }
+            
+            .timeline-section h3 {
+                font-size: 1.25rem;
+            }
+            
+            .timeline::before {
+                left: 12px;
+            }
+            
+            .timeline-item {
+                padding-left: 35px;
+                margin-bottom: 1.5rem;
+            }
+            
+            .timeline-marker {
+                left: 4px;
+                width: 18px;
+                height: 18px;
+                border-width: 2px;
+            }
+            
+            .timeline-tags {
+                gap: 0.35rem;
+            }
+            
+            .timeline-tag {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.6rem;
+            }
+        }
+        
         /* Small mobile devices */
         @media (max-width: 480px) {
             .logo {
@@ -862,6 +1193,10 @@
                                 style="background: #8e44ad; font-size: 0.9rem; padding: 0.6rem 1rem;">
                             🎡 City of Redmond Park (Grass Lawn Park)
                         </button>
+                        <button class="btn" onclick="loadSampleCoords(47.6611, -122.1133, 'King County Park')" 
+                                style="background: #e67e22; font-size: 0.9rem; padding: 0.6rem 1rem;">
+                            🌳 King County Park (Marymoor Park)
+                        </button>
                         <button class="btn" onclick="loadSampleCoords(47.6062, -122.3321, 'Private Property - King County')" 
                                 style="background: #95a5a6; font-size: 0.9rem; padding: 0.6rem 1rem;">
                             🏠 Private Property (King County)
@@ -888,12 +1223,32 @@
                     </div>
                 </div>
                 
+                <!-- Relevant Laws Section -->
+                <div id="relevantLawsSection" class="relevant-laws-section" style="display: none;">
+                    <h3>⚖️ Relevant Archaeological Laws</h3>
+                    <p style="color: #666; font-size: 0.95rem; margin-bottom: 1rem;">
+                        <em>This section shows state and county laws specific to your location. Federal laws are not included here. 
+                        Please visit the <a href="laws.html" style="color: #3498db; font-weight: 600; text-decoration: none;">Laws page</a> for comprehensive federal and state law information.</em>
+                    </p>
+                    <div id="relevantLawsContent">
+                        <!-- Laws will be populated dynamically -->
+                    </div>
+                </div>
+                
                 <!-- Parcel Map Section -->
                 <div id="parcelMapSection" class="parcel-map-section" style="display: none;">
                     <h3>📍 Parcel Boundary</h3>
                     <div id="parcelMap"></div>
                     <div class="map-info">
                         <strong>ℹ️ Map shows the property boundary.</strong> The highlighted area represents the parcel where the artifact was found.<br><br>OpenStreetMap is open data, licensed under the Open Data Commons Open Database License (ODbL) by the OpenStreetMap Foundation (OSMF). 
+                    </div>
+                </div>
+                
+                <!-- Timeline Section -->
+                <div id="timelineSection" class="timeline-section" style="display: none;">
+                    <h3>📜 Location History Timeline</h3>
+                    <div id="timelineContent" class="timeline">
+                        <!-- Timeline will be populated dynamically -->
                     </div>
                 </div>
                 
@@ -2159,6 +2514,7 @@ async function searchInstructions(searchTerm = '') {
                     
                     // Display results
                     displayPropertyInfo(parcelData);
+                    displayRelevantLaws(parcelData); // Display relevant laws for the location
                     displayParcelMap(parcelData); // Display the map with polygon
                     displayGuidance(parcelData, specificInstructions);
                 } else {
@@ -2377,7 +2733,7 @@ async function searchInstructions(searchTerm = '') {
             console.log('📊 Displaying property data:', propertyData);
             
             const info = [
-                { label: 'Owner', value: propertyData.owner || 'Unknown' },
+                { label: 'Owner', value: 'XXXXXX' }, // Hidden for privacy/safety reasons
                 { label: 'Jurisdiction', value: propertyData.jurisdiction || 'Unknown' },
                 { label: 'Coordinates', value: `${propertyData.lat || 'N/A'}, ${propertyData.long || 'N/A'}` }
             ];
@@ -2401,7 +2757,319 @@ async function searchInstructions(searchTerm = '') {
                     <span class="info-value">${item.value}</span>
                 </div>
             `).join('');
+            
+            // Display timeline for specific locations
+            displayTimeline(propertyData);
         }
+        
+        // Timeline data for sample locations
+        const locationTimelines = {
+            'Philadelphia County': [
+                {
+                    year: '1682',
+                    title: 'William Penn Founds Philadelphia',
+                    description: 'William Penn established Philadelphia as the capital of Pennsylvania Colony, creating a planned city with grid streets.',
+                    tags: ['Historic', 'Founding'],
+                    type: 'historic'
+                },
+                {
+                    year: '1701',
+                    title: 'City Charter Granted',
+                    description: 'Philadelphia received its official city charter, establishing local governance and municipal rights.',
+                    tags: ['Government', 'Historic'],
+                    type: 'historic'
+                },
+                {
+                    year: '1776',
+                    title: 'Declaration of Independence',
+                    description: 'The Declaration of Independence was signed in Philadelphia at Independence Hall, marking a pivotal moment in American history.',
+                    tags: ['Historic', 'Event'],
+                    type: 'historic'
+                },
+                {
+                    year: '1787',
+                    title: 'Constitutional Convention',
+                    description: 'The U.S. Constitution was drafted and signed in Philadelphia during the Constitutional Convention.',
+                    tags: ['Historic', 'Event'],
+                    type: 'historic'
+                },
+                {
+                    year: '1854',
+                    title: 'Philadelphia Consolidation',
+                    description: 'The city expanded significantly through the Consolidation Act, merging surrounding districts and townships.',
+                    tags: ['Government', 'Expansion'],
+                    type: 'modern'
+                },
+                {
+                    year: '1876',
+                    title: 'Centennial Exposition',
+                    description: 'Philadelphia hosted the first official World\'s Fair in the United States, celebrating the nation\'s 100th anniversary.',
+                    tags: ['Event', 'Cultural'],
+                    type: 'modern'
+                },
+                {
+                    year: '1952',
+                    title: 'City Charter Reform',
+                    description: 'A new city charter established a strong-mayor system and modernized city governance.',
+                    tags: ['Government', 'Reform'],
+                    type: 'modern'
+                }
+            ],
+            'Cook County': [
+                {
+                    year: '1831',
+                    title: 'Cook County Established',
+                    description: 'Cook County was organized and named after Daniel Pope Cook, an Illinois statesman.',
+                    tags: ['Historic', 'Founding'],
+                    type: 'historic'
+                },
+                {
+                    year: '1837',
+                    title: 'Chicago Incorporated',
+                    description: 'Chicago was incorporated as a city within Cook County with a population of about 4,000.',
+                    tags: ['Historic', 'Municipal'],
+                    type: 'historic'
+                },
+                {
+                    year: '1871',
+                    title: 'Great Chicago Fire',
+                    description: 'The devastating fire destroyed much of Chicago, leading to massive reconstruction and urban development.',
+                    tags: ['Event', 'Historic'],
+                    type: 'historic'
+                },
+                {
+                    year: '1893',
+                    title: 'World\'s Columbian Exposition',
+                    description: 'Chicago hosted the World\'s Fair, showcasing innovations and establishing the city as a global metropolis.',
+                    tags: ['Event', 'Cultural'],
+                    type: 'modern'
+                },
+                {
+                    year: '1955',
+                    title: 'Richard J. Daley Elected',
+                    description: 'Richard J. Daley became mayor, beginning an era of significant urban development and political influence.',
+                    tags: ['Government', 'Leadership'],
+                    type: 'modern'
+                },
+                {
+                    year: '2008',
+                    title: 'Modern Development',
+                    description: 'Continued growth in technology, finance, and cultural sectors solidified Cook County\'s position as a major metropolitan area.',
+                    tags: ['Modern', 'Development'],
+                    type: 'modern'
+                }
+            ],
+            'King County Park': [
+                {
+                    year: 'Historical',
+                    title: 'Indigenous Peoples - Sduk̓ʷalbixʷ (Snoqualmie)',
+                    description: 'View more at: https://native-land.ca/listings/territories/sduk%ca%b7albix%ca%b7-snoqualmie',
+                    tags: ['Indigenous', 'Historic'],
+                    type: 'historic'
+                }
+            ],
+            'Default': [
+                {
+                    year: 'Historical',
+                    title: 'Indigenous Peoples',
+                    description: 'This land was originally inhabited by indigenous peoples who lived here for thousands of years before European colonization.',
+                    tags: ['Historic', 'Indigenous'],
+                    type: 'historic'
+                },
+                {
+                    year: 'Colonial Era',
+                    title: 'European Settlement',
+                    description: 'European settlers arrived and established communities, fundamentally changing the landscape and land use.',
+                    tags: ['Historic', 'Settlement'],
+                    type: 'historic'
+                },
+                {
+                    year: '19th Century',
+                    title: 'Land Development',
+                    description: 'The property was developed as part of the expansion of settlements and agriculture in the region.',
+                    tags: ['Development', 'Historic'],
+                    type: 'historic'
+                },
+                {
+                    year: '20th Century',
+                    title: 'Modern Ownership',
+                    description: 'The property transitioned through various owners as the area modernized and urbanized.',
+                    tags: ['Modern', 'Ownership'],
+                    type: 'modern'
+                }
+            ]
+        };
+        
+        // Display timeline based on location
+        function displayTimeline(propertyData) {
+            const timelineSection = document.getElementById('timelineSection');
+            const timelineContent = document.getElementById('timelineContent');
+            
+            // Determine which timeline to show based on jurisdiction or location
+            let timeline = null;
+            const jurisdiction = propertyData.jurisdiction || '';
+            const owner = propertyData.owner || '';
+            
+            // Match jurisdiction to timeline
+            if (jurisdiction.includes('Philadelphia')) {
+                timeline = locationTimelines['Philadelphia County'];
+            } else if (jurisdiction.includes('Cook')) {
+                timeline = locationTimelines['Cook County'];
+            } else if (owner.includes('KING COUNTY-PARKS')) {
+                timeline = locationTimelines['King County Park'];
+            } else {
+                timeline = locationTimelines['Default'];
+            }
+            
+            if (!timeline) {
+                timelineSection.style.display = 'none';
+                return;
+            }
+            
+            // Generate timeline HTML
+            const timelineHTML = timeline.map((item, index) => `
+                <div class="timeline-item" style="animation-delay: ${index * 0.1}s">
+                    <div class="timeline-marker ${item.type}"></div>
+                    <div class="timeline-content ${item.type}">
+                        <div class="timeline-year">${item.year}</div>
+                        <div class="timeline-title">${item.title}</div>
+                        <div class="timeline-description">${item.description}</div>
+                        <div class="timeline-tags">
+                            ${item.tags.map(tag => {
+                                let tagClass = 'timeline-tag';
+                                if (tag.toLowerCase() === 'purchase' || tag.toLowerCase() === 'ownership') tagClass += ' purchase';
+                                else if (tag.toLowerCase().includes('resident') || tag.toLowerCase().includes('resident')) tagClass += ' resident';
+                                else if (tag.toLowerCase() === 'event') tagClass += ' event';
+                                return `<span class="${tagClass}">${tag}</span>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            timelineContent.innerHTML = timelineHTML;
+            timelineSection.style.display = 'block';
+        }
+
+        // Display relevant laws for the location
+        async function displayRelevantLaws(propertyData) {
+            const lawsSection = document.getElementById('relevantLawsSection');
+            const lawsContent = document.getElementById('relevantLawsContent');
+            
+            const stateAbbr = propertyData.state; // e.g., "WA"
+            const jurisdiction = propertyData.jurisdiction;
+            
+            if (!stateAbbr) {
+                lawsSection.style.display = 'none';
+                return;
+            }
+            
+            // Map state abbreviations to full names
+            const stateNameMap = {
+                'WA': 'Washington',
+                'CA': 'California',
+                'OR': 'Oregon',
+                'TX': 'Texas',
+                'NY': 'New York',
+                'FL': 'Florida',
+                'IL': 'Illinois',
+                'PA': 'Pennsylvania',
+                // Add more as needed
+            };
+            
+            const stateName = stateNameMap[stateAbbr] || stateAbbr;
+            
+            try {
+                // Fetch laws from Firebase - using archaeologyLaws collection
+                const lawsRef = collection(db, 'archaeologyLaws');
+                const lawsSnapshot = await getDocs(lawsRef);
+                
+                const relevantLaws = [];
+                
+                lawsSnapshot.forEach((doc) => {
+                    const lawData = doc.data();
+                    const lawState = lawData.state || '';
+                    const lawCounty = lawData.county || '';
+                    const lawType = lawData.type || 'federal';
+                    
+                    // ONLY include state and county laws (NO federal laws)
+                    // Check if state matches (compare with full state name)
+                    if (lawType === 'state' && lawState === stateName) {
+                        relevantLaws.push({ id: doc.id, ...lawData });
+                    }
+                    // Include county laws that match the state and optionally the jurisdiction
+                    else if (lawType === 'county' && lawState === stateName) {
+                        // If county field exists and jurisdiction contains it, or if no specific county
+                        if (!lawCounty || !jurisdiction || jurisdiction.toLowerCase().includes(lawCounty.toLowerCase())) {
+                            relevantLaws.push({ id: doc.id, ...lawData });
+                        }
+                    }
+                });
+                
+                console.log(`Found ${relevantLaws.length} relevant laws for state: ${stateName} (${stateAbbr})`);
+                
+                if (relevantLaws.length === 0) {
+                    lawsSection.style.display = 'none';
+                    return;
+                }
+                
+                // Sort laws: state first, then county
+                relevantLaws.sort((a, b) => {
+                    const order = { state: 1, county: 2 };
+                    const aType = a.type || 'state';
+                    const bType = b.type || 'state';
+                    return (order[aType] || 3) - (order[bType] || 3);
+                });
+                
+                // Generate HTML
+                let html = '<ul class="laws-list">';
+                
+                relevantLaws.forEach((law, index) => {
+                    const lawType = law.type || 'state';
+                    const title = law.title || law.name || 'Untitled Law';
+                    const description = law.description || law.summary || '';
+                    const fullText = law.fullText || law.text || '';
+                    const reference = law.reference || law.citation || '';
+                    const link = law.link || law.url || '';
+                    
+                    html += `
+                        <li class="law-item ${lawType}" onclick="toggleLawDetails('law-${index}')">
+                            <div class="law-title">
+                                <span class="law-type ${lawType}">${lawType.toUpperCase()}</span>
+                                ${title}
+                            </div>
+                            ${description ? `<div class="law-description">${description}</div>` : ''}
+                            <div id="law-${index}" class="law-details">
+                                ${fullText ? `<div class="law-full-text">${fullText}</div>` : ''}
+                                ${reference || link ? `
+                                    <div class="law-reference">
+                                        ${reference ? `<strong>Reference:</strong> ${reference}` : ''}
+                                        ${link ? `<br><a href="${link}" target="_blank">View Full Text →</a>` : ''}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </li>
+                    `;
+                });
+                
+                html += '</ul>';
+                
+                lawsContent.innerHTML = html;
+                lawsSection.style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error fetching laws:', error);
+                lawsSection.style.display = 'none';
+            }
+        }
+        
+        // Toggle law details visibility
+        window.toggleLawDetails = function(lawId) {
+            const detailsElement = document.getElementById(lawId);
+            if (detailsElement) {
+                detailsElement.classList.toggle('active');
+            }
+        };
 
         // Global map instance tracker
         let parcelMapInstance = null;

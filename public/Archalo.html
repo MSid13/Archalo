@@ -115,6 +115,106 @@
             padding: clamp(2rem, 5vw, 4rem) 2rem;
             text-align: center;
         }
+
+        /* Found Artifact Info Section */
+        .found-artifact-info {
+            background: linear-gradient(135deg, #fff8f0, #fef5e7);
+            padding: clamp(2rem, 5vw, 3rem) 2rem;
+            text-align: center;
+            border-bottom: 3px solid #d4704a;
+        }
+
+        .found-artifact-info h2 {
+            color: #2c3e50;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .found-artifact-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .found-artifact-content p {
+            color: #555;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .found-artifact-content ol {
+            padding-left: 1.5rem;
+        }
+
+        .found-artifact-content ol li {
+            margin-bottom: 0.8rem;
+        }
+
+        .found-artifact-content ol li strong {
+            color: #d4704a;
+        }
+
+        .found-artifact-content input[type="number"] {
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .found-artifact-content input[type="number"]:focus {
+            border-color: #3498db !important;
+        }
+
+        /* Home page guidance results */
+        #homeGuidanceResults {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive adjustments for home artifact finder */
+        @media (max-width: 768px) {
+            .found-artifact-content > div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 1.5rem 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            color: #2c3e50;
+        }
+
+        .read-more-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #d4704a, #c0603c);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 112, 74, 0.2);
+        }
+
+        .read-more-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 112, 74, 0.35);
+        }
+
         
         .artifact-of-day h2 {
             color: #2c3e50;
@@ -128,10 +228,7 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: clamp(1.5rem, 4vw, 2.5rem);
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            border: 1px solid rgba(0,0,0,0.05);
+            background: transparent;
         }
         
         .artifact-placeholder p {
@@ -153,10 +250,8 @@
             max-width: 350px;
             height: clamp(200px, 25vw, 250px);
             object-fit: cover;
-            border-radius: 12px;
             margin: 0 auto;
             display: block;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             transition: transform 0.3s ease;
         }
         
@@ -238,28 +333,27 @@
             transition: all 0.3s ease;
             min-width: 200px;
             justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .cta-button.primary {
             background: linear-gradient(135deg, #d4704a, #c0603c);
             color: white;
-            box-shadow: 0 4px 15px rgba(212, 112, 74, 0.3);
         }
 
         .cta-button.primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(212, 112, 74, 0.4);
+            box-shadow: 0 6px 20px rgba(212, 112, 74, 0.3);
         }
 
         .cta-button.secondary {
             background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
         }
 
         .cta-button.secondary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
         }
         
         .features {
@@ -272,10 +366,7 @@
         .feature {
             text-align: center;
             padding: clamp(2rem, 4vw, 3rem);
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            background: white;
-            border: 1px solid rgba(0,0,0,0.05);
+            background: transparent;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -295,7 +386,6 @@
         
         .feature:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
         }
 
         .feature:hover::before {
@@ -324,7 +414,6 @@
         /* About Section */
         .about-section {
             background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border-radius: 20px;
             padding: clamp(2.5rem, 5vw, 4rem);
             margin-bottom: 2rem;
         }
@@ -354,7 +443,6 @@
         .disclaimer {
             background: #fff3cd;
             border: 1px solid #ffeaa7;
-            border-radius: 12px;
             padding: 1.5rem;
             margin-top: 2rem;
         }
@@ -381,8 +469,6 @@
             text-align: center;
             padding: 1.5rem;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .stat-number {
@@ -465,6 +551,11 @@
             .cta-button {
                 width: 100%;
                 max-width: 300px;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
             }
         }
         
@@ -856,6 +947,33 @@
             font-family: 'Courier New', monospace;
             font-size: 0.9em;
         }
+
+        /* Contact Card Styles (matching artifactHelp.html) */
+        .contact-card {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .contact-card h4 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-info {
+            color: #856404;
+        }
+        
+        .emergency-note {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #721c24;
+        }
     </style>
 </head>
 <body>
@@ -882,6 +1000,62 @@
             📢 Loading announcement...
         </div>
     </div>
+
+    <!-- I Found an Artifact Info Section -->
+    <section class="found-artifact-info">
+        <div class="found-artifact-content">
+            <h2>🔍 Found an Artifact?</h2>
+            <p style="font-size: clamp(1.1rem, 2.5vw, 1.3rem); margin-bottom: 1rem; line-height: 1.5;">
+                <strong>Don't panic! We'll help you do the right thing.</strong>
+            </p>
+            <p style="font-size: clamp(0.95rem, 2vw, 1.1rem); margin-bottom: 1.5rem; color: #555;">
+                Whether it's a pottery shard, arrowhead, or historic structure—finding an artifact is exciting but comes with important responsibilities. 
+                Get instant, location-specific guidance on who to contact and what to do next.
+            </p>
+            
+            <!-- Location Input -->
+            <div style="background: rgba(255, 255, 255, 0.8); padding: 1.5rem; margin: 1.5rem auto; max-width: 600px;">
+                <h3 style="color: #2c3e50; margin-bottom: 1rem; font-size: clamp(1rem, 2.5vw, 1.2rem);">� Get Location-Specific Guidance</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label style="display: block; font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; font-size: 0.9rem;">Latitude:</label>
+                        <input type="number" id="homeLatitude" step="any" placeholder="e.g., 47.6062" 
+                               style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: all 0.3s ease;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; font-size: 0.9rem;">Longitude:</label>
+                        <input type="number" id="homeLongitude" step="any" placeholder="e.g., -122.3321"
+                               style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: all 0.3s ease;">
+                    </div>
+                </div>
+                <button onclick="homeLookupLocation()" class="read-more-link" style="width: 100%; margin-top: 0.5rem; cursor: pointer; border: none; font-size: 1.05rem;">
+                    🔍 Find Who to Contact
+                </button>
+                <button onclick="homeGetCurrentLocation()" class="read-more-link" style="width: 100%; margin-top: 0.8rem; background: linear-gradient(135deg, #27ae60, #229954); cursor: pointer; border: none; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.2);">
+                    📍 Use My Current Location
+                </button>
+                
+                <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid rgba(0,0,0,0.08);">
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">
+                        <strong>Need detailed property info, maps & history?</strong>
+                    </p>
+                    <a href="artifactHelp.html" style="color: #3498db; text-decoration: none; font-weight: 600; font-size: 0.95rem; border-bottom: 2px solid #3498db; padding-bottom: 2px; transition: all 0.3s ease;">
+                        Explore the Full Tool →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Results Display -->
+            <div id="homeGuidanceResults" style="display: none; background: rgba(255, 255, 255, 0.9); padding: 1.5rem; margin: 1.5rem auto; max-width: 800px; text-align: left;">
+                <div id="homeGuidanceContent"></div>
+            </div>
+
+            <!-- Default Steps (shown when no location provided) -->
+            <div id="homeDefaultSteps" style="display: none;">
+            </div>
+        </div>
+    </section>
+
     <section class="artifact-of-day">
         <h2>Artifact of the Day</h2>
         <div class="artifact-placeholder" id="artifact-container">
@@ -2067,6 +2241,291 @@ service cloud.firestore {
                 alert('Error saving description: ' + error.message);
             }
         }
+
+        // ============== HOME PAGE ARTIFACT LOOKUP ==============
+        // Simplified version - shows only contacts and special instructions
+        
+        // Manual location lookup from home page
+        window.homeLookupLocation = async function() {
+            const lat = parseFloat(document.getElementById('homeLatitude').value);
+            const lng = parseFloat(document.getElementById('homeLongitude').value);
+            
+            if (isNaN(lat) || isNaN(lng)) {
+                alert('Please enter valid latitude and longitude values.');
+                return;
+            }
+            
+            if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+                alert('Please enter valid coordinate ranges (Lat: -90 to 90, Lng: -180 to 180).');
+                return;
+            }
+            
+            await homeLookupLocationByCoords(lat, lng);
+        };
+
+        // Get current location from home page
+        window.homeGetCurrentLocation = function() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by this browser.');
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    // Fill in the form
+                    document.getElementById('homeLatitude').value = lat;
+                    document.getElementById('homeLongitude').value = lng;
+                    
+                    homeLookupLocationByCoords(lat, lng);
+                },
+                function(error) {
+                    console.error('Error getting location:', error);
+                    alert('Unable to get your location. Please try entering coordinates manually.');
+                }
+            );
+        };
+
+        // Lookup location by coordinates from home page
+        async function homeLookupLocationByCoords(lat, lng) {
+            console.log(`🏠 Home page lookup: ${lat}, ${lng}`);
+            
+            try {
+                // Call property API
+                const parcelData = await homeCheckData(lat, lng);
+                
+                if (parcelData) {
+                    parcelData.lat = lat;
+                    parcelData.long = lng;
+                    
+                    // Check for specific instructions in database
+                    const specificInstructions = await homeCheckForSpecificInstructions(parcelData);
+                    
+                    // Display simplified guidance
+                    homeDisplayGuidance(parcelData, specificInstructions);
+                } else {
+                    homeDisplayDefaultGuidance('No property data found for these coordinates.');
+                }
+            } catch (error) {
+                console.error('Error during lookup:', error);
+                homeDisplayDefaultGuidance(`Error: ${error.message}`);
+            }
+        }
+
+        // Fetch parcel data from API
+        async function homeCheckData(lat, lng) {
+            try {
+                const apiUrl = `https://getpropertyinfo-gailic6cjq-uc.a.run.app/getPropertyInfo?lat=${lat}&long=${lng}`;
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`API returned status ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Normalize state field
+                if (data && data.state_abbr && !data.state) {
+                    data.state = data.state_abbr;
+                }
+                
+                if (data && (data.owner || data.jurisdiction)) {
+                    return data;
+                }
+                
+                return null;
+                
+            } catch (error) {
+                console.error('Error fetching property data:', error);
+                return null;
+            }
+        }
+
+        // Check for specific instructions in database - FOUR TIER FALLBACK
+        async function homeCheckForSpecificInstructions(propertyData) {
+            try {
+                const owner = (propertyData.owner || '').toLowerCase().trim();
+                const jurisdiction = (propertyData.jurisdiction || '').toLowerCase().trim();
+                const state = (propertyData.state || '').toUpperCase().trim();
+                
+                // Get all instructions from database
+                const querySnapshot = await getDocs(collection(db, "artifactInstructions"));
+                
+                if (querySnapshot.empty) {
+                    return null;
+                }
+                
+                let ownerMatch = null;
+                let jurisdictionMatch = null;
+                let stateMatch = null;
+                
+                // TIER 1, 2 & 2.5: Loop through all instructions
+                for (const docSnapshot of querySnapshot.docs) {
+                    const instruction = docSnapshot.data();
+                    const dbOwner = (instruction.owner || '').toLowerCase().trim();
+                    const dbJurisdiction = (instruction.jurisdiction || '').toLowerCase().trim();
+                    const dbState = (instruction.state || '').toUpperCase().trim();
+                    const keywords = (instruction.keywords || []).map(k => k.toLowerCase().trim());
+                    
+                    // STATE MATCHING: If instruction has states, property state must match
+                    if (dbState) {
+                        const dbStates = dbState.split(',').map(s => s.trim()).filter(s => s);
+                        const stateMatches = dbStates.some(s => s === state);
+                        
+                        if (!state || !stateMatches) {
+                            continue;
+                        }
+                    }
+                    
+                    // TIER 1: Owner match
+                    if (owner && !ownerMatch) {
+                        if (dbOwner && (owner.includes(dbOwner) || dbOwner.includes(owner))) {
+                            ownerMatch = { ...instruction, matchType: 'owner', docId: docSnapshot.id };
+                            break;
+                        }
+                        
+                        for (const keyword of keywords) {
+                            if (owner.includes(keyword)) {
+                                ownerMatch = { ...instruction, matchType: 'keyword-owner', docId: docSnapshot.id };
+                                break;
+                            }
+                        }
+                        
+                        if (ownerMatch) break;
+                    }
+                    
+                    // TIER 2: Jurisdiction match
+                    if (jurisdiction && !ownerMatch && !jurisdictionMatch) {
+                        if (!dbOwner || dbOwner === '') {
+                            if (dbJurisdiction && (jurisdiction.includes(dbJurisdiction) || dbJurisdiction.includes(jurisdiction))) {
+                                jurisdictionMatch = { ...instruction, matchType: 'jurisdiction', docId: docSnapshot.id };
+                            }
+                            
+                            if (!jurisdictionMatch) {
+                                for (const keyword of keywords) {
+                                    if (jurisdiction.includes(keyword) || keyword.includes(jurisdiction)) {
+                                        jurisdictionMatch = { ...instruction, matchType: 'keyword-jurisdiction', docId: docSnapshot.id };
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    // TIER 2.5: State-only match
+                    if (state && !ownerMatch && !jurisdictionMatch && !stateMatch) {
+                        if ((!dbOwner || dbOwner === '') && (!dbJurisdiction || dbJurisdiction === '')) {
+                            if (dbState && state === dbState) {
+                                stateMatch = { ...instruction, matchType: 'state', docId: docSnapshot.id };
+                            }
+                        }
+                    }
+                }
+                
+                // Return best match
+                if (ownerMatch) {
+                    return ownerMatch;
+                } else if (jurisdictionMatch) {
+                    return jurisdictionMatch;
+                } else if (stateMatch) {
+                    return stateMatch;
+                } else {
+                    return null;
+                }
+                
+            } catch (error) {
+                console.error('Error checking database:', error);
+                return null;
+            }
+        }
+
+        // Display guidance on home page (simplified - contacts and instructions only)
+        function homeDisplayGuidance(propertyData, specificInstructions) {
+            const resultsDiv = document.getElementById('homeGuidanceResults');
+            const contentDiv = document.getElementById('homeGuidanceContent');
+            const defaultSteps = document.getElementById('homeDefaultSteps');
+            
+            // Hide default steps
+            defaultSteps.style.display = 'none';
+            
+            if (specificInstructions && specificInstructions.htmlContent) {
+                // Show custom instructions
+                contentDiv.innerHTML = specificInstructions.htmlContent;
+            } else {
+                // Show default guidance
+                contentDiv.innerHTML = homeGetDefaultGuidanceHTML();
+            }
+            
+            resultsDiv.style.display = 'block';
+            
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Display default guidance on home page
+        function homeDisplayDefaultGuidance(errorInfo = null) {
+            const resultsDiv = document.getElementById('homeGuidanceResults');
+            const contentDiv = document.getElementById('homeGuidanceContent');
+            const defaultSteps = document.getElementById('homeDefaultSteps');
+            
+            defaultSteps.style.display = 'none';
+            
+            let html = '';
+            if (errorInfo) {
+                html += `<p style="color: #e74c3c; font-weight: 600; margin-bottom: 1rem;">${errorInfo}</p>`;
+            }
+            
+            html += homeGetDefaultGuidanceHTML();
+            contentDiv.innerHTML = html;
+            resultsDiv.style.display = 'block';
+            
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Get default guidance HTML
+        function homeGetDefaultGuidanceHTML() {
+            return `
+                <div class="emergency-note">
+                    <strong>⚠️ STOP! Do not disturb the artifact or the surrounding area.</strong>
+                </div>
+                
+                <div class="contact-card">
+                    <h4>📞 Contact Your Local Authorities</h4>
+                    <div class="contact-info">
+                        <p><strong>County Archaeologist or Planning Department</strong></p>
+                        <p>Search online for: "[Your County Name] archaeologist" or "[Your County Name] planning department"</p>
+                        <p style="margin-top: 1rem;"><strong>State Historic Preservation Office (SHPO)</strong></p>
+                        <p>Every state has a SHPO - search: "[Your State] historic preservation office"</p>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <h4>🏛️ Federal Resources</h4>
+                    <div class="contact-info">
+                        <p><strong>If on Federal Land:</strong></p>
+                        <p>National Park Service, Bureau of Land Management, U.S. Forest Service, etc.</p>
+                        <p style="margin-top: 1rem;"><strong>If Native American artifacts:</strong></p>
+                        <p>Contact local tribal authorities and NAGPRA coordinator</p>
+                    </div>
+                </div>
+                
+                <div class="emergency-note">
+                    <strong>⚖️ Legal Notice:</strong> Federal and state laws protect archaeological resources. The Archaeological Resources Protection Act (ARPA) and similar state laws make it illegal to excavate, remove, damage, or otherwise alter archaeological sites on public or tribal lands without a permit. Violations can result in criminal penalties including fines and imprisonment.
+                </div>
+                
+                <div class="contact-card" style="background: #e3f2fd; border-color: #90caf9;">
+                    <h4>📚 Learn More</h4>
+                    <div class="contact-info">
+                        <p>Visit the <a href="laws.html" style="color: #1976d2; font-weight: 600;">Federal Archaeology Laws</a> page to learn about your legal responsibilities.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============== END HOME PAGE ARTIFACT LOOKUP ==============
 
         // ============== HAMBURGER MENU ==============
         const hamburger = document.getElementById('hamburger');
