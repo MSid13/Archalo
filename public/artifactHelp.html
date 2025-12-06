@@ -1003,6 +1003,139 @@
             font-weight: 500;
         }
         
+        /* Quick Navigation Bar Styles */
+        .quick-nav {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            border: 1px solid rgba(0,0,0,0.08);
+            display: none; /* Hidden by default, shown when results are available */
+        }
+        
+        .quick-nav.active {
+            display: block;
+            animation: fadeInDown 0.6s ease-out;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .quick-nav h3 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .quick-nav-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            width: 100%;
+        }
+        
+        .quick-nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quick-nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        
+        .quick-nav-link:hover:not(.disabled) {
+            color: white;
+            border-color: #3498db;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        .quick-nav-link:hover:not(.disabled)::before {
+            opacity: 1;
+        }
+        
+        .quick-nav-link:active:not(.disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 12px rgba(52, 152, 219, 0.3);
+        }
+        
+        .quick-nav-link span {
+            font-size: 1.2rem;
+        }
+        
+        .quick-nav-link.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+            background: #f5f5f5;
+            color: #999;
+        }
+        
+        @media (max-width: 992px) {
+            .quick-nav-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .quick-nav {
+                padding: 1.5rem;
+                position: relative;
+                top: 0;
+            }
+            
+            .quick-nav h3 {
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .quick-nav-links {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .quick-nav-link {
+                padding: 0.875rem 1.25rem;
+                font-size: 0.95rem;
+            }
+        }
+
+        
         .timeline-tag.purchase {
             background: #27ae60;
         }
@@ -1207,6 +1340,28 @@
             
             <div id="gpsForm" class="location-form">
                 <button class="btn location-btn" onclick="getCurrentLocation()">Get My Current Location</button>
+            </div>
+        </div>
+        
+        <!-- Quick Navigation Bar -->
+        <div id="quickNav" class="quick-nav">
+            <h3>🔍 Jump to Section</h3>
+            <div class="quick-nav-links">
+                <a href="#guidanceContent" class="quick-nav-link" id="navGuidance">
+                    <span>📋</span> What to Do
+                </a>
+                <a href="#relevantLawsSection" class="quick-nav-link" id="navLaws">
+                    <span>⚖️</span> Relevant Laws
+                </a>
+                <a href="#parcelMapSection" class="quick-nav-link" id="navMap">
+                    <span>🗺️</span> Map
+                </a>
+                <a href="#timelineSection" class="quick-nav-link" id="navTimeline">
+                    <span>📜</span> Timeline
+                </a>
+                <a href="#propertyInfoGrid" class="quick-nav-link" id="navProperty">
+                    <span>🏠</span> Property Info
+                </a>
             </div>
         </div>
         
@@ -2528,6 +2683,9 @@ async function searchInstructions(searchTerm = '') {
                 document.getElementById('loadingIndicator').style.display = 'none';
                 document.getElementById('propertyResults').style.display = 'block';
                 
+                // Show quick navigation bar
+                document.getElementById('quickNav').classList.add('active');
+                
                 // Reset buttons
                 const buttons = document.querySelectorAll('.btn');
                 buttons.forEach(btn => {
@@ -3468,6 +3626,78 @@ async function searchInstructions(searchTerm = '') {
             });
         }
         // ============== END HAMBURGER MENU ==============
+        
+        // ============== QUICK NAVIGATION ==============
+        // Smooth scroll to sections
+        document.querySelectorAll('.quick-nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    // Check if the target section is visible (not display: none)
+                    const targetSection = targetElement.closest('[id*="Section"]') || targetElement;
+                    
+                    if (targetSection && window.getComputedStyle(targetSection).display !== 'none') {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+        
+        // Function to update quick nav link states based on visible sections
+        function updateQuickNavLinks() {
+            const sections = {
+                navGuidance: 'guidanceContent',
+                navLaws: 'relevantLawsSection',
+                navMap: 'parcelMapSection',
+                navTimeline: 'timelineSection',
+                navProperty: 'propertyInfoGrid'
+            };
+            
+            Object.entries(sections).forEach(([navId, sectionId]) => {
+                const navLink = document.getElementById(navId);
+                const section = document.getElementById(sectionId);
+                
+                if (navLink && section) {
+                    const sectionParent = section.closest('[id*="Section"]') || section.parentElement;
+                    const isVisible = sectionParent && window.getComputedStyle(sectionParent).display !== 'none';
+                    
+                    if (isVisible) {
+                        navLink.classList.remove('disabled');
+                    } else {
+                        navLink.classList.add('disabled');
+                    }
+                }
+            });
+        }
+        
+        // Call updateQuickNavLinks whenever results are displayed
+        // We'll use a MutationObserver to watch for changes in the results section
+        const resultsSection = document.getElementById('resultsSection');
+        if (resultsSection) {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' || mutation.type === 'childList') {
+                        // Small delay to ensure DOM has updated
+                        setTimeout(updateQuickNavLinks, 100);
+                    }
+                });
+            });
+            
+            observer.observe(resultsSection, {
+                attributes: true,
+                childList: true,
+                subtree: true,
+                attributeFilter: ['style', 'class']
+            });
+        }
+        // ============== END QUICK NAVIGATION ==============
     </script>
 </body>
 </html>
