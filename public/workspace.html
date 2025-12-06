@@ -377,6 +377,19 @@
             
             <div class="section">
                 <h3>Current Artifact Information</h3>
+                                <div class="info-item" style="background: #fff3cd; border: 2px solid #ffc107; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="font-size: 1.5rem;">⚠️</span>
+                        <div>
+                            <strong style="color: #856404; display: block; margin-bottom: 0.25rem;">Important Notice</strong>
+                            <p style="color: #856404; margin: 0; font-size: 0.95rem;">
+                                Upon clicking the save button, the artifact information will be <strong>permanently updated</strong> in the database. 
+                                Changes are <strong>irreversible</strong> and will be immediately visible to all users. 
+                                Please review all fields carefully before saving.
+                            </p>
+                        </div>
+                    </div>
+                </div>
                 <div class="artifact-info">
                     <div class="info-item">
                         <span class="info-label">Title</span>
@@ -420,9 +433,46 @@
                         <div class="info-value" id="artifactTimestamp" style="background: #f8f9fa; color: #666;">Loading...</div>
                     </div>
                 </div>
-                
+                <div class="info-item" style="background: #fff3cd; border: 2px solid #ffc107; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="font-size: 1.5rem;">⚠️</span>
+                        <div>
+                            <strong style="color: #856404; display: block; margin-bottom: 0.25rem;">Important Notice</strong>
+                            <p style="color: #856404; margin: 0; font-size: 0.95rem;">
+                                Upon clicking the save button, the artifact information will be <strong>permanently updated</strong> in the database. 
+                                Changes are <strong>irreversible</strong> and will be immediately visible to all users. 
+                                Please review all fields carefully before saving.
+                            </p>
+                        </div>
+                    </div>
+                </div>
                 <button class="btn btn-primary" style="margin-top: 1rem;" onclick="saveArtifact()">💾 Save Changes</button>
                 <button class="btn btn-secondary" onclick="loadArtifact()">🔄 Reload Data</button>
+            </div>
+            
+            <div class="section">
+                <h3>🤖 AI Prompt Generator</h3>
+                <p style="color: #666; margin-bottom: 1rem;">
+                    Generate a ready-to-use AI prompt based on the current artifact data
+                </p>
+                <button class="btn btn-primary" onclick="generateAIPrompt()" style="margin-bottom: 1rem;">
+                    ✨ Generate Prompt
+                </button>
+                
+                <div id="promptOutput" style="display: none;">
+                    <div class="info-item">
+                        <span class="info-label">Generated AI Prompt</span>
+                        <textarea id="generatedPrompt" class="info-value" readonly style="min-height: 150px; font-family: 'Segoe UI', sans-serif; cursor: text;"></textarea>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                        <button class="btn btn-primary" onclick="copyPromptToClipboard()" style="flex: 1;">
+                            📋 Copy to Clipboard
+                        </button>
+                        <button class="btn btn-secondary" onclick="openAIWithPrompt()" style="flex: 1;">
+                            🚀 Open in Gemini
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -490,7 +540,7 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, getDocs, doc, getDoc, setDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -507,23 +557,40 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // Set persistence to LOCAL (stays logged in even after browser refresh)
+        setPersistence(auth, browserLocalPersistence)
+            .then(() => {
+                console.log('Persistence set to LOCAL');
+            })
+            .catch((error) => {
+                console.error('Error setting persistence:', error);
+            });
+
         let currentUser = null;
         let currentCollection = null;
         let allCollections = [];
 
         // Auth state listener
         onAuthStateChanged(auth, (user) => {
+            console.log('Auth state changed:', user ? user.email : 'No user');
+            
             if (user) {
                 currentUser = user;
+                console.log('User authenticated:', user.email);
+                
                 if (user.email === 'artifact@example.com') {
+                    console.log('Showing artifact panel');
                     showArtifactPanel();
                 } else if (user.email === 'admin@example.com') {
+                    console.log('Showing admin panel');
                     showAdminPanel();
                 } else {
+                    console.log('Showing user panel for:', user.email);
                     // General user access
                     showUserPanel();
                 }
             } else {
+                console.log('No user, showing login');
                 showLoginSection();
             }
         });
@@ -536,16 +603,35 @@
             const password = document.getElementById('password').value.trim();
             const messageDiv = document.getElementById('loginMessage');
             
+            console.log('Attempting login for:', email);
+            
             try {
-                await signInWithEmailAndPassword(auth, email, password);
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                console.log('Login successful:', userCredential.user.email);
                 messageDiv.innerHTML = '';
             } catch (error) {
-                messageDiv.innerHTML = '<div class="message error">❌ Login failed: ' + error.message + '</div>';
+                console.error('Login error:', error.code, error.message);
+                
+                let errorMessage = '❌ Login failed: ';
+                if (error.code === 'auth/user-not-found') {
+                    errorMessage += 'User not found. Please create this user in Firebase Console first.';
+                } else if (error.code === 'auth/wrong-password') {
+                    errorMessage += 'Incorrect password.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage += 'Invalid email format.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage += 'Too many failed attempts. Try again later.';
+                } else {
+                    errorMessage += error.message;
+                }
+                
+                messageDiv.innerHTML = '<div class="message error">' + errorMessage + '</div>';
             }
         });
 
         // Logout
         window.logout = async function() {
+            console.log('Logout function called');
             await signOut(auth);
         };
 
@@ -560,11 +646,16 @@
 
         // Show artifact panel
         function showArtifactPanel() {
+            console.log('showArtifactPanel called');
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('artifactPanel').style.display = 'block';
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('userPanel').style.display = 'none';
-            loadArtifact();
+            
+            // Load artifact after panel is shown
+            setTimeout(() => {
+                loadArtifact();
+            }, 100);
         }
 
         // Show admin panel
@@ -588,14 +679,17 @@
         // ============== ARTIFACT PANEL FUNCTIONS ==============
         
         window.loadArtifact = async function() {
+            console.log('loadArtifact called');
             const messageDiv = document.getElementById('artifactMessage');
             
             try {
                 const today = new Date().toISOString().split('T')[0];
+                console.log('Loading artifact for date:', today);
                 const docRef = doc(db, 'artifactOfDay', today);
                 const docSnap = await getDoc(docRef);
                 
                 if (docSnap.exists()) {
+                    console.log('Artifact document found');
                     const data = docSnap.data();
                     const artifact = data.artifact;
                     
@@ -660,6 +754,82 @@
             } catch (error) {
                 messageDiv.innerHTML = '<div class="message error">❌ Error saving artifact: ' + error.message + '</div>';
             }
+        };
+
+        // Generate AI Prompt
+        window.generateAIPrompt = function() {
+            const title = document.getElementById('artifactTitle').value.trim();
+            const description = document.getElementById('artifactDescription').value.trim();
+            const culture = document.getElementById('artifactCulture').value.trim();
+            const date = document.getElementById('artifactDate').value.trim();
+            const place = document.getElementById('artifactPlace').value.trim();
+            const image = document.getElementById('artifactImage').value.trim();
+            
+            // Build the prompt
+            let prompt = `Generate an engaging and informative description for an archaeological artifact with the following details:\n\n`;
+            
+            if (title) {
+                prompt += `**Title:** ${title}\n`;
+            }
+            if (culture) {
+                prompt += `**Culture/Origin:** ${culture}\n`;
+            }
+            if (date) {
+                prompt += `**Date/Period:** ${date}\n`;
+            }
+            if (place) {
+                prompt += `**Location:** ${place}\n`;
+            }
+            if (description) {
+                prompt += `**Current Description:** ${description}\n`;
+            }
+            if (image) {
+                prompt += `**Image URL:** ${image}\n`;
+            }
+            
+            prompt += `\n**Instructions:**\n`;
+            prompt += `- Write a brief, concise description (MAXIMUM 20 WORDS)\n`;
+            prompt += `- Focus only on the most important historical fact\n`;
+            prompt += `- Be clear and direct\n`;
+            prompt += `- Do not exceed 20 words under any circumstances\n\n`;
+            prompt += `Please provide only the description text, nothing else.`;
+            
+            // Display the prompt
+            document.getElementById('generatedPrompt').value = prompt;
+            document.getElementById('promptOutput').style.display = 'block';
+            
+            // Show success message
+            const messageDiv = document.getElementById('artifactMessage');
+            messageDiv.innerHTML = '<div class="message success">✓ AI prompt generated! Copy it and paste into your favorite AI tool.</div>';
+            setTimeout(() => { messageDiv.innerHTML = ''; }, 3000);
+        };
+
+        // Copy prompt to clipboard
+        window.copyPromptToClipboard = function() {
+            const promptText = document.getElementById('generatedPrompt');
+            promptText.select();
+            navigator.clipboard.writeText(promptText.value).then(() => {
+                const messageDiv = document.getElementById('artifactMessage');
+                messageDiv.innerHTML = '<div class="message success">✓ Prompt copied to clipboard!</div>';
+                setTimeout(() => { messageDiv.innerHTML = ''; }, 2000);
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        };
+
+        // Open AI with prompt
+        window.openAIWithPrompt = function() {
+            const promptText = document.getElementById('generatedPrompt').value;
+            
+            // Copy to clipboard first
+            navigator.clipboard.writeText(promptText).then(() => {
+                // Open Gemini in a popup
+                window.open('https://gemini.google.com', 'Gemini', 'width=900,height=700,menubar=no,toolbar=no,location=no');
+                
+                const messageDiv = document.getElementById('artifactMessage');
+                messageDiv.innerHTML = '<div class="message success">✓ Prompt copied! Paste it into Gemini (Ctrl+V or Cmd+V)</div>';
+                setTimeout(() => { messageDiv.innerHTML = ''; }, 5000);
+            });
         };
 
         // ============== USER PANEL FUNCTIONS ==============

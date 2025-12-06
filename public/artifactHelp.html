@@ -2598,18 +2598,7 @@ async function searchInstructions(searchTerm = '') {
                 }
                 
                 guidanceContent.innerHTML = `
-                    <div class="contact-card" style="background: #d4edda; border-color: #c3e6cb;">
-                        <h4>✓ Custom Instructions Found</h4>
-                        <p style="color: #155724; margin-bottom: 0.5rem;">
-                            <strong>${tier}:</strong> ${matchLabel}
-                        </p>
-                        ${contactsSummary}
-                        <p style="color: #666; font-size: 0.9rem;">
-                            Document: ${specificInstructions.docId || 'N/A'}
-                        </p>
-                    </div>
-                    
-                    <div class="custom-instructions-content" style="margin-top: 1.5rem;">
+                    <div class="custom-instructions-content">
                         ${specificInstructions.htmlContent}
                     </div>
                 `;
