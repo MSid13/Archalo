@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Archalo</title>
     <link rel="icon" type="image/png" href="owlcheologists.png">
+    
     <style>
         * {
             margin: 0;
@@ -1035,12 +1036,15 @@
                     📍 Use My Current Location
                 </button>
                 
-                <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid rgba(0,0,0,0.08);">
-                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">
-                        <strong>Need detailed property info, maps & history?</strong>
+                <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid rgba(0,0,0,0.08); background: linear-gradient(135deg, rgba(52, 152, 219, 0.05), rgba(41, 128, 185, 0.08)); padding: 1.2rem; border-radius: 8px;">
+                    <p style="font-size: 1rem; color: #2c3e50; margin-bottom: 0.3rem; font-weight: 700;">
+                        🔍 Want the Complete Picture?
                     </p>
-                    <a href="artifactHelp.html" style="color: #3498db; text-decoration: none; font-weight: 600; font-size: 0.95rem; border-bottom: 2px solid #3498db; padding-bottom: 2px; transition: all 0.3s ease;">
-                        Explore the Full Tool →
+                    <p style="font-size: 0.88rem; color: #555; margin-bottom: 0.8rem; line-height: 1.5;">
+                        Get <strong>interactive maps</strong>, <strong>detailed timelines</strong>, <strong>parcel boundaries</strong>, and <strong>relevant federal laws</strong>, and <strong>much more!</strong> — all in one place!
+                    </p>
+                    <a href="artifactHelp.html" style="display: inline-block; color: white; background: linear-gradient(135deg, #3498db, #2980b9); text-decoration: none; font-weight: 700; font-size: 1rem; padding: 0.7rem 1.8rem; border-radius: 6px; box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3); transition: all 0.3s ease; transform: scale(1);">
+                        🗺️ Launch Full Artifact Tool →
                     </a>
                 </div>
             </div>
@@ -1048,6 +1052,7 @@
             <!-- Results Display -->
             <div id="homeGuidanceResults" style="display: none; background: rgba(255, 255, 255, 0.9); padding: 1.5rem; margin: 1.5rem auto; max-width: 800px; text-align: left;">
                 <div id="homeGuidanceContent"></div>
+                
             </div>
 
             <!-- Default Steps (shown when no location provided) -->
@@ -1309,13 +1314,10 @@
                 
                 if (announcementSnap.exists()) {
                     const data = announcementSnap.data();
-                    const markdownContent = data.announcement || data.content || data.message;
+                    const htmlContent = data.announcement || data.content || data.message;
                     
-                    if (markdownContent) {
-                        // Parse markdown to HTML
-                        const htmlContent = marked.parse(markdownContent);
-                        
-                        // Update the announcement content
+                    if (htmlContent) {
+                        // Render HTML directly (no markdown parsing)
                         const announcementDiv = document.getElementById('announcement-content');
                         if (announcementDiv) {
                             announcementDiv.innerHTML = htmlContent;
@@ -1511,20 +1513,20 @@
                 
                 if (announcementSnap.exists()) {
                     const data = announcementSnap.data();
-                    const markdownContent = data.announcement || data.content || data.message || '';
+                    const htmlContent = data.announcement || data.content || data.message || '';
                     
                     // Set the textarea value
                     const textarea = document.getElementById('announcementText');
                     if (textarea) {
-                        textarea.value = markdownContent;
+                        textarea.value = htmlContent;
                     }
                     
-                    // Show preview
-                    if (markdownContent) {
+                    // Show preview (render HTML directly)
+                    if (htmlContent) {
                         const previewDiv = document.getElementById('announcementPreview');
                         const previewContent = document.getElementById('announcementPreviewContent');
                         if (previewDiv && previewContent) {
-                            previewContent.innerHTML = marked.parse(markdownContent);
+                            previewContent.innerHTML = htmlContent;
                             previewDiv.style.display = 'block';
                         }
                     }
@@ -1546,24 +1548,24 @@
             const textarea = document.getElementById('announcementText');
             if (!textarea) return;
             
-            const markdownContent = textarea.value.trim();
+            const htmlContent = textarea.value.trim();
             
             try {
                 const announcementRef = doc(db, "main", "announcements");
                 
                 await setDoc(announcementRef, {
-                    announcement: markdownContent,
+                    announcement: htmlContent,
                     lastUpdated: new Date().toISOString()
                 });
                 
                 console.log('Announcement saved successfully');
                 
-                // Show preview
+                // Show preview (render HTML directly)
                 const previewDiv = document.getElementById('announcementPreview');
                 const previewContent = document.getElementById('announcementPreviewContent');
                 if (previewDiv && previewContent) {
-                    if (markdownContent) {
-                        previewContent.innerHTML = marked.parse(markdownContent);
+                    if (htmlContent) {
+                        previewContent.innerHTML = htmlContent;
                         previewDiv.style.display = 'block';
                     } else {
                         previewDiv.style.display = 'none';
@@ -1593,18 +1595,17 @@
                 loadAnnouncementBtn.addEventListener('click', loadCurrentAnnouncement);
             }
 
-            // Live preview for announcement
+            // Live preview for announcement (render HTML directly)
             const announcementText = document.getElementById('announcementText');
             if (announcementText) {
-                announcementText.addEventListener('input', async () => {
-                    await waitForMarked();
-                    const markdownContent = announcementText.value.trim();
+                announcementText.addEventListener('input', () => {
+                    const htmlContent = announcementText.value.trim();
                     const previewDiv = document.getElementById('announcementPreview');
                     const previewContent = document.getElementById('announcementPreviewContent');
                     
                     if (previewDiv && previewContent) {
-                        if (markdownContent) {
-                            previewContent.innerHTML = marked.parse(markdownContent);
+                        if (htmlContent) {
+                            previewContent.innerHTML = htmlContent;
                             previewDiv.style.display = 'block';
                         } else {
                             previewDiv.style.display = 'none';
