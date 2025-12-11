@@ -8,6 +8,10 @@
     ],
     "rewrites": [
       {
+        "source": "/Archalo",
+        "destination": "/Archalo.html"
+      },
+      {
         "source": "/laws",
         "destination": "/laws.html"
       },
