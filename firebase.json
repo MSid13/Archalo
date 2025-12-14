@@ -8,7 +8,7 @@
     ],
     "rewrites": [
       {
-        "source": "/Archalo",
+        "source": "/archalo",
         "destination": "/Archalo.html"
       },
       {
