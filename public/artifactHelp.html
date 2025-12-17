@@ -1330,9 +1330,13 @@
                                 style="background: #e67e22; font-size: 0.9rem; padding: 0.6rem 1rem;">
                             🌳 King County Park (Marymoor Park)
                         </button>
-                        <button class="btn" onclick="loadSampleCoords(47.6062, -122.3321, 'Private Property - King County')" 
+                        <button class="btn" onclick="loadSampleCoords(47.6062, -122.3321, 'Private Property - Seattle')" 
                                 style="background: #95a5a6; font-size: 0.9rem; padding: 0.6rem 1rem;">
-                            🏠 Private Property (King County)
+                            🏠 Private Property (Seattle)
+                        </button>
+                        <button class="btn" onclick="loadSampleCoords(47.6611, -122.1133, 'Private Property - King County')" 
+                                style="background: #7f8c8d; font-size: 0.9rem; padding: 0.6rem 1rem;">
+                            �️ Private Property (King County)
                         </button>
                     </div>
                 </div>
@@ -1512,15 +1516,21 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="editJurisdiction">Jurisdiction (optional)</label>
+                            <label for="editCity">City (optional)</label>
+                            <input type="text" id="editCity" placeholder="e.g., Philadelphia">
+                            <small style="color: #7f8c8d;">For TIER 2 matching - city-wide guidance (leave Owner & Jurisdiction blank for city-only entries)</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editJurisdiction">Jurisdiction/County (optional)</label>
                             <input type="text" id="editJurisdiction" placeholder="e.g., King">
-                            <small style="color: #7f8c8d;">For TIER 2 matching - county or jurisdiction name</small>
+                            <small style="color: #7f8c8d;">For TIER 3 matching - county or jurisdiction name (leave Owner & City blank for county-only entries)</small>
                         </div>
                         
                         <div class="form-group">
                             <label for="editState">State Abbreviation(s) (optional)</label>
                             <input type="text" id="editState" placeholder="e.g., WA or WA, OR, CA" style="text-transform: uppercase;">
-                            <small style="color: #7f8c8d;">For TIER 2.5 matching - state-wide fallback. Use commas for multiple states (e.g., WA, OR, CA)</small>
+                            <small style="color: #7f8c8d;">For TIER 4 matching - state-wide fallback. Use commas for multiple states (e.g., WA, OR, CA). Leave Owner, City & Jurisdiction blank for state-only entries.</small>
                         </div>
                         
                         <div class="form-group">
@@ -1559,8 +1569,8 @@
                 
                 <h3>Add New Property Instructions</h3>
                 <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.95rem;">
-                    <strong>Note:</strong> Provide at least one of Owner, Jurisdiction, or State. 
-                    For state-wide entries (e.g., State Archaeologist), fill in State(s) and leave Owner/Jurisdiction blank. For multi-state coverage, use commas (e.g., WA, OR, CA).
+                    <strong>Note:</strong> Provide at least one of Owner, City, Jurisdiction, or State. 
+                    For state-wide entries (e.g., State Archaeologist), fill in State(s) and leave Owner/City/Jurisdiction blank. For multi-state coverage, use commas (e.g., WA, OR, CA).
                 </p>
                 <form id="addInstructionForm">
                     <div class="form-group">
@@ -1570,15 +1580,21 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="instructionJurisdiction">Jurisdiction (optional)</label>
+                        <label for="instructionCity">City (optional)</label>
+                        <input type="text" id="instructionCity" placeholder="e.g., Philadelphia">
+                        <small style="color: #7f8c8d;">For TIER 2 matching - city-wide guidance (leave Owner & Jurisdiction blank for city-only entries)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="instructionJurisdiction">Jurisdiction/County (optional)</label>
                         <input type="text" id="instructionJurisdiction" placeholder="e.g., King">
-                        <small style="color: #7f8c8d;">For TIER 2 matching - county or jurisdiction name</small>
+                        <small style="color: #7f8c8d;">For TIER 3 matching - county or jurisdiction name (leave Owner & City blank for county-only entries)</small>
                     </div>
                     
                     <div class="form-group">
                         <label for="instructionState">State Abbreviation(s) (optional)</label>
                         <input type="text" id="instructionState" placeholder="e.g., WA or WA, OR, CA" style="text-transform: uppercase;">
-                        <small style="color: #7f8c8d;">For TIER 2.5 matching - state-wide fallback (e.g., State Archaeologist). Use commas for multiple states. Leave Owner & Jurisdiction blank for state-only entries.</small>
+                        <small style="color: #7f8c8d;">For TIER 4 matching - state-wide fallback (e.g., State Archaeologist). Use commas for multiple states. Leave Owner, City & Jurisdiction blank for state-only entries.</small>
                     </div>
                     
                     <div class="form-group">
@@ -1979,17 +1995,18 @@
                     console.log('User authenticated:', currentUser.email);
 
                     const owner = document.getElementById('instructionOwner').value.trim();
+                    const city = document.getElementById('instructionCity').value.trim();
                     const jurisdiction = document.getElementById('instructionJurisdiction').value.trim();
                     const state = document.getElementById('instructionState').value.trim().toUpperCase();
                     const keywordsInput = document.getElementById('instructionKeywords').value.trim();
                     const specialInstructions = document.getElementById('instructionSpecialInstructions').value.trim();
                     const generalNotes = document.getElementById('instructionGeneralNotes').value.trim();
 
-                    console.log('Form values:', { owner, jurisdiction, state, keywordsInput, specialInstructions, generalNotes });
+                    console.log('Form values:', { owner, city, jurisdiction, state, keywordsInput, specialInstructions, generalNotes });
 
-                    // Validation: Require at least owner, jurisdiction, OR state
-                    if (!owner && !jurisdiction && !state) {
-                        alert('Please provide at least one of: Owner, Jurisdiction, or State');
+                    // Validation: Require at least owner, city, jurisdiction, OR state
+                    if (!owner && !city && !jurisdiction && !state) {
+                        alert('Please provide at least one of: Owner, City, Jurisdiction, or State');
                         return;
                     }
 
@@ -2024,6 +2041,7 @@
 
                     // Add optional fields
                     if (owner) instructionData.owner = owner;
+                    if (city) instructionData.city = city;
                     if (jurisdiction) instructionData.jurisdiction = jurisdiction;
                     if (state) instructionData.state = state;
 
@@ -2271,6 +2289,7 @@ async function searchInstructions(searchTerm = '') {
             let html = '';
             results.forEach(result => {
                 const owner = result.owner || 'N/A';
+                const city = result.city || 'N/A';
                 const jurisdiction = result.jurisdiction || 'N/A';
                 const state = result.state || 'N/A';
                 const contactCount = result.contacts ? result.contacts.length : 0;
@@ -2283,6 +2302,7 @@ async function searchInstructions(searchTerm = '') {
                         <div style="display: flex; justify-content: space-between; align-items: start;">
                             <div>
                                 <strong style="color: #2c3e50;">Owner:</strong> ${owner}<br>
+                                <strong style="color: #2c3e50;">City:</strong> ${city}<br>
                                 <strong style="color: #2c3e50;">Jurisdiction:</strong> ${jurisdiction}<br>
                                 <strong style="color: #2c3e50;">State:</strong> ${state}<br>
                                 <small style="color: #7f8c8d;">${contactCount} contact(s) • Created ${new Date(result.createdAt).toLocaleDateString()}</small>
@@ -2325,6 +2345,7 @@ async function searchInstructions(searchTerm = '') {
                 // Fill form fields
                 document.getElementById('editDocId').value = docId;
                 document.getElementById('editOwner').value = data.owner || '';
+                document.getElementById('editCity').value = data.city || '';
                 document.getElementById('editJurisdiction').value = data.jurisdiction || '';
                 document.getElementById('editState').value = data.state || '';
                 document.getElementById('editKeywords').value = (data.keywords || []).join(', ');
@@ -2463,6 +2484,7 @@ async function searchInstructions(searchTerm = '') {
             
             const docId = document.getElementById('editDocId').value;
             const owner = document.getElementById('editOwner').value.trim();
+            const city = document.getElementById('editCity').value.trim();
             const jurisdiction = document.getElementById('editJurisdiction').value.trim();
             const state = document.getElementById('editState').value.trim().toUpperCase();
             const keywordsInput = document.getElementById('editKeywords').value.trim();
@@ -2470,8 +2492,8 @@ async function searchInstructions(searchTerm = '') {
             const generalNotes = document.getElementById('editGeneralNotes').value.trim();
             
             // Validation
-            if (!owner && !jurisdiction && !state) {
-                alert('Please provide at least one of: Owner, Jurisdiction, or State');
+            if (!owner && !city && !jurisdiction && !state) {
+                alert('Please provide at least one of: Owner, City, Jurisdiction, or State');
                 return;
             }
             
@@ -2495,6 +2517,7 @@ async function searchInstructions(searchTerm = '') {
             };
             
             if (owner) instructionData.owner = owner;
+            if (city) instructionData.city = city;
             if (jurisdiction) instructionData.jurisdiction = jurisdiction;
             if (state) instructionData.state = state;
             
@@ -2527,9 +2550,10 @@ async function searchInstructions(searchTerm = '') {
             
             const docId = document.getElementById('editDocId').value;
             const owner = document.getElementById('editOwner').value || 'N/A';
+            const city = document.getElementById('editCity').value || 'N/A';
             const jurisdiction = document.getElementById('editJurisdiction').value || 'N/A';
             
-            if (!confirm(`Are you sure you want to delete this instruction?\n\nOwner: ${owner}\nJurisdiction: ${jurisdiction}\n\nThis action cannot be undone!`)) {
+            if (!confirm(`Are you sure you want to delete this instruction?\n\nOwner: ${owner}\nCity: ${city}\nJurisdiction: ${jurisdiction}\n\nThis action cannot be undone!`)) {
                 return;
             }
             
@@ -2668,7 +2692,7 @@ async function searchInstructions(searchTerm = '') {
                     const specificInstructions = await checkForSpecificInstructions(parcelData);
                     
                     // Display results
-                    displayPropertyInfo(parcelData);
+                    displayPropertyInfo(parcelData, specificInstructions);
                     displayRelevantLaws(parcelData); // Display relevant laws for the location
                     displayParcelMap(parcelData); // Display the map with polygon
                     displayGuidance(parcelData, specificInstructions);
@@ -2728,6 +2752,7 @@ async function searchInstructions(searchTerm = '') {
                 if (data && (data.owner || data.jurisdiction)) {
                     console.log('✅ Property data received');
                     console.log('  - Owner:', data.owner || 'Unknown');
+                    console.log('  - City:', data.city || 'Unknown');
                     console.log('  - Jurisdiction:', data.jurisdiction || 'Unknown');
                     console.log('  - State:', data.state || 'Unknown');
                     return data;
@@ -2748,10 +2773,12 @@ async function searchInstructions(searchTerm = '') {
             try {
                 const owner = (propertyData.owner || '').toLowerCase().trim();
                 const jurisdiction = (propertyData.jurisdiction || '').toLowerCase().trim();
+                const city = (propertyData.city || '').toLowerCase().trim();
                 const state = (propertyData.state || '').toUpperCase().trim();
                 
-                console.log('\n=== FOUR-TIER MATCHING LOGIC ===');
+                console.log('\n=== FIVE-TIER MATCHING LOGIC ===');
                 console.log('🔍 Property Owner:', `"${owner}"`);
+                console.log('🔍 Property City:', `"${city}"`);
                 console.log('🔍 Property Jurisdiction:', `"${jurisdiction}"`);
                 console.log('🔍 Property State:', `"${state}"`);
                 
@@ -2767,19 +2794,21 @@ async function searchInstructions(searchTerm = '') {
                 console.log(`\n📚 Database has ${querySnapshot.docs.length} instruction(s)`);
                 
                 let ownerMatch = null;
+                let cityMatch = null;
                 let jurisdictionMatch = null;
                 let stateMatch = null;
                 
-                // TIER 1, 2 & 2.5: Loop through all instructions to find best match
+                // TIER 1, 2, 3 & 4: Loop through all instructions to find best match
                 for (const docSnapshot of querySnapshot.docs) {
                     const instruction = docSnapshot.data();
                     const dbOwner = (instruction.owner || '').toLowerCase().trim();
+                    const dbCity = (instruction.city || '').toLowerCase().trim();
                     const dbJurisdiction = (instruction.jurisdiction || '').toLowerCase().trim();
                     const dbState = (instruction.state || '').toUpperCase().trim();
                     const keywords = (instruction.keywords || []).map(k => k.toLowerCase().trim());
                     
                     console.log(`\n📄 Checking: "${docSnapshot.id}"`);
-                    console.log('   Owner:', `"${dbOwner}"`, 'Jurisdiction:', `"${dbJurisdiction}"`, 'State:', `"${dbState}"`);
+                    console.log('   Owner:', `"${dbOwner}"`, 'City:', `"${dbCity}"`, 'Jurisdiction:', `"${dbJurisdiction}"`, 'State:', `"${dbState}"`);
                     console.log('   Keywords:', keywords);
                     
                     // STATE MATCHING: If instruction has states, property state must match ONE of them
@@ -2816,16 +2845,51 @@ async function searchInstructions(searchTerm = '') {
                         if (ownerMatch) break; // Stop after finding owner/keyword match
                     }
                     
-                    // TIER 2: Check Jurisdiction match (only if no owner match yet)
-                    // STRICT: Only match jurisdiction-only entries (no specific owner required)
-                    if (jurisdiction && !ownerMatch && !jurisdictionMatch) {
-                        // Only match if this is a jurisdiction-wide entry (no specific owner in DB)
-                        // OR if the entry has an owner but it doesn't match (skip it)
-                        
+                    // TIER 2: Check City match (only if no owner match yet)
+                    // City-wide entry: has city but NO owner (jurisdiction optional for disambiguating cities with same name)
+                    if (city && !ownerMatch && !cityMatch) {
                         if (!dbOwner || dbOwner === '') {
+                            // This is a city-wide entry (applies to all properties in city)
+                            if (dbCity && (city.includes(dbCity) || dbCity.includes(city))) {
+                                // If jurisdiction is specified in DB, verify it matches (for disambiguation)
+                                // If jurisdiction is not specified in DB, match any property in that city
+                                if (!dbJurisdiction || dbJurisdiction === '' || 
+                                    (jurisdiction && (jurisdiction.includes(dbJurisdiction) || dbJurisdiction.includes(jurisdiction)))) {
+                                    console.log('   ✅ TIER 2: City-wide match (no specific owner required)');
+                                    cityMatch = { ...instruction, matchType: 'city', docId: docSnapshot.id };
+                                }
+                            }
+                            
+                            // Check keywords against city for city-wide entries
+                            if (!cityMatch) {
+                                for (const keyword of keywords) {
+                                    // Bidirectional keyword matching
+                                    if (city.includes(keyword) || keyword.includes(city)) {
+                                        // If jurisdiction is specified in DB, verify it matches
+                                        if (!dbJurisdiction || dbJurisdiction === '' || 
+                                            (jurisdiction && (jurisdiction.includes(dbJurisdiction) || dbJurisdiction.includes(jurisdiction)))) {
+                                            console.log(`   ✅ TIER 2: City keyword match! ("${keyword}" matches "${city}")`);
+                                            cityMatch = { ...instruction, matchType: 'keyword-city', docId: docSnapshot.id };
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            // This entry has a specific owner requirement, skip for TIER 2
+                            console.log(`   ⏭️ TIER 2: Skipped (entry requires specific owner)`);
+                        }
+                    }
+                    
+                    // TIER 3: Check Jurisdiction/County match (only if no owner or city match yet)
+                    // STRICT: Only match jurisdiction-only entries (no specific owner or city required)
+                    if (jurisdiction && !ownerMatch && !cityMatch && !jurisdictionMatch) {
+                        // Only match if this is a jurisdiction-wide entry (no specific owner or city in DB)
+                        
+                        if ((!dbOwner || dbOwner === '') && (!dbCity || dbCity === '')) {
                             // This is a jurisdiction-wide entry (applies to all properties in jurisdiction)
                             if (dbJurisdiction && (jurisdiction.includes(dbJurisdiction) || dbJurisdiction.includes(jurisdiction))) {
-                                console.log('   ✅ TIER 2: Jurisdiction-wide match (no specific owner required)');
+                                console.log('   ✅ TIER 3: Jurisdiction-wide match (no specific owner/city required)');
                                 jurisdictionMatch = { ...instruction, matchType: 'jurisdiction', docId: docSnapshot.id };
                             }
                             
@@ -2834,25 +2898,25 @@ async function searchInstructions(searchTerm = '') {
                                 for (const keyword of keywords) {
                                     // Bidirectional keyword matching
                                     if (jurisdiction.includes(keyword) || keyword.includes(jurisdiction)) {
-                                        console.log(`   ✅ TIER 2: Jurisdiction keyword match! ("${keyword}" matches "${jurisdiction}")`);
+                                        console.log(`   ✅ TIER 3: Jurisdiction keyword match! ("${keyword}" matches "${jurisdiction}")`);
                                         jurisdictionMatch = { ...instruction, matchType: 'keyword-jurisdiction', docId: docSnapshot.id };
                                         break;
                                     }
                                 }
                             }
                         } else {
-                            // This entry has a specific owner requirement, skip for TIER 2
-                            console.log(`   ⏭️ TIER 2: Skipped (entry requires specific owner: "${dbOwner}")`);
+                            // This entry has a specific owner or city requirement, skip for TIER 3
+                            console.log(`   ⏭️ TIER 3: Skipped (entry requires specific owner/city)`);
                         }
                     }
                     
-                    // TIER 2.5: Check State-only match (State Archaeologist fallback)
-                    // Only if no owner/jurisdiction match, and entry has state but NO owner and NO jurisdiction
-                    if (state && !ownerMatch && !jurisdictionMatch && !stateMatch) {
-                        // This is a state-wide entry (e.g., State Archaeologist) - no owner or jurisdiction specified
-                        if ((!dbOwner || dbOwner === '') && (!dbJurisdiction || dbJurisdiction === '')) {
+                    // TIER 4: Check State-only match (State Archaeologist fallback)
+                    // Only if no owner/city/jurisdiction match, and entry has state but NO owner, NO city, and NO jurisdiction
+                    if (state && !ownerMatch && !cityMatch && !jurisdictionMatch && !stateMatch) {
+                        // This is a state-wide entry (e.g., State Archaeologist) - no owner, city, or jurisdiction specified
+                        if ((!dbOwner || dbOwner === '') && (!dbCity || dbCity === '') && (!dbJurisdiction || dbJurisdiction === '')) {
                             if (dbState && state === dbState) {
-                                console.log('   ✅ TIER 2.5: State-wide match (State Archaeologist)');
+                                console.log('   ✅ TIER 4: State-wide match (State Archaeologist)');
                                 stateMatch = { ...instruction, matchType: 'state', docId: docSnapshot.id };
                             }
                         }
@@ -2864,17 +2928,21 @@ async function searchInstructions(searchTerm = '') {
                     console.log(`\n🎯 TIER 1 MATCH FOUND: ${ownerMatch.matchType}`);
                     console.log('   Using:', ownerMatch.docId);
                     return ownerMatch;
+                } else if (cityMatch) {
+                    console.log(`\n🎯 TIER 2 MATCH FOUND (CITY): ${cityMatch.matchType}`);
+                    console.log('   Using:', cityMatch.docId);
+                    return cityMatch;
                 } else if (jurisdictionMatch) {
-                    console.log(`\n🎯 TIER 2 MATCH FOUND: ${jurisdictionMatch.matchType}`);
+                    console.log(`\n🎯 TIER 3 MATCH FOUND (COUNTY): ${jurisdictionMatch.matchType}`);
                     console.log('   Using:', jurisdictionMatch.docId);
                     return jurisdictionMatch;
                 } else if (stateMatch) {
-                    console.log(`\n🎯 TIER 2.5 MATCH FOUND: ${stateMatch.matchType}`);
+                    console.log(`\n🎯 TIER 4 MATCH FOUND (STATE): ${stateMatch.matchType}`);
                     console.log('   Using:', stateMatch.docId);
                     return stateMatch;
                 } else {
                     console.log('\n⚠️ NO MATCH FOUND');
-                    console.log('📋 TIER 3: Falling back to default basic steps');
+                    console.log('📋 TIER 5: Falling back to default nationwide guidance');
                     return null;
                 }
                 
@@ -2885,7 +2953,7 @@ async function searchInstructions(searchTerm = '') {
         }
 
         // Display property information
-        function displayPropertyInfo(propertyData) {
+        function displayPropertyInfo(propertyData, specificInstructions) {
             const grid = document.getElementById('propertyInfoGrid');
             
             console.log('📊 Displaying property data:', propertyData);
@@ -2895,6 +2963,11 @@ async function searchInstructions(searchTerm = '') {
                 { label: 'Jurisdiction', value: propertyData.jurisdiction || 'Unknown' },
                 { label: 'Coordinates', value: `${propertyData.lat || 'N/A'}, ${propertyData.long || 'N/A'}` }
             ];
+            
+            // Add city if available
+            if (propertyData.city) {
+                info.push({ label: 'City', value: propertyData.city });
+            }
             
             // Add state if available
             if (propertyData.state) {
@@ -2909,12 +2982,23 @@ async function searchInstructions(searchTerm = '') {
                 info.push({ label: 'Parcel Number', value: propertyData.parcelNumber });
             }
             
-            grid.innerHTML = info.map(item => `
+            let htmlContent = info.map(item => `
                 <div class="info-item">
                     <span class="info-label">${item.label}:</span>
                     <span class="info-value">${item.value}</span>
                 </div>
             `).join('');
+            
+            // Add doc ID at the bottom if available
+            if (specificInstructions && specificInstructions.docId) {
+                htmlContent += `
+                    <div style="margin-top: 1rem; padding-top: 0.5rem; border-top: 1px solid rgba(0,0,0,0.1); text-align: center;">
+                        <span style="font-size: 0.75rem; color: #999;">${specificInstructions.docId}</span>
+                    </div>
+                `;
+            }
+            
+            grid.innerHTML = htmlContent;
             
             // Display timeline for specific locations
             displayTimeline(propertyData);
