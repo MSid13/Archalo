@@ -8,6 +8,10 @@
     ],
     "rewrites": [
       {
+        "source": "/archalo",
+        "destination": "/Archalo.html"
+      },
+            {
         "source": "/Archalo",
         "destination": "/Archalo.html"
       },
@@ -35,7 +39,7 @@
     "redirects": [
       {
         "source": "/index.html",
-        "destination": "/Archalo.html",
+        "destination": "/archalo",
         "type": 301
       },
       {
