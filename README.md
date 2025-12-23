@@ -99,7 +99,7 @@ Access at `http://localhost:5000`
 ```
 Archalo/
 ├── public/                    # Static website files
-│   ├── Archalo.html          # Home page
+│   ├── index.html          # Home page
 │   ├── artifactHelp.html     # Main artifact discovery tool
 │   ├── laws.html             # Laws database
 │   ├── edu-resources.html    # Educational resources

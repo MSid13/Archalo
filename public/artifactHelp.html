@@ -876,6 +876,137 @@
             }
         }
         
+        /* Sample Locations Styles */
+        .sample-locations-container {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .sample-locations-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .state-section {
+            margin-bottom: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        .state-section:hover {
+            border-color: #3498db;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.15);
+        }
+        
+        .state-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            width: 100%;
+            text-align: left;
+        }
+        
+        .state-header:hover {
+            background: linear-gradient(135deg, #e8f4f8, #f0f8ff);
+        }
+        
+        .state-header.active {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+        
+        .state-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .state-header.active .state-name {
+            color: white;
+        }
+        
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            color: #7f8c8d;
+        }
+        
+        .state-header.active .toggle-icon {
+            transform: rotate(180deg);
+            color: white;
+        }
+        
+        .state-locations {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            background: #fafafa;
+        }
+        
+        .state-locations.active {
+            max-height: 1000px;
+            padding: 1rem;
+        }
+        
+        .location-btn-sample {
+            width: 100%;
+            padding: 0.85rem 1.2rem;
+            margin-bottom: 0.6rem;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #2c3e50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .location-btn-sample:hover {
+            transform: translateX(5px);
+            border-color: #3498db;
+            box-shadow: 0 3px 12px rgba(52, 152, 219, 0.2);
+            background: linear-gradient(135deg, #ffffff, #f0f8ff);
+        }
+        
+        .location-btn-sample:last-child {
+            margin-bottom: 0;
+        }
+        
+        .location-icon {
+            font-size: 1.3rem;
+            min-width: 24px;
+        }
+        
+        .location-type {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background: #e8f4f8;
+            color: #2980b9;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+        
         /* Timeline Styles */
         .timeline-section {
             background: white;
@@ -1251,12 +1382,143 @@
                 font-size: 0.9rem;
             }
         }
+        
+        /* Sample Locations Styles */
+        .sample-locations-container {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .sample-locations-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .state-section {
+            margin-bottom: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        .state-section:hover {
+            border-color: #3498db;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.15);
+        }
+        
+        .state-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            width: 100%;
+            text-align: left;
+        }
+        
+        .state-header:hover {
+            background: linear-gradient(135deg, #e8f4f8, #f0f8ff);
+        }
+        
+        .state-header.active {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+        
+        .state-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .state-header.active .state-name {
+            color: white;
+        }
+        
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            color: #7f8c8d;
+        }
+        
+        .state-header.active .toggle-icon {
+            transform: rotate(180deg);
+            color: white;
+        }
+        
+        .state-locations {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            background: #fafafa;
+        }
+        
+        .state-locations.active {
+            max-height: 1000px;
+            padding: 1rem;
+        }
+        
+        .location-btn-sample {
+            width: 100%;
+            padding: 0.85rem 1.2rem;
+            margin-bottom: 0.6rem;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #2c3e50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .location-btn-sample:hover {
+            transform: translateX(5px);
+            border-color: #3498db;
+            box-shadow: 0 3px 12px rgba(52, 152, 219, 0.2);
+            background: linear-gradient(135deg, #ffffff, #f0f8ff);
+        }
+        
+        .location-btn-sample:last-child {
+            margin-bottom: 0;
+        }
+        
+        .location-icon {
+            font-size: 1.3rem;
+            min-width: 24px;
+        }
+        
+        .location-type {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background: #e8f4f8;
+            color: #2980b9;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
     </style>
 </head>
 <body>
     <nav>
         <div class="nav-container">
-            <a href="Archalo.html" style="text-decoration: none; color: inherit;">
+            <a href="index.html" style="text-decoration: none; color: inherit;">
                 <div class="logo">Archalo</div>
             </a>
             <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -1265,7 +1527,7 @@
                 <span></span>
             </button>
             <ul class="nav-links" id="navLinks">
-                <li><a href="Archalo.html">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="laws.html">Laws</a></li>
                 <li><a href="artifactHelp.html" class="active">I Found an Artifact</a></li>
                 <li><a href="edu-resources.html">Educational Resources</a></li>
@@ -1307,37 +1569,52 @@
                 <button class="btn" onclick="lookupLocation()">Find Property Information</button>
                 
                 <!-- Sample Coordinates -->
-                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid #e0e0e0;">
-                    <p style="font-weight: 600; color: #2c3e50; margin-bottom: 1rem;">📍 Try Sample Locations:</p>
-                    <div style="display: grid; gap: 0.5rem;">
-                        <button class="btn" onclick="loadSampleCoords(46.8523, -121.7603, 'National Park Service')" 
-                                style="background: #27ae60; font-size: 0.9rem; padding: 0.6rem 1rem;">
-                            🏞️ National Park Service (Mt. Rainier)
+                <div class="sample-locations-container">
+                    <p class="sample-locations-title">📍 Try Sample Locations:</p>
+                    
+                    <!-- Washington State -->
+                    <div class="state-section">
+                        <button class="state-header" onclick="toggleState(this)">
+                            <span class="state-name">🌲 Washington State</span>
+                            <span class="toggle-icon">▼</span>
                         </button>
-                        <button class="btn" onclick="loadSampleCoords(48.052727359509, -121.3570518501979, 'National Forest Service')" 
-                                style="background: #16a085; font-size: 0.9rem; padding: 0.6rem 1rem;">
-                            🌲 National Forest Service (Mt. Baker-Snoqualmie)
-                        </button>
-                        <button class="btn" onclick="loadSampleCoords(47.55858371570509, -122.05892874774389, 'Washington State Parks')" 
-                                style="background: #2980b9; font-size: 0.9rem; padding: 0.6rem 1rem;">
-                            🏕️ Washington State Parks (Lake Sammamish State Park)
-                        </button>
-                        <button class="btn" onclick="loadSampleCoords(47.668265406752234, -122.1461806080578, 'City of Redmond Park')" 
-                                style="background: #8e44ad; font-size: 0.9rem; padding: 0.6rem 1rem;">
-                            🎡 City of Redmond Park (Grass Lawn Park)
-                        </button>
-                        <button class="btn" onclick="loadSampleCoords(47.6611, -122.1133, 'King County Park')" 
-                                style="background: #e67e22; font-size: 0.9rem; padding: 0.6rem 1rem;">
-                            🌳 King County Park (Marymoor Park)
-                        </button>
-                        <button class="btn" onclick="loadSampleCoords(47.6062, -122.3321, 'Private Property - Seattle')" 
-                                style="background: #95a5a6; font-size: 0.9rem; padding: 0.6rem 1rem;">
-                            🏠 Private Property (Seattle)
-                        </button>
-                        <button class="btn" onclick="loadSampleCoords(47.6611, -122.1133, 'Private Property - King County')" 
-                                style="background: #7f8c8d; font-size: 0.9rem; padding: 0.6rem 1rem;">
-                            �️ Private Property (King County)
-                        </button>
+                        <div class="state-locations">
+                            <button class="location-btn-sample" onclick="loadSampleCoords(46.8523, -121.7603, 'National Park Service')">
+                                <span class="location-icon">🏞️</span>
+                                <span>Mt. Rainier National Park</span>
+                                <span class="location-type">Federal</span>
+                            </button>
+                            <button class="location-btn-sample" onclick="loadSampleCoords(48.052727359509, -121.3570518501979, 'National Forest Service')">
+                                <span class="location-icon">🌲</span>
+                                <span>Mt. Baker-Snoqualmie National Forest</span>
+                                <span class="location-type">Federal</span>
+                            </button>
+                            <button class="location-btn-sample" onclick="loadSampleCoords(47.55858371570509, -122.05892874774389, 'Washington State Parks')">
+                                <span class="location-icon">🏕️</span>
+                                <span>Lake Sammamish State Park</span>
+                                <span class="location-type">State</span>
+                            </button>
+                            <button class="location-btn-sample" onclick="loadSampleCoords(47.668265406752234, -122.1461806080578, 'City of Redmond Park')">
+                                <span class="location-icon">🎡</span>
+                                <span>Grass Lawn Park, Redmond</span>
+                                <span class="location-type">City</span>
+                            </button>
+                            <button class="location-btn-sample" onclick="loadSampleCoords(47.6611, -122.1133, 'King County Park')">
+                                <span class="location-icon">🌳</span>
+                                <span>Marymoor Park</span>
+                                <span class="location-type">County</span>
+                            </button>
+                            <button class="location-btn-sample" onclick="loadSampleCoords(47.6062, -122.3321, 'Private Property - Seattle')">
+                                <span class="location-icon">🏠</span>
+                                <span>Private Property, Seattle</span>
+                                <span class="location-type">Private</span>
+                            </button>
+                            <button class="location-btn-sample" onclick="loadSampleCoords(47.6611, -122.1133, 'Private Property - King County')">
+                                <span class="location-icon">🏘️</span>
+                                <span>Private Property, King County</span>
+                                <span class="location-type">Private</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1561,6 +1838,16 @@
                         
                         <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
                         
+                        <h4 style="color: #2c3e50; margin-bottom: 1rem;">⚖️ Applicable Laws</h4>
+                        <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">Select which laws apply to this location. If no laws are selected, the laws section will be hidden for this instruction.</p>
+                        <button type="button" class="btn" id="editLoadLawsBtn" style="background: #9b59b6; margin-bottom: 1rem;">📜 Load Available Laws</button>
+                        <div id="editLawsSelection" style="display: none; max-height: 300px; overflow-y: auto; background: #f8f9fa; padding: 1rem; border-radius: 8px; border: 1px solid #e0e0e0;">
+                            <!-- Laws checkboxes will be loaded here -->
+                        </div>
+                        <div id="editSelectedLawsPreview" style="margin-top: 1rem;"></div>
+                        
+                        <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                        
                         <button type="submit" class="btn" style="background: #f39c12;">💾 Update Instruction</button>
                         <button type="button" class="btn" id="cancelEditBtn" style="background: #95a5a6; margin-left: 0.5rem;">❌ Cancel</button>
                         <button type="button" class="btn" id="deleteBtn" style="background: #e74c3c; float: right;">🗑️ Delete</button>
@@ -1621,6 +1908,16 @@
                     <button type="button" class="btn" id="addContactBtn" style="background: #27ae60; margin-bottom: 1rem;">
                         ➕ Add Contact
                     </button>
+                    
+                    <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                    
+                    <h4 style="color: #2c3e50; margin-bottom: 1rem;">⚖️ Applicable Laws</h4>
+                    <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">Select which laws apply to this location. If no laws are selected, the laws section will be hidden for this instruction.</p>
+                    <button type="button" class="btn" id="loadLawsBtn" style="background: #9b59b6; margin-bottom: 1rem;">📜 Load Available Laws</button>
+                    <div id="lawsSelection" style="display: none; max-height: 300px; overflow-y: auto; background: #f8f9fa; padding: 1rem; border-radius: 8px; border: 1px solid #e0e0e0;">
+                        <!-- Laws checkboxes will be loaded here -->
+                    </div>
+                    <div id="selectedLawsPreview" style="margin-top: 1rem;"></div>
                     
                     <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
                     
@@ -2028,6 +2325,10 @@
                     // Generate HTML content from contacts
                     const htmlContent = generateHTMLFromContacts(contacts, specialInstructions, generalNotes);
 
+                    // Get selected laws
+                    const selectedLaws = getSelectedLawIds('lawsSelection');
+                    console.log('Selected laws:', selectedLaws);
+
                     // Create instruction document
                     const instructionData = {
                         htmlContent: htmlContent,
@@ -2035,6 +2336,7 @@
                         contacts: contacts,
                         specialInstructions: specialInstructions,
                         generalNotes: generalNotes,
+                        selectedLaws: selectedLaws,
                         createdAt: new Date().toISOString(),
                         createdBy: currentUser.email
                     };
@@ -2059,6 +2361,9 @@
                         document.getElementById('addInstructionForm').reset();
                         document.getElementById('keywordPreview').innerHTML = '';
                         document.getElementById('contactsList').innerHTML = '';
+                        document.getElementById('lawsSelection').style.display = 'none';
+                        document.getElementById('lawsSelection').innerHTML = '';
+                        document.getElementById('selectedLawsPreview').innerHTML = '';
                         contactCounter = 0;
                         
                         console.log('Instruction added:', docId, instructionData);
@@ -2154,6 +2459,24 @@
                 console.log('✓ Delete button listener attached');
             }
             
+            // Load Laws button for Add form
+            const loadLawsBtn = document.getElementById('loadLawsBtn');
+            if (loadLawsBtn) {
+                loadLawsBtn.addEventListener('click', function() {
+                    loadAvailableLaws('lawsSelection', 'selectedLawsPreview');
+                });
+                console.log('✓ Load laws button listener attached');
+            }
+            
+            // Load Laws button for Edit form
+            const editLoadLawsBtn = document.getElementById('editLoadLawsBtn');
+            if (editLoadLawsBtn) {
+                editLoadLawsBtn.addEventListener('click', function() {
+                    loadAvailableLaws('editLawsSelection', 'editSelectedLawsPreview');
+                });
+                console.log('✓ Edit load laws button listener attached');
+            }
+            
             console.log('✅ Admin event listeners initialization complete');
         }
 
@@ -2218,6 +2541,111 @@
             
             return html;
         }
+
+        // ============== LAW SELECTION FUNCTIONS ==============
+        // Load available laws for admin to select
+        async function loadAvailableLaws(containerId, previewId) {
+            const container = document.getElementById(containerId);
+            const preview = document.getElementById(previewId);
+            
+            if (!container) {
+                console.error('Laws container not found:', containerId);
+                return;
+            }
+            
+            try {
+                // Show loading
+                container.innerHTML = '<p style="text-align: center; color: #7f8c8d;">Loading laws...</p>';
+                container.style.display = 'block';
+                
+                // Fetch all laws from database
+                const lawsRef = collection(db, 'archaeologyLaws');
+                const lawsSnapshot = await getDocs(lawsRef);
+                
+                if (lawsSnapshot.empty) {
+                    container.innerHTML = '<p style="text-align: center; color: #7f8c8d;">No laws found in database</p>';
+                    return;
+                }
+                
+                const laws = [];
+                lawsSnapshot.forEach((doc) => {
+                    laws.push({ id: doc.id, ...doc.data() });
+                });
+                
+                // Sort laws by type and state
+                laws.sort((a, b) => {
+                    const typeOrder = { federal: 1, state: 2, county: 3, local: 4 };
+                    const aType = typeOrder[a.type] || 99;
+                    const bType = typeOrder[b.type] || 99;
+                    if (aType !== bType) return aType - bType;
+                    return (a.state || '').localeCompare(b.state || '');
+                });
+                
+                // Get currently selected laws if editing
+                const currentlySelected = window.tempSelectedLaws || getSelectedLawIds(containerId);
+                
+                // Generate checkboxes
+                let html = '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
+                laws.forEach((law) => {
+                    const title = law.title || law.name || 'Untitled Law';
+                    const type = law.type || 'unknown';
+                    const state = law.state ? ` - ${law.state}` : '';
+                    const county = law.county ? ` (${law.county} County)` : '';
+                    const isChecked = currentlySelected.includes(law.id) ? 'checked' : '';
+                    
+                    html += `
+                        <label style="display: flex; align-items: start; gap: 0.5rem; padding: 0.5rem; background: white; border-radius: 6px; border: 1px solid #e0e0e0; cursor: pointer; transition: all 0.2s ease;">
+                            <input type="checkbox" 
+                                   value="${law.id}" 
+                                   ${isChecked}
+                                   onchange="updateLawSelection('${containerId}', '${previewId}')"
+                                   style="margin-top: 0.25rem; cursor: pointer;">
+                            <span style="flex: 1;">
+                                <span class="law-type ${type}" style="display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 0.5rem;">${type.toUpperCase()}</span>
+                                <strong>${title}</strong>${state}${county}
+                            </span>
+                        </label>
+                    `;
+                });
+                html += '</div>';
+                
+                container.innerHTML = html;
+                
+                // Update preview
+                updateLawSelection(containerId, previewId);
+                
+            } catch (error) {
+                console.error('Error loading laws:', error);
+                container.innerHTML = `<p style="text-align: center; color: #e74c3c;">Error loading laws: ${error.message}</p>`;
+            }
+        }
+        
+        // Update law selection preview
+        window.updateLawSelection = function(containerId, previewId) {
+            const container = document.getElementById(containerId);
+            const preview = document.getElementById(previewId);
+            
+            if (!container || !preview) return;
+            
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
+            const count = checkboxes.length;
+            
+            if (count === 0) {
+                preview.innerHTML = '<p style="color: #7f8c8d; font-size: 0.9rem;"><em>No laws selected - the laws section will be hidden for this instruction</em></p>';
+            } else {
+                preview.innerHTML = `<p style="color: #27ae60; font-weight: 600; font-size: 0.9rem;">✓ ${count} law${count === 1 ? '' : 's'} selected</p>`;
+            }
+        };
+        
+        // Get selected law IDs from a container
+        function getSelectedLawIds(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return [];
+            
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+        // ============== END LAW SELECTION FUNCTIONS ==============
 
         // ============== SEARCH AND EDIT FUNCTIONS ==============
         let editContactCounter = 0;
@@ -2371,6 +2799,18 @@ async function searchInstructions(searchTerm = '') {
                     addEditContactField();
                 }
                 
+                // Load selected laws if any
+                if (data.selectedLaws && data.selectedLaws.length > 0) {
+                    // Store selected laws temporarily
+                    window.tempSelectedLaws = data.selectedLaws;
+                    // Auto-load laws with selections
+                    loadAvailableLaws('editLawsSelection', 'editSelectedLawsPreview');
+                } else {
+                    window.tempSelectedLaws = [];
+                    document.getElementById('editLawsSelection').style.display = 'none';
+                    document.getElementById('editSelectedLawsPreview').innerHTML = '<p style="color: #7f8c8d; font-size: 0.9rem;"><em>No laws selected - click "Load Available Laws" to add laws</em></p>';
+                }
+                
                 // Show edit form and scroll to it
                 document.getElementById('editFormContainer').style.display = 'block';
                 document.getElementById('editFormContainer').scrollIntoView({ behavior: 'smooth' });
@@ -2506,12 +2946,17 @@ async function searchInstructions(searchTerm = '') {
             const keywords = keywordsInput.split(',').map(k => k.trim().toLowerCase()).filter(k => k);
             const htmlContent = generateHTMLFromContacts(contacts, specialInstructions, generalNotes);
             
+            // Get selected laws
+            const selectedLaws = getSelectedLawIds('editLawsSelection');
+            console.log('Updating with selected laws:', selectedLaws);
+            
             const instructionData = {
                 htmlContent: htmlContent,
                 keywords: keywords,
                 contacts: contacts,
                 specialInstructions: specialInstructions,
                 generalNotes: generalNotes,
+                selectedLaws: selectedLaws,
                 updatedAt: new Date().toISOString(),
                 updatedBy: currentUser.email
             };
@@ -2693,7 +3138,7 @@ async function searchInstructions(searchTerm = '') {
                     
                     // Display results
                     displayPropertyInfo(parcelData, specificInstructions);
-                    displayRelevantLaws(parcelData); // Display relevant laws for the location
+                    displayRelevantLaws(parcelData, specificInstructions); // Pass specificInstructions for law selection
                     displayParcelMap(parcelData); // Display the map with polygon
                     displayGuidance(parcelData, specificInstructions);
                 } else {
@@ -3194,61 +3639,34 @@ async function searchInstructions(searchTerm = '') {
         }
 
         // Display relevant laws for the location
-        async function displayRelevantLaws(propertyData) {
+        async function displayRelevantLaws(propertyData, specificInstructions) {
             const lawsSection = document.getElementById('relevantLawsSection');
             const lawsContent = document.getElementById('relevantLawsContent');
             
-            const stateAbbr = propertyData.state; // e.g., "WA"
-            const jurisdiction = propertyData.jurisdiction;
+            // Check if instruction has selected laws
+            const selectedLawIds = specificInstructions?.selectedLaws || [];
             
-            if (!stateAbbr) {
+            if (selectedLawIds.length === 0) {
+                console.log('No laws selected for this instruction');
                 lawsSection.style.display = 'none';
                 return;
             }
             
-            // Map state abbreviations to full names
-            const stateNameMap = {
-                'WA': 'Washington',
-                'CA': 'California',
-                'OR': 'Oregon',
-                'TX': 'Texas',
-                'NY': 'New York',
-                'FL': 'Florida',
-                'IL': 'Illinois',
-                'PA': 'Pennsylvania',
-                // Add more as needed
-            };
-            
-            const stateName = stateNameMap[stateAbbr] || stateAbbr;
-            
             try {
-                // Fetch laws from Firebase - using archaeologyLaws collection
+                // Fetch only the selected laws
                 const lawsRef = collection(db, 'archaeologyLaws');
                 const lawsSnapshot = await getDocs(lawsRef);
                 
                 const relevantLaws = [];
                 
                 lawsSnapshot.forEach((doc) => {
-                    const lawData = doc.data();
-                    const lawState = lawData.state || '';
-                    const lawCounty = lawData.county || '';
-                    const lawType = lawData.type || 'federal';
-                    
-                    // ONLY include state and county laws (NO federal laws)
-                    // Check if state matches (compare with full state name)
-                    if (lawType === 'state' && lawState === stateName) {
-                        relevantLaws.push({ id: doc.id, ...lawData });
-                    }
-                    // Include county laws that match the state and optionally the jurisdiction
-                    else if (lawType === 'county' && lawState === stateName) {
-                        // If county field exists and jurisdiction contains it, or if no specific county
-                        if (!lawCounty || !jurisdiction || jurisdiction.toLowerCase().includes(lawCounty.toLowerCase())) {
-                            relevantLaws.push({ id: doc.id, ...lawData });
-                        }
+                    // Only include laws that were selected by admin
+                    if (selectedLawIds.includes(doc.id)) {
+                        relevantLaws.push({ id: doc.id, ...doc.data() });
                     }
                 });
                 
-                console.log(`Found ${relevantLaws.length} relevant laws for state: ${stateName} (${stateAbbr})`);
+                console.log(`Displaying ${relevantLaws.length} admin-selected laws`);
                 
                 if (relevantLaws.length === 0) {
                     lawsSection.style.display = 'none';
@@ -3677,6 +4095,16 @@ async function searchInstructions(searchTerm = '') {
             
             // Automatically trigger the lookup
             lookupLocationByCoords(lat, lng);
+        };
+        
+        // Toggle state section collapse/expand
+        window.toggleState = function(headerElement) {
+            const stateSection = headerElement.parentElement;
+            const stateLocations = stateSection.querySelector('.state-locations');
+            
+            // Toggle active class on header and locations
+            headerElement.classList.toggle('active');
+            stateLocations.classList.toggle('active');
         };
 
         // ============== HAMBURGER MENU ==============

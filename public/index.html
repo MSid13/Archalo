@@ -7,78 +7,2558 @@
     <link rel="icon" type="image/png" href="owlcheologists.png">
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         body {
-            background: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
             color: #333;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            background-color: #fafafa;
         }
-
-        .container {
-            max-width: 500px;
+        
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            color: #ecf0f1;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: clamp(1rem, 3vw, 2rem);
+        }
+        
+        .nav-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            transform: translateY(-1px);
+        }
+        
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #ecf0f1;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        /* Mobile menu toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #ecf0f1;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Artifact of the day section */
+        .artifact-of-day {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: clamp(2rem, 5vw, 4rem) 2rem;
             text-align: center;
         }
 
-        h1 {
-            font-size: 32px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 16px;
+        /* Found Artifact Info Section */
+        .found-artifact-info {
+            background: linear-gradient(135deg, #fff8f0, #fef5e7);
+            padding: clamp(2rem, 5vw, 3rem) 2rem;
+            text-align: center;
+            border-bottom: 3px solid #d4704a;
         }
 
-        p {
-            font-size: 16px;
+        .found-artifact-info h2 {
+            color: #2c3e50;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .found-artifact-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .found-artifact-content p {
+            color: #555;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .found-artifact-content ol {
+            padding-left: 1.5rem;
+        }
+
+        .found-artifact-content ol li {
+            margin-bottom: 0.8rem;
+        }
+
+        .found-artifact-content ol li strong {
+            color: #d4704a;
+        }
+
+        .found-artifact-content input[type="number"] {
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .found-artifact-content input[type="number"]:focus {
+            border-color: #3498db !important;
+        }
+
+        /* Home page guidance results */
+        #homeGuidanceResults {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive adjustments for home artifact finder */
+        @media (max-width: 768px) {
+            .found-artifact-content > div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 1.5rem 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            color: #2c3e50;
+        }
+
+        .read-more-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #d4704a, #c0603c);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 112, 74, 0.2);
+        }
+
+        .read-more-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 112, 74, 0.35);
+        }
+
+        
+        .artifact-of-day h2 {
+            color: #2c3e50;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        .artifact-placeholder {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            background: transparent;
+        }
+        
+        .artifact-placeholder p {
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+        }
+        
+        .artifact-content {
+            display: grid;
+            grid-template-columns: minmax(250px, 1fr) 2fr;
+            gap: clamp(1.5rem, 4vw, 3rem);
+            align-items: center;
+            text-align: left;
+        }
+        
+        .artifact-image {
+            width: 100%;
+            max-width: 350px;
+            height: clamp(200px, 25vw, 250px);
+            object-fit: cover;
+            margin: 0 auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .artifact-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .artifact-info h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        
+        .artifact-info p {
+            color: #555;
+            margin-bottom: 0.8rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            line-height: 1.6;
+        }
+        
+        .artifact-info p strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .loading {
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+        }
+        
+        /* Features section */
+        .content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: clamp(3rem, 6vw, 5rem) 2rem;
+        }
+
+        /* Hero Content Section */
+        .hero-content {
+            text-align: center;
+            margin-bottom: clamp(4rem, 8vw, 6rem);
+        }
+
+        .hero-content h2 {
+            color: #2c3e50;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .hero-description {
+            color: #555;
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            line-height: 1.7;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            min-width: 200px;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-button.primary {
+            background: linear-gradient(135deg, #d4704a, #c0603c);
+            color: white;
+        }
+
+        .cta-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 112, 74, 0.3);
+        }
+
+        .cta-button.secondary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .cta-button.secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: clamp(4rem, 8vw, 6rem);
+        }
+        
+        .feature {
+            text-align: center;
+            padding: clamp(2rem, 4vw, 3rem);
+            background: transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #d4704a, #3498db);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-8px);
+        }
+
+        .feature:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        
+        .feature h3 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            font-weight: 600;
+        }
+        
+        .feature p {
             color: #666;
-            margin-bottom: 24px;
+            font-size: clamp(0.95rem, 2vw, 1.1rem);
+            line-height: 1.7;
+        }
+
+        /* About Section */
+        .about-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 2rem;
+        }
+
+        .about-section h2 {
+            color: #2c3e50;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .about-text p {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .disclaimer {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .disclaimer h4 {
+            color: #856404;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .disclaimer p {
+            color: #856404;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+        }
+
+        .stat-number {
+            color: #d4704a;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* Responsive breakpoints */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .nav-links {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: linear-gradient(135deg, #2c3e50, #34495e);
+                width: 100%;
+                text-align: center;
+                transition: left 0.3s ease;
+                box-shadow: 0 10px 27px rgba(0,0,0,0.3);
+                padding: 1rem 0;
+                gap: 0;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                padding: 0.5rem 0;
+                width: 100%;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 1rem;
+                width: 100%;
+            }
+            
+            .mobile-menu-toggle {
+                display: none;
+            }
+            
+            .artifact-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+            
+            .artifact-image {
+                max-width: 280px;
+                height: 200px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-button {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .artifact-of-day {
+                padding: 2rem 1rem;
+            }
+            
+            .content {
+                padding: 2rem 1rem;
+            }
+            
+            .features {
+                gap: 1.5rem;
+            }
+            
+            .feature {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .artifact-content {
+                gap: 4rem;
+            }
+            
+            .artifact-image {
+                max-width: 400px;
+                height: 280px;
+            }
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: #ecf0f1;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        
+        .footer-disclaimer {
+            max-width: 900px;
+            margin: 0 auto 1rem;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #bdc3c7;
+        }
+        
+        .admin-link {
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 1px dotted transparent;
+        }
+        
+        .admin-link:hover {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Focus styles for accessibility */
+        .nav-links a:focus,
+        .mobile-menu-toggle:focus {
+            outline: 2px solid #3498db;
+            outline-offset: 2px;
+        }
+
+        /* Admin Modal & Permissions Panel */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .admin-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .admin-modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .admin-modal-content h2 {
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .permission-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+        }
+
+        .permission-item label {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .permission-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
         }
 
         .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            font-size: 14px;
-            text-decoration: none;
-            background: #333;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
-            border-radius: 4px;
         }
 
-        .btn:hover {
-            background: #555;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
         }
 
-        .loader {
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #7f8c8d;
+            background: none;
+            border: none;
             width: 40px;
             height: 40px;
-            border: 3px solid #e0e0e0;
-            border-top-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            transition: all 0.3s;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .close-modal:hover {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        .user-list {
+            margin-top: 1.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .user-item {
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .user-email {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .user-perms {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+
+        #loginForm, #permissionsPanel {
+            display: none;
+        }
+
+        #loginForm.active, #permissionsPanel.active {
+            display: block;
+        }
+
+        /* Artifact Edit Buttons */
+        .artifact-edit-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-left: 0.5rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .artifact-edit-btn:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .artifact-edit-controls {
+            margin-top: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .artifact-edit-input {
+            width: 100%;
+            padding: 0.6rem;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .artifact-edit-textarea {
+            width: 100%;
+            padding: 0.6rem;
+            border: 2px solid #3498db;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .artifact-save-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .artifact-save-btn:hover {
+            background: #229954;
+        }
+
+        .artifact-cancel-btn {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .artifact-cancel-btn:hover {
+            background: #7f8c8d;
+        }
+
+        /* Announcement Banner Markdown Styles */
+        #announcement-content {
+            color: #2c3e50;
+            font-size: 0.85rem;
+            text-align: center;
+            margin: 0;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        #announcement-content p {
+            margin: 0;
+            padding: 0;
+        }
+
+        #announcement-content a {
+            color: #2980b9;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        #announcement-content a:hover {
+            color: #3498db;
+        }
+
+        #announcement-content strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        #announcement-content em {
+            font-style: italic;
+        }
+
+        #announcement-content code {
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        /* Contact Card Styles (matching artifactHelp.html) */
+        .contact-card {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .contact-card h4 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-info {
+            color: #856404;
+        }
+        
+        .emergency-note {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #721c24;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="loader"></div>
-        <h1>Archalo</h1>
-        <p>Redirecting you now...</p>
-        <p>Click <a href="Archalo.html">here</a> if you're not redirected automatically.</p>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" style="text-decoration: none; color: inherit;">
+                <div class="logo">Archalo</div>
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="laws.html">Laws</a></li>
+                <li><a href="artifactHelp.html">I Found an Artifact</a></li>
+                <li><a href="edu-resources.html">Educational Resources</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div id="announcement-banner" style="background: linear-gradient(135deg, #e8f4f8, #d6e9f1); padding: 0.8rem 1.5rem; margin: 0; border-bottom: 2px solid rgba(52, 152, 219, 0.15);">
+        <div id="announcement-content" style="color: #2c3e50; font-size: 0.85rem; text-align: center; margin: 0; font-weight: 400; line-height: 1.4;">
+            📢 Loading announcement...
+        </div>
     </div>
 
-    <script>
-        setTimeout(() => {
-            window.location.href = 'Archalo.html';
-        }, 1500);
+    <!-- I Found an Artifact Info Section -->
+    <section class="found-artifact-info">
+        <div class="found-artifact-content">
+            <h2>🔍 Found an Artifact?</h2>
+            <p style="font-size: clamp(1.1rem, 2.5vw, 1.3rem); margin-bottom: 1rem; line-height: 1.5;">
+                <strong>Don't panic! We'll help you do the right thing.</strong>
+            </p>
+            <p style="font-size: clamp(0.95rem, 2vw, 1.1rem); margin-bottom: 1.5rem; color: #555;">
+                Whether it's a pottery shard, arrowhead, or historic structure—finding an artifact is exciting but comes with important responsibilities. 
+                Get instant, location-specific guidance on who to contact and what to do next.
+            </p>
+            
+            <!-- Location Input -->
+            <div style="background: rgba(255, 255, 255, 0.8); padding: 1.5rem; margin: 1.5rem auto; max-width: 600px;">
+                <h3 style="color: #2c3e50; margin-bottom: 1rem; font-size: clamp(1rem, 2.5vw, 1.2rem);">� Get Location-Specific Guidance</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label style="display: block; font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; font-size: 0.9rem;">Latitude:</label>
+                        <input type="number" id="homeLatitude" step="any" placeholder="e.g., 47.6062" 
+                               style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: all 0.3s ease;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; font-size: 0.9rem;">Longitude:</label>
+                        <input type="number" id="homeLongitude" step="any" placeholder="e.g., -122.3321"
+                               style="width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: all 0.3s ease;">
+                    </div>
+                </div>
+                <button onclick="homeLookupLocation()" class="read-more-link" style="width: 100%; margin-top: 0.5rem; cursor: pointer; border: none; font-size: 1.05rem;">
+                    🔍 Find Who to Contact
+                </button>
+                <button onclick="homeGetCurrentLocation()" class="read-more-link" style="width: 100%; margin-top: 0.8rem; background: linear-gradient(135deg, #27ae60, #229954); cursor: pointer; border: none; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.2);">
+                    📍 Use My Current Location
+                </button>
+                
+                <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid rgba(0,0,0,0.08); background: linear-gradient(135deg, rgba(52, 152, 219, 0.05), rgba(41, 128, 185, 0.08)); padding: 1.2rem; border-radius: 8px;">
+                    <p style="font-size: 1rem; color: #2c3e50; margin-bottom: 0.3rem; font-weight: 700;">
+                        🔍 Want the Complete Picture?
+                    </p>
+                    <p style="font-size: 0.88rem; color: #555; margin-bottom: 0.8rem; line-height: 1.5;">
+                        Get <strong>interactive maps</strong>, <strong>detailed timelines</strong>, <strong>parcel boundaries</strong>, and <strong>relevant federal laws</strong>, and <strong>much more!</strong> — all in one place!
+                    </p>
+                    <a href="artifactHelp.html" style="display: inline-block; color: white; background: linear-gradient(135deg, #3498db, #2980b9); text-decoration: none; font-weight: 700; font-size: 1rem; padding: 0.7rem 1.8rem; border-radius: 6px; box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3); transition: all 0.3s ease; transform: scale(1);">
+                        🗺️ Launch Full Artifact Tool →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Results Display -->
+            <div id="homeGuidanceResults" style="display: none; background: rgba(255, 255, 255, 0.9); padding: 1.5rem; margin: 1.5rem auto; max-width: 800px; text-align: left;">
+                <div id="homeGuidanceContent"></div>
+                
+            </div>
+
+            <!-- Default Steps (shown when no location provided) -->
+            <div id="homeDefaultSteps" style="display: none;">
+            </div>
+        </div>
+    </section>
+
+    <section class="artifact-of-day">
+        <h2>Artifact of the Day</h2>
+        <div class="artifact-placeholder" id="artifact-container">
+            <p class="loading">Loading today's artifact...</p>
+        </div>
+    </section>
+    
+    <section class="content">
+        <!-- Hero Content Section -->
+        <div class="hero-content">
+            <h2>Welcome to Archalo</h2>
+            <p class="hero-description">Your comprehensive guide to archaeological discovery. Found an artifact? Don't know what to do next? We'll support you through every step with location-specific guidance, legal requirements, and expert contact information.</p>
+            
+            <div class="quick-actions">
+                <a href="artifactHelp.html" class="cta-button primary">🔍 I Found an Artifact</a>
+                <a href="laws.html" class="cta-button secondary">⚖️ View Legal Guidelines</a>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <!-- About Section -->
+        <div class="about-section">
+            <h2>About Archalo</h2>
+            <div class="about-content">
+            <div class="about-text">
+                <p style="font-size: 1.2rem; color: #2c3e50; font-weight: 500; margin-bottom: 2rem;"></p>
+                Archalo is proudly developed by the <strong style="color: #d4704a;">FLL Owlcheologists Team #41991</strong>, 
+                dedicated to bridging the gap between archaeological discovery and proper reporting procedures.
+                </p>
+                
+                <div style="background: linear-gradient(135deg, #3498db15, #d4704a15); padding: 2rem; border-radius: 12px; border-left: 4px solid #d4704a; margin: 2rem 0;">
+                <h3 style="color: #2c3e50; margin-bottom: 1rem; font-size: 1.3rem;">📍 Our Mission</h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #444;">
+                    To empower the public to protect cultural heritage by simplifying the process of reporting 
+                    archaeological finds and providing essential legal and educational resources.
+                </p>
+                </div>
+                
+                <p style="font-size: 1.05rem; line-height: 1.8; color: #555; margin: 2rem 0;">
+                🌍 Our platform combines <strong>real-time location data</strong> with comprehensive legal databases 
+                to provide accurate, <strong>jurisdiction-specific guidance</strong> for archaeological finds.
+                </p>
+                
+                <div style="background: #fff3cd; border: 2px solid #ffeaa7; border-radius: 12px; padding: 1.5rem; margin-top: 2.5rem; text-align: center;">
+                <p style="color: #856404; font-size: 1rem; margin: 0;">
+                    <strong>Found an issue?</strong> Help us improve! 
+                    <a href="https://forms.gle/NN3anqoQDDi9g5vD7" 
+                       style="color: #d4704a; font-weight: 600; text-decoration: none; border-bottom: 2px solid #d4704a; transition: all 0.3s;"
+                       onmouseover="this.style.color='#c0603c'; this.style.borderColor='#c0603c';"
+                       onmouseout="this.style.color='#d4704a'; this.style.borderColor='#d4704a';">
+                    Report bugs or inaccuracies here →
+                    </a>
+                </p>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-item" style="background: linear-gradient(135deg, #ffffff, #f8f9fa); border: 1px solid #e9ecef;">
+                <div class="stat-number">10+</div>
+                <div class="stat-label">States Covered & more coming soon</div>
+                </div>
+                <div class="stat-item" style="background: linear-gradient(135deg, #ffffff, #f8f9fa); border: 1px solid #e9ecef;">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Free to Use</div>
+                </div>
+            </div>
+            </div>
+        </div></div></a></p>
+    </section>
+    <!-- Admin Modal -->
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            
+            <!-- Login Form -->
+            <div id="loginForm" class="active">
+                <h2>🔐 Admin Login</h2>
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label for="adminEmail">Email</label>
+                        <input type="email" id="adminEmail" placeholder="admin@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</p></label>
+                        <input type="password" id="adminPassword" placeholder="Enter password" required>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <button type="button" class="btn btn-secondary" id="cancelLogin">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Permi</a>ssions Panel (Only for admin@example.com) -->
+            <div id="permissionsPanel">
+                <h2>👤 Admin Panel</h2>
+                <p style="color: #666; margin-bottom: 1.5rem;">
+                    <strong>Logged in as:</strong> <span id="currentUserEmail"></span>
+                    <button class="btn btn-secondary" id="logoutBtn" style="float: right; padding: 0.5rem 1rem; font-size: 0.9rem;">Logout</button>
+                </p>
+
+                <!-- Announcements Section -->
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                    <h3 style="margin-bottom: 1rem;">📢 Edit Announcement</h3>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
+                        Edit the announcement banner shown on the homepage. Supports Markdown formatting.
+                    </p>
+                    <div class="form-group">
+                        <label for="announcementText">Announcement Text (Markdown supported)</label>
+                        <textarea id="announcementText" 
+                                  rows="4" 
+                                  style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 0.9rem;"
+                                  placeholder="📢 **Example:** Your announcement here with [links](https://example.com)"></textarea>
+                        <small style="color: #666; display: block; margin-top: 0.5rem;">
+                            <strong>Markdown tips:</strong> **bold**, *italic*, [link text](url)
+                        </small>
+                    </div>
+                    <div class="modal-buttons" style="margin-top: 1rem;">
+                        <button class="btn btn-primary" id="saveAnnouncementBtn">💾 Save Announcement</button>
+                        <button class="btn btn-secondary" id="loadAnnouncementBtn">🔄 Load Current</button>
+                    </div>
+                    <div id="announcementPreview" style="margin-top: 1rem; padding: 1rem; background: white; border: 1px solid #ddd; border-radius: 6px; display: none;">
+                        <strong>Preview:</strong>
+                        <div id="announcementPreviewContent" style="margin-top: 0.5rem;"></div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Edit User Permissions</h3>
+                <div class="form-group">
+                    <label for="targetUserEmail">User Email</label>
+                    <input type="email" id="targetUserEmail" placeholder="user@example.com">
+                    <button class="btn btn-primary" id="loadUserBtn" style="margin-top: 0.5rem;">Load User</button>
+                </div>
+
+                <div id="permissionsForm" style="display: none; margin-top: 1.5rem;">
+                    <h4 style="margin-bottom: 1rem;">Permissions for: <span id="editingUserEmail"></span></h4>
+                    
+                    <div class="permission-item">
+                        <label>
+                            <input type="checkbox" id="permLaws" checked>
+                            <span><strong>📜 Laws Admin Panel</strong> - Can access Laws admin panel</span>
+                        </label>
+                    </div>
+
+                    <div class="permission-item">
+                        <label>
+                            <input type="checkbox" id="permDeletion" checked>
+                            <span><strong>🗑️ Delete Content</strong> - Can delete laws, resources, and artifact instructions</span>
+                        </label>
+                    </div>
+
+                    <div class="permission-item">
+                        <label>
+                            <input type="checkbox" id="permFound" checked>
+                            <span><strong>🔍 Found Artifact Admin Panel</strong> - Can access admin panel on "I Found an Artifact" page</span>
+                        </label>
+                    </div>
+
+                    <div class="permission-item">
+                        <label>
+                            <input type="checkbox" id="permEdu" checked>
+                            <span><strong>📚 Add Educational Resources</strong> - Can add and edit educational resources</span>
+                        </label>
+                    </div>
+
+                    <div class="modal-buttons">
+                        <button class="btn btn-primary" id="savePermissionsBtn">💾 Save Permissions</button>
+                        <button class="btn btn-danger" id="deletePermissionsBtn">🗑️ Delete Config</button>
+                    </div>
+                </div>
+
+                <div class="user-list" id="userListContainer" style="margin-top: 2rem;">
+                    <h4>Recent Users</h4>
+                    <div id="userList">
+                        <!-- User list will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-disclaimer">
+                        <p style="margin: 1rem 0; font-size: 0.95rem;">
+                <strong>Data Sources:</strong> To view the data sources and attributions used on this page, please visit our 
+                <a href="credits.html" style="color: #3498db; text-decoration: none; font-weight: 600; border-bottom: 2px solid transparent; transition: border-color 0.3s ease;" 
+                   onmouseover="this.style.borderColor='#3498db'" 
+                   onmouseout="this.style.borderColor='transparent'">
+                    Credits & Attributions
+                </a> page.
+            </p>
+            <p><strong>Disclaimer:</strong> We strive to provide the most accurate and up-to-date data available; however, we cannot guarantee its completeness, accuracy, or fitness for any particular purpose. This guidance is advisory only and should never be relied upon as a substitute for official legal, regulatory, or professional advice. We assume no responsibility or liability for any losses, damages, or consequences resulting directly or indirectly from the use of this information. Users assume all risk and must always verify all information with the relevant governmental or legal authorities.</p>
+            <p><br>Report data inaccuracies and/or website bugs <a href="https://forms.gle/NN3anqoQDDi9g5vD7" style="color: #3498db; text-decoration: underline; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.color='#5dade2'; this.style.textDecoration='none'" onmouseout="this.style.color='#3498db'; this.style.textDecoration='underline'">here</a>.</p>
+        </div>
+        <a href="#" class="admin-link" id="adminLoginBtn">Login</a>
+    </footer>
+
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, query, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCYpXOczp5nRRP1S2Gdb1ADjIAHeJQVq0",
+            authDomain: "owlcheologists.firebaseapp.com",
+            projectId: "owlcheologists",
+            storageBucket: "owlcheologists.firebasestorage.app",
+            messagingSenderId: "323297596743",
+            appId: "1:323297596743:web:c9455e40779b7c09522862",
+            measurementId: "G-2CFYWTQCQ4"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // ============== ANNOUNCEMENT LOADING ==============
+        // Wait for marked.js to be available
+        function waitForMarked() {
+            return new Promise((resolve) => {
+                if (typeof marked !== 'undefined') {
+                    resolve();
+                } else {
+                    const checkInterval = setInterval(() => {
+                        if (typeof marked !== 'undefined') {
+                            clearInterval(checkInterval);
+                            resolve();
+                        }
+                    }, 50);
+                }
+            });
+        }
+
+        async function loadAnnouncement() {
+            // Wait for marked.js to load
+            await waitForMarked();
+            
+            try {
+                const announcementRef = doc(db, "main", "announcements");
+                const announcementSnap = await getDoc(announcementRef);
+                
+                if (announcementSnap.exists()) {
+                    const data = announcementSnap.data();
+                    const htmlContent = data.announcement || data.content || data.message;
+                    
+                    if (htmlContent) {
+                        // Render HTML directly (no markdown parsing)
+                        const announcementDiv = document.getElementById('announcement-content');
+                        if (announcementDiv) {
+                            announcementDiv.innerHTML = htmlContent;
+                        }
+                    } else {
+                        // No content field, create default
+                        await createDefaultAnnouncement(announcementRef);
+                    }
+                } else {
+                    // Document doesn't exist, create it with default content
+                    console.log('Announcement document does not exist, creating default...');
+                    await createDefaultAnnouncement(announcementRef);
+                }
+            } catch (error) {
+                console.error('Error loading announcement:', error);
+                // Show default message on error
+                const announcementDiv = document.getElementById('announcement-content');
+                if (announcementDiv) {
+                    announcementDiv.innerHTML = '📢 Moderate use of the "Find Property Information" feature is requested.';
+                }
+            }
+        }
+
+        // Create default announcement in database
+        async function createDefaultAnnouncement(announcementRef) {
+            const defaultAnnouncement = '📢 Moderate use of the "Find Property Information" feature is requested.';
+            
+            try {
+                await setDoc(announcementRef, {
+                    announcement: defaultAnnouncement,
+                    createdAt: new Date().toISOString(),
+                    lastUpdated: new Date().toISOString()
+                });
+                
+                console.log('Default announcement created in database');
+                
+                // Display the default announcement
+                const announcementDiv = document.getElementById('announcement-content');
+                if (announcementDiv) {
+                    const htmlContent = marked.parse(defaultAnnouncement);
+                    announcementDiv.innerHTML = htmlContent;
+                }
+            } catch (error) {
+                console.error('Error creating default announcement:', error);
+                // Still show the message even if save fails
+                const announcementDiv = document.getElementById('announcement-content');
+                if (announcementDiv) {
+                    announcementDiv.innerHTML = defaultAnnouncement;
+                }
+            }
+        }
+
+        // Load announcement on page load
+        loadAnnouncement();
+
+        // ============== ADMIN AUTHENTICATION & PERMISSIONS ==============
+        let currentUser = null;
+
+        // Check auth state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                console.log('User logged in:', user.email);
+                
+                // Show permissions panel only for admin@example.com
+                if (user.email === 'admin@example.com') {
+                    showPermissionsPanel(user);
+                    // Refresh artifact display to show edit buttons
+                    initArtifactOfDay();
+                } else {
+                    alert('Access denied. Only admin@example.com can manage permissions.');
+                    signOut(auth);
+                }
+            } else {
+                currentUser = null;
+                console.log('User logged out');
+                // Refresh artifact display to hide edit buttons
+                initArtifactOfDay();
+            }
+        });
+
+        // Initialize modal controls after DOM is loaded
+        window.addEventListener('DOMContentLoaded', () => {
+            // Modal controls
+            const adminModal = document.getElementById('adminModal');
+            const adminLoginBtn = document.getElementById('adminLoginBtn');
+            const closeModal = document.getElementById('closeModal');
+            const cancelLogin = document.getElementById('cancelLogin');
+
+            if (adminLoginBtn) {
+                console.log('Admin login button found, attaching event listener');
+                adminLoginBtn.addEventListener('click', (e) => {
+                    console.log('Login button clicked!');
+                    e.preventDefault();
+                    console.log('Opening modal...');
+                    if (adminModal) {
+                        adminModal.classList.add('active');
+                        document.getElementById('loginForm').classList.add('active');
+                        document.getElementById('permissionsPanel').classList.remove('active');
+                        console.log('Modal should now be visible');
+                    } else {
+                        console.error('Admin modal not found!');
+                    }
+                });
+            } else {
+                console.error('Admin login button not found!');
+            }
+
+            if (closeModal) {
+                closeModal.addEventListener('click', () => {
+                    adminModal.classList.remove('active');
+                });
+            }
+
+            if (cancelLogin) {
+                cancelLogin.addEventListener('click', () => {
+                    adminModal.classList.remove('active');
+                });
+            }
+
+            // Close modal on outside click
+            if (adminModal) {
+                adminModal.addEventListener('click', (e) => {
+                    if (e.target === adminModal) {
+                        adminModal.classList.remove('active');
+                    }
+                });
+            }
+
+            // Login form submission
+            const adminLoginForm = document.getElementById('adminLoginForm');
+            if (adminLoginForm) {
+                console.log('Admin login form found, attaching submit listener');
+                adminLoginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    console.log('Login form submitted!');
+                    const email = document.getElementById('adminEmail').value.trim();
+                    const password = document.getElementById('adminPassword').value;
+
+                    console.log('Email entered:', email);
+                    if (!email || !password) {
+                        alert('Please enter both email and password');
+                        return;
+                    }
+
+                    try {
+                        console.log('Attempting to sign in...');
+                        await signInWithEmailAndPassword(auth, email, password);
+                        console.log('Sign in successful!');
+                        // Auth state change will handle showing the panel
+                    } catch (error) {
+                        console.error('Login error:', error);
+                        alert('Login failed: ' + error.message);
+                    }
+                });
+            } else {
+                console.error('Admin login form not found!');
+            }
+        });
+
+        // Show permissions panel
+        function showPermissionsPanel(user) {
+            console.log('showPermissionsPanel called for:', user.email);
+            const adminModal = document.getElementById('adminModal');
+            const loginForm = document.getElementById('loginForm');
+            const permissionsPanel = document.getElementById('permissionsPanel');
+            
+            if (loginForm && permissionsPanel) {
+                loginForm.classList.remove('active');
+                permissionsPanel.classList.add('active');
+                document.getElementById('currentUserEmail').textContent = user.email;
+                
+                // Ensure modal stays open
+                if (adminModal) {
+                    adminModal.classList.add('active');
+                    console.log('Permissions panel should now be visible');
+                }
+                
+                loadRecentUsers();
+            } else {
+                console.error('Login form or permissions panel not found!');
+            }
+        }
+
+        // ============== ANNOUNCEMENT MANAGEMENT ==============
+        // Load current announcement
+        async function loadCurrentAnnouncement() {
+            await waitForMarked();
+            
+            try {
+                const announcementRef = doc(db, "main", "announcements");
+                const announcementSnap = await getDoc(announcementRef);
+                
+                if (announcementSnap.exists()) {
+                    const data = announcementSnap.data();
+                    const htmlContent = data.announcement || data.content || data.message || '';
+                    
+                    // Set the textarea value
+                    const textarea = document.getElementById('announcementText');
+                    if (textarea) {
+                        textarea.value = htmlContent;
+                    }
+                    
+                    // Show preview (render HTML directly)
+                    if (htmlContent) {
+                        const previewDiv = document.getElementById('announcementPreview');
+                        const previewContent = document.getElementById('announcementPreviewContent');
+                        if (previewDiv && previewContent) {
+                            previewContent.innerHTML = htmlContent;
+                            previewDiv.style.display = 'block';
+                        }
+                    }
+                    
+                    alert('✅ Announcement loaded successfully!');
+                } else {
+                    alert('No announcement found in database.');
+                }
+            } catch (error) {
+                console.error('Error loading announcement:', error);
+                alert('Error loading announcement: ' + error.message);
+            }
+        }
+
+        // Save announcement
+        async function saveAnnouncement() {
+            await waitForMarked();
+            
+            const textarea = document.getElementById('announcementText');
+            if (!textarea) return;
+            
+            const htmlContent = textarea.value.trim();
+            
+            try {
+                const announcementRef = doc(db, "main", "announcements");
+                
+                await setDoc(announcementRef, {
+                    announcement: htmlContent,
+                    lastUpdated: new Date().toISOString()
+                });
+                
+                console.log('Announcement saved successfully');
+                
+                // Show preview (render HTML directly)
+                const previewDiv = document.getElementById('announcementPreview');
+                const previewContent = document.getElementById('announcementPreviewContent');
+                if (previewDiv && previewContent) {
+                    if (htmlContent) {
+                        previewContent.innerHTML = htmlContent;
+                        previewDiv.style.display = 'block';
+                    } else {
+                        previewDiv.style.display = 'none';
+                    }
+                }
+                
+                // Reload the announcement on the page
+                loadAnnouncement();
+                
+                alert('✅ Announcement saved successfully!');
+            } catch (error) {
+                console.error('Error saving announcement:', error);
+                alert('Error saving announcement: ' + error.message);
+            }
+        }
+
+        // Initialize permission management controls after DOM is loaded
+        window.addEventListener('DOMContentLoaded', () => {
+            // Announcement management buttons
+            const saveAnnouncementBtn = document.getElementById('saveAnnouncementBtn');
+            if (saveAnnouncementBtn) {
+                saveAnnouncementBtn.addEventListener('click', saveAnnouncement);
+            }
+
+            const loadAnnouncementBtn = document.getElementById('loadAnnouncementBtn');
+            if (loadAnnouncementBtn) {
+                loadAnnouncementBtn.addEventListener('click', loadCurrentAnnouncement);
+            }
+
+            // Live preview for announcement (render HTML directly)
+            const announcementText = document.getElementById('announcementText');
+            if (announcementText) {
+                announcementText.addEventListener('input', () => {
+                    const htmlContent = announcementText.value.trim();
+                    const previewDiv = document.getElementById('announcementPreview');
+                    const previewContent = document.getElementById('announcementPreviewContent');
+                    
+                    if (previewDiv && previewContent) {
+                        if (htmlContent) {
+                            previewContent.innerHTML = htmlContent;
+                            previewDiv.style.display = 'block';
+                        } else {
+                            previewDiv.style.display = 'none';
+                        }
+                    }
+                });
+            }
+
+            // Logout
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    const adminModal = document.getElementById('adminModal');
+                    try {
+                        await signOut(auth);
+                        adminModal.classList.remove('active');
+                        document.getElementById('loginForm').classList.add('active');
+                        document.getElementById('permissionsPanel').classList.remove('active');
+                        alert('Logged out successfully');
+                    } catch (error) {
+                        console.error('Logout error:', error);
+                        alert('Logout failed: ' + error.message);
+                    }
+                });
+            }
+
+            // Load user permissions
+            const loadUserBtn = document.getElementById('loadUserBtn');
+            if (loadUserBtn) {
+                loadUserBtn.addEventListener('click', async () => {
+                    const email = document.getElementById('targetUserEmail').value.trim();
+                    if (!email) {
+                        alert('Please enter a user email');
+                        return;
+                    }
+
+                    try {
+                        const configRef = doc(db, 'config', email);
+                        const configSnap = await getDoc(configRef);
+
+                        document.getElementById('editingUserEmail').textContent = email;
+                        document.getElementById('permissionsForm').style.display = 'block';
+
+                        if (configSnap.exists()) {
+                            const data = configSnap.data();
+                            document.getElementById('permLaws').checked = data.laws !== false;
+                            document.getElementById('permDeletion').checked = data.deletion !== false;
+                            document.getElementById('permFound').checked = data.found !== false;
+                            document.getElementById('permEdu').checked = data.edu !== false;
+                        } else {
+                            // Default all to true if no config exists
+                            document.getElementById('permLaws').checked = true;
+                            document.getElementById('permDeletion').checked = true;
+                            document.getElementById('permFound').checked = true;
+                            document.getElementById('permEdu').checked = true;
+                        }
+                    } catch (error) {
+                        console.error('Error loading user:', error);
+                        alert('Error loading user: ' + error.message);
+                    }
+                });
+            }
+
+            // Save permissions
+            const savePermissionsBtn = document.getElementById('savePermissionsBtn');
+            if (savePermissionsBtn) {
+                savePermissionsBtn.addEventListener('click', async () => {
+                    const email = document.getElementById('editingUserEmail').textContent;
+                    if (!email) {
+                        alert('No user loaded');
+                        return;
+                    }
+
+                    const permissions = {
+                        laws: document.getElementById('permLaws').checked,
+                        deletion: document.getElementById('permDeletion').checked,
+                        found: document.getElementById('permFound').checked,
+                        edu: document.getElementById('permEdu').checked
+                    };
+
+                    try {
+                        await setDoc(doc(db, 'config', email), permissions);
+                        alert(`✅ Permissions saved for ${email}`);
+                        loadRecentUsers();
+                    } catch (error) {
+                        console.error('Error saving permissions:', error);
+                        alert('Error saving permissions: ' + error.message);
+                    }
+                });
+            }
+
+            // Delete permissions config
+            const deletePermissionsBtn = document.getElementById('deletePermissionsBtn');
+            if (deletePermissionsBtn) {
+                deletePermissionsBtn.addEventListener('click', async () => {
+                    const email = document.getElementById('editingUserEmail').textContent;
+                    if (!email) {
+                        alert('No user loaded');
+                        return;
+                    }
+
+                    if (!confirm(`Delete permission config for ${email}?\n\nThis will reset all permissions to default (all enabled).`)) {
+                        return;
+                    }
+
+                    try {
+                        await deleteDoc(doc(db, 'config', email));
+                        alert(`✅ Permission config deleted for ${email}`);
+                        document.getElementById('permissionsForm').style.display = 'none';
+                        document.getElementById('targetUserEmail').value = '';
+                        loadRecentUsers();
+                    } catch (error) {
+                        console.error('Error deleting config:', error);
+                        alert('Error deleting config: ' + error.message);
+                    }
+                });
+            }
+        });
+
+        // Load recent users with configs
+        async function loadRecentUsers() {
+            try {
+                const configQuery = query(collection(db, 'config'), limit(10));
+                const querySnapshot = await getDocs(configQuery);
+                
+                const userListDiv = document.getElementById('userList');
+                userListDiv.innerHTML = '';
+
+                if (querySnapshot.empty) {
+                    userListDiv.innerHTML = '<p style="color: #999; text-align: center;">No user configs found</p>';
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const email = doc.id;
+                    const data = doc.data();
+                    
+                    const userItem = document.createElement('div');
+                    userItem.className = 'user-item';
+                    userItem.innerHTML = `
+                        <div>
+                            <div class="user-email">${email}</div>
+                            <div class="user-perms">
+                                Laws: ${data.laws !== false ? '✅' : '❌'} | 
+                                Delete: ${data.deletion !== false ? '✅' : '❌'} | 
+                                Found: ${data.found !== false ? '✅' : '❌'} | 
+                                Edu: ${data.edu !== false ? '✅' : '❌'}
+                            </div>
+                        </div>
+                    `;
+                    userItem.addEventListener('click', () => {
+                        document.getElementById('targetUserEmail').value = email;
+                        document.getElementById('loadUserBtn').click();
+                    });
+                    userListDiv.appendChild(userItem);
+                });
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        // ============== ARTIFACT OF THE DAY ==============
+
+        const SMITHSONIAN_API_KEY = "KKiTrGw8uKnEZTiBmCV4gBbkT3Y2KYRGjLL6gKmR";
+
+        // Get today's date string (YYYY-MM-DD)
+        function getTodayString() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        // Generate deterministic random number based on date
+        function getDeterministicRandom(seed) {
+            const x = Math.sin(seed) * 10000;
+            return x - Math.floor(x);
+        }
+
+        // Get date-based seed for consistent daily selection
+        function getDateSeed() {
+            const today = getTodayString();
+            return today.split('-').reduce((acc, part) => acc + parseInt(part), 0);
+        }
+
+        // Fetch random artifact from Smithsonian API
+        async function fetchRandomArtifact() {
+            try {
+                // Search for Native American physical artifacts (exclude books, documents, etc.)
+                const searchTopic = 'Native American AND (object OR artifact OR pottery OR basket OR tool OR weapon OR jewelry OR textile OR clothing OR ceremonial) NOT (book OR photograph OR print OR document OR manuscript OR paper OR page)';
+                console.log("Searching for artifacts with topic:", searchTopic);
+                
+                // First, get total number of records for this topic
+                const searchUrl = `https://api.si.edu/openaccess/api/v1.0/search?api_key=${SMITHSONIAN_API_KEY}&q=${encodeURIComponent(searchTopic)}&rows=0&online_media_type=Images`;
+                const searchResponse = await fetch(searchUrl);
+                const searchData = await searchResponse.json();
+                
+                if (searchData.response && searchData.response.rowCount > 0) {
+                    console.log(`Found ${searchData.response.rowCount} artifacts for topic: ${searchTopic}`);
+                    
+                    // Get a truly random offset each time we fetch
+                    // This ensures a different artifact if the database is cleared
+                    const totalRecords = Math.min(searchData.response.rowCount, 10000);
+                    const randomOffset = Math.floor(Math.random() * totalRecords);
+                    
+                    console.log(`Fetching artifact at offset ${randomOffset} of ${totalRecords}`);
+                    
+                    // Fetch artifact with image
+                    const artifactUrl = `https://api.si.edu/openaccess/api/v1.0/search?api_key=${SMITHSONIAN_API_KEY}&q=${encodeURIComponent(searchTopic)}&rows=1&start=${randomOffset}&online_media_type=Images`;
+                    const artifactResponse = await fetch(artifactUrl);
+                    const artifactData = await artifactResponse.json();
+                    
+                    if (artifactData.response && artifactData.response.rows && artifactData.response.rows.length > 0) {
+                        const artifact = artifactData.response.rows[0];
+                        console.log("Raw artifact data:", artifact);
+                        
+                        // Extract data following the API structure
+                        const content = artifact.content || {};
+                        const freetext = content.freetext || {};
+                        const indexedStructured = content.indexedStructured || {};
+                        const descriptiveNonRepeating = content.descriptiveNonRepeating || {};
+                        const onlineMedia = descriptiveNonRepeating.online_media || {};
+                        
+                        // Get description from notes or summary
+                        let description = "No description available";
+                        if (freetext.notes && freetext.notes.length > 0) {
+                            // Find summary or first available note
+                            const summaryNote = freetext.notes.find(note => note.label === "Summary");
+                            const firstNote = freetext.notes[0];
+                            description = "Pending approval. Please check back later.";
+                        } else if (freetext.physicalDescription && freetext.physicalDescription.length > 0) {
+                            description = freetext.physicalDescription[0].content;
+                        }
+                        
+                        // Get image - check multiple possible locations
+                        let imageUrl = "";
+                        if (onlineMedia.media && onlineMedia.media.length > 0) {
+                            // Try to get the highest quality image available
+                            const mediaItem = onlineMedia.media[0];
+                            imageUrl = mediaItem.content || mediaItem.idsId || mediaItem.thumbnail || "";
+                            
+                            // If we have an idsId, construct the full image URL
+                            if (mediaItem.idsId && !imageUrl.startsWith('http')) {
+                                imageUrl = `https://ids.si.edu/ids/deliveryService?id=${mediaItem.idsId}&max=800`;
+                            }
+                        }
+                        
+                        // Fallback: check for resources array
+                        if (!imageUrl && onlineMedia.mediaCount > 0 && descriptiveNonRepeating.online_visual_material) {
+                            const visualMaterial = descriptiveNonRepeating.online_visual_material;
+                            if (visualMaterial.length > 0 && visualMaterial[0].idsId) {
+                                imageUrl = `https://ids.si.edu/ids/deliveryService?id=${visualMaterial[0].idsId}&max=800`;
+                            }
+                        }
+                        
+                        console.log("Extracted image URL:", imageUrl);
+                        
+                        // Get culture information
+                        let culture = "Unknown";
+                        if (indexedStructured.culture && indexedStructured.culture.length > 0) {
+                            culture = indexedStructured.culture.join(", ");
+                        } else if (freetext.name && freetext.name.length > 0) {
+                            const cultureName = freetext.name.find(n => n.label === "Culture/People" || n.label === "Culture");
+                            if (cultureName) culture = cultureName.content;
+                        }
+                        
+                        // Get date
+                        let date = "Date unknown";
+                        if (indexedStructured.date && indexedStructured.date.length > 0) {
+                            date = indexedStructured.date.join(", ");
+                        } else if (freetext.date && freetext.date.length > 0) {
+                            date = freetext.date[0].content;
+                        }
+                        
+                        // Get place/location
+                        let place = "";
+                        if (indexedStructured.place && indexedStructured.place.length > 0) {
+                            place = indexedStructured.place.slice(0, 2).join(", ");
+                        } else if (freetext.place && freetext.place.length > 0) {
+                            place = freetext.place[0].content;
+                        }
+                        
+                        const artifactObj = {
+                            id: artifact.id,
+                            title: artifact.title || descriptiveNonRepeating.title?.content || "Unknown Artifact",
+                            description: description,
+                            date: date,
+                            culture: culture,
+                            place: place,
+                            unitCode: artifact.unitCode || "",
+                            recordLink: descriptiveNonRepeating.record_link || "",
+                            url: artifact.url || ""
+                        };
+                        
+                        console.log("Processed artifact:", artifactObj);
+                        return artifactObj;
+                    }
+                }
+                throw new Error("No artifacts found");
+            } catch (error) {
+                console.error("Error fetching artifact:", error);
+                return null;
+            }
+        }
+
+        // Get or set today's artifact
+        async function getTodaysArtifact() {
+            const today = getTodayString();
+            const docRef = doc(db, "artifactOfDay", today);
+            
+            try {
+                console.log("Checking Firestore for artifact on date:", today);
+                console.log("Project ID:", firebaseConfig.projectId);
+                console.log("Document path:", `artifactOfDay/${today}`);
+                
+                const docSnap = await getDoc(docRef);
+                console.log("Firestore read successful");
+                
+                if (docSnap.exists()) {
+                    console.log("Found existing artifact in Firestore");
+                    return docSnap.data().artifact;
+                } else {
+                    console.log("No document exists for today, fetching new artifact from API");
+                    
+                    // Fetch new artifact
+                    const artifact = await fetchRandomArtifact();
+                    
+                    if (artifact) {
+                        console.log("Fetched artifact:", artifact.title);
+                        
+                        // Save to Firestore
+                        console.log("Saving new artifact to Firestore...");
+                        const docData = { 
+                            artifact: artifact, 
+                            date: today,
+                            timestamp: new Date().toISOString()
+                        };
+                        
+                        await setDoc(docRef, docData);
+                        console.log("Successfully saved to Firestore!");
+                        
+                        // Verify the save
+                        const verifyDoc = await getDoc(docRef);
+                        if (verifyDoc.exists()) {
+                            console.log("Verification: Document exists in Firestore");
+                            return verifyDoc.data().artifact;
+                        } else {
+                            console.warn("Verification: Document NOT found in Firestore after save");
+                        }
+                        
+                        return artifact;
+                    } else {
+                        console.error("Failed to fetch artifact from API");
+                        return null;
+                    }
+                }
+            } catch (error) {
+                console.error("Firestore operation failed:", error);
+                console.error("Error details:", {
+                    code: error.code,
+                    message: error.message
+                });
+                
+                // Check if it's a permissions error
+                if (error.code === 'permission-denied') {
+                    console.error("PERMISSION DENIED: Check Firestore security rules");
+                    console.log("Suggested Firestore rules for testing:");
+                    console.log(`
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+                    `);
+                }
+                
+                return {
+                    title: "Database Error",
+                    description: "Unable to connect to database. Please check Firestore configuration and security rules.",
+                    image: "",
+                    date: "Unknown",
+                    culture: "Unknown"
+                };
+            }
+        }
+
+        // Display artifact in the UI
+        function displayArtifact(artifact) {
+            const container = document.getElementById('artifact-container');
+            
+            if (!artifact) {
+                container.innerHTML = '<p class="loading">Unable to load artifact. Please try again later.</p>';
+                return;
+            }
+
+            // Check if current user is admin
+            const isAdmin = currentUser && currentUser.email === 'admin@example.com';
+
+            // Build the HTML for artifact display
+            let artifactHTML = '<div class="artifact-content"><div>';
+            
+            // Banner section - show image if exists, otherwise gradient banner
+            if (artifact.image && artifact.image.trim() !== '') {
+                artifactHTML += `<div class="artifact-image" style="background-image: url('${artifact.image}'); background-size: cover; background-position: center; height: 300px; border-radius: 15px 15px 0 0;"></div>`;
+            } else {
+                artifactHTML += '<div class="artifact-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; font-weight: 700; text-align: center; padding: 2rem; letter-spacing: 2px;">ARTIFACT OF THE DAY</div>';
+            }
+            
+            artifactHTML += '</div><div class="artifact-info">';
+            
+            // Title with edit button for admin
+            artifactHTML += `<div id="title-display">`;
+            artifactHTML += `<h3 id="artifact-title">${artifact.title}`;
+            if (isAdmin) {
+                artifactHTML += ` <button class="artifact-edit-btn" onclick="editArtifactTitle()">✏️ Edit</button>`;
+            }
+            artifactHTML += `</h3></div>`;
+            artifactHTML += `<div id="title-edit" style="display: none;">
+                <input type="text" id="title-input" class="artifact-edit-input" value="${artifact.title.replace(/"/g, '&quot;')}">
+                <div class="artifact-edit-controls">
+                    <button class="artifact-save-btn" onclick="saveArtifactTitle()">💾 Save</button>
+                    <button class="artifact-cancel-btn" onclick="cancelEditTitle()">❌ Cancel</button>
+                </div>
+            </div>`;
+            
+            // Culture
+            if (artifact.culture && artifact.culture !== "Unknown") {
+                artifactHTML += `<p><strong>Culture:</strong> ${artifact.culture}</p>`;
+            }
+            
+            // Date
+            if (artifact.date && artifact.date !== "Date unknown") {
+                artifactHTML += `<p><strong>Date:</strong> ${artifact.date}</p>`;
+            }
+            
+            // Place
+            if (artifact.place) {
+                artifactHTML += `<p><strong>Location:</strong> ${artifact.place}</p>`;
+            }
+            
+            // Unit/Museum
+            if (artifact.unitCode) {
+                artifactHTML += `<p><strong>Collection:</strong> ${artifact.unitCode}</p>`;
+            }
+            
+            // Description with edit button for admin
+            if (artifact.description && artifact.description !== "No description available") {
+                const maxLength = 300;
+                const truncatedDesc = artifact.description.length > maxLength 
+                    ? artifact.description.substring(0, maxLength) + '...' 
+                    : artifact.description;
+                
+                artifactHTML += `<div id="description-display">`;
+                artifactHTML += `<p><strong>Description:</strong> <span id="artifact-description">${truncatedDesc}</span>`;
+                if (isAdmin) {
+                    artifactHTML += ` <button class="artifact-edit-btn" onclick="editArtifactDescription()">✏️ Edit</button>`;
+                }
+                artifactHTML += `</p></div>`;
+                artifactHTML += `<div id="description-edit" style="display: none;">
+                    <p><strong>Description:</strong></p>
+                    <textarea id="description-input" class="artifact-edit-textarea">${artifact.description.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+                    <div class="artifact-edit-controls">
+                        <button class="artifact-save-btn" onclick="saveArtifactDescription()">💾 Save</button>
+                        <button class="artifact-cancel-btn" onclick="cancelEditDescription()">❌ Cancel</button>
+                    </div>
+                </div>`;
+            }
+            
+            // Link to full record - use record_link or construct from URL
+            // The Smithsonian URL structure has changed, so we'll use a search-based approach
+            let recordUrl;
+            if (artifact.url && artifact.url.includes('http')) {
+                // Use the artifact URL if it's a full URL
+                recordUrl = artifact.url;
+            } else if (artifact.recordLink && artifact.recordLink.includes('http')) {
+                // Only use recordLink if it's already a full URL
+                recordUrl = artifact.recordLink;
+            } else if (artifact.title) {
+                // Search for the artifact by title on Smithsonian collections
+                // This is more reliable than trying to construct object URLs
+                recordUrl = `https://collections.si.edu/search/?q=${encodeURIComponent(artifact.title)}`;
+            } else if (artifact.id) {
+                // Last resort: search by ID
+                recordUrl = `https://collections.si.edu/search/?q=${encodeURIComponent(artifact.id)}`;
+            }
+            
+            if (recordUrl) {
+                artifactHTML += `<p style="margin-top: 1.5rem;">
+                    <a href="${recordUrl}" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #3498db, #2980b9); color: white; text-decoration: none; font-weight: 600; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);"
+                       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(52, 152, 219, 0.4)';"
+                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(52, 152, 219, 0.3)';">
+                       View Full Record on Smithsonian →
+                    </a>
+                </p>`;
+            }
+            
+            artifactHTML += '</div></div>';
+            container.innerHTML = artifactHTML;
+        }
+
+        // Initialize artifact of the day
+        async function initArtifactOfDay() {
+            try {
+                console.log("Starting artifact initialization...");
+                const artifact = await getTodaysArtifact();
+                console.log("Artifact received:", artifact);
+                displayArtifact(artifact);
+            } catch (error) {
+                console.error("Error initializing artifact:", error);
+                const container = document.getElementById('artifact-container');
+                container.innerHTML = '<p class="loading">Error loading artifact. Please refresh the page.</p>';
+            }
+        }
+
+        // Load artifact when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log("Page loaded, initializing artifact...");
+            initArtifactOfDay();
+        });
+
+        // ============== ARTIFACT EDITING FUNCTIONS ==============
+        
+        // Edit title
+        window.editArtifactTitle = function() {
+            document.getElementById('title-display').style.display = 'none';
+            document.getElementById('title-edit').style.display = 'block';
+            document.getElementById('title-input').focus();
+        }
+
+        // Cancel edit title
+        window.cancelEditTitle = function() {
+            document.getElementById('title-display').style.display = 'block';
+            document.getElementById('title-edit').style.display = 'none';
+        }
+
+        // Save title
+        window.saveArtifactTitle = async function() {
+            const newTitle = document.getElementById('title-input').value.trim();
+            
+            if (!newTitle) {
+                alert('Title cannot be empty');
+                return;
+            }
+
+            try {
+                const today = getTodayString();
+                const docRef = doc(db, "artifactOfDay", today);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    const artifactData = docSnap.data().artifact;
+                    artifactData.title = newTitle;
+                    
+                    await setDoc(docRef, {
+                        artifact: artifactData,
+                        date: today,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    console.log('Title updated successfully');
+                    
+                    // Update display
+                    document.getElementById('artifact-title').innerHTML = newTitle + 
+                        ` <button class="artifact-edit-btn" onclick="editArtifactTitle()">✏️ Edit</button>`;
+                    cancelEditTitle();
+                    
+                    alert('✅ Title updated successfully!');
+                } else {
+                    alert('Error: Artifact data not found');
+                }
+            } catch (error) {
+                console.error('Error saving title:', error);
+                alert('Error saving title: ' + error.message);
+            }
+        }
+
+        // Edit description
+        window.editArtifactDescription = function() {
+            document.getElementById('description-display').style.display = 'none';
+            document.getElementById('description-edit').style.display = 'block';
+            document.getElementById('description-input').focus();
+        }
+
+        // Cancel edit description
+        window.cancelEditDescription = function() {
+            document.getElementById('description-display').style.display = 'block';
+            document.getElementById('description-edit').style.display = 'none';
+        }
+
+        // Save description
+        window.saveArtifactDescription = async function() {
+            const newDescription = document.getElementById('description-input').value.trim();
+            
+            if (!newDescription) {
+                alert('Description cannot be empty');
+                return;
+            }
+
+            try {
+                const today = getTodayString();
+                const docRef = doc(db, "artifactOfDay", today);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    const artifactData = docSnap.data().artifact;
+                    artifactData.description = newDescription;
+                    
+                    await setDoc(docRef, {
+                        artifact: artifactData,
+                        date: today,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    console.log('Description updated successfully');
+                    
+                    // Update display
+                    const maxLength = 300;
+                    const truncatedDesc = newDescription.length > maxLength 
+                        ? newDescription.substring(0, maxLength) + '...' 
+                        : newDescription;
+                    
+                    document.getElementById('artifact-description').textContent = truncatedDesc;
+                    cancelEditDescription();
+                    
+                    alert('✅ Description updated successfully!');
+                } else {
+                    alert('Error: Artifact data not found');
+                }
+            } catch (error) {
+                console.error('Error saving description:', error);
+                alert('Error saving description: ' + error.message);
+            }
+        }
+
+        // ============== HOME PAGE ARTIFACT LOOKUP ==============
+        // Simplified version - shows only contacts and special instructions
+        
+        // Manual location lookup from home page
+        window.homeLookupLocation = async function() {
+            const lat = parseFloat(document.getElementById('homeLatitude').value);
+            const lng = parseFloat(document.getElementById('homeLongitude').value);
+            
+            if (isNaN(lat) || isNaN(lng)) {
+                alert('Please enter valid latitude and longitude values.');
+                return;
+            }
+            
+            if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+                alert('Please enter valid coordinate ranges (Lat: -90 to 90, Lng: -180 to 180).');
+                return;
+            }
+            
+            await homeLookupLocationByCoords(lat, lng);
+        };
+
+        // Get current location from home page
+        window.homeGetCurrentLocation = function() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by this browser.');
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    // Fill in the form
+                    document.getElementById('homeLatitude').value = lat;
+                    document.getElementById('homeLongitude').value = lng;
+                    
+                    homeLookupLocationByCoords(lat, lng);
+                },
+                function(error) {
+                    console.error('Error getting location:', error);
+                    alert('Unable to get your location. Please try entering coordinates manually.');
+                }
+            );
+        };
+
+        // Lookup location by coordinates from home page
+        async function homeLookupLocationByCoords(lat, lng) {
+            console.log(`🏠 Home page lookup: ${lat}, ${lng}`);
+            
+            try {
+                // Call property API
+                const parcelData = await homeCheckData(lat, lng);
+                
+                if (parcelData) {
+                    parcelData.lat = lat;
+                    parcelData.long = lng;
+                    
+                    // Check for specific instructions in database
+                    const specificInstructions = await homeCheckForSpecificInstructions(parcelData);
+                    
+                    // Display simplified guidance
+                    homeDisplayGuidance(parcelData, specificInstructions);
+                } else {
+                    homeDisplayDefaultGuidance('No property data found for these coordinates.');
+                }
+            } catch (error) {
+                console.error('Error during lookup:', error);
+                homeDisplayDefaultGuidance(`Error: ${error.message}`);
+            }
+        }
+
+        // Fetch parcel data from API
+        async function homeCheckData(lat, lng) {
+            try {
+                const apiUrl = `https://getpropertyinfo-gailic6cjq-uc.a.run.app/getPropertyInfo?lat=${lat}&long=${lng}`;
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`API returned status ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Normalize state field
+                if (data && data.state_abbr && !data.state) {
+                    data.state = data.state_abbr;
+                }
+                
+                if (data && (data.owner || data.jurisdiction)) {
+                    return data;
+                }
+                
+                return null;
+                
+            } catch (error) {
+                console.error('Error fetching property data:', error);
+                return null;
+            }
+        }
+
+        // Check for specific instructions in database - FOUR TIER FALLBACK
+        async function homeCheckForSpecificInstructions(propertyData) {
+            try {
+                const owner = (propertyData.owner || '').toLowerCase().trim();
+                const jurisdiction = (propertyData.jurisdiction || '').toLowerCase().trim();
+                const state = (propertyData.state || '').toUpperCase().trim();
+                
+                // Get all instructions from database
+                const querySnapshot = await getDocs(collection(db, "artifactInstructions"));
+                
+                if (querySnapshot.empty) {
+                    return null;
+                }
+                
+                let ownerMatch = null;
+                let jurisdictionMatch = null;
+                let stateMatch = null;
+                
+                // TIER 1, 2 & 2.5: Loop through all instructions
+                for (const docSnapshot of querySnapshot.docs) {
+                    const instruction = docSnapshot.data();
+                    const dbOwner = (instruction.owner || '').toLowerCase().trim();
+                    const dbJurisdiction = (instruction.jurisdiction || '').toLowerCase().trim();
+                    const dbState = (instruction.state || '').toUpperCase().trim();
+                    const keywords = (instruction.keywords || []).map(k => k.toLowerCase().trim());
+                    
+                    // STATE MATCHING: If instruction has states, property state must match
+                    if (dbState) {
+                        const dbStates = dbState.split(',').map(s => s.trim()).filter(s => s);
+                        const stateMatches = dbStates.some(s => s === state);
+                        
+                        if (!state || !stateMatches) {
+                            continue;
+                        }
+                    }
+                    
+                    // TIER 1: Owner match
+                    if (owner && !ownerMatch) {
+                        if (dbOwner && (owner.includes(dbOwner) || dbOwner.includes(owner))) {
+                            ownerMatch = { ...instruction, matchType: 'owner', docId: docSnapshot.id };
+                            break;
+                        }
+                        
+                        for (const keyword of keywords) {
+                            if (owner.includes(keyword)) {
+                                ownerMatch = { ...instruction, matchType: 'keyword-owner', docId: docSnapshot.id };
+                                break;
+                            }
+                        }
+                        
+                        if (ownerMatch) break;
+                    }
+                    
+                    // TIER 2: Jurisdiction match
+                    if (jurisdiction && !ownerMatch && !jurisdictionMatch) {
+                        if (!dbOwner || dbOwner === '') {
+                            if (dbJurisdiction && (jurisdiction.includes(dbJurisdiction) || dbJurisdiction.includes(jurisdiction))) {
+                                jurisdictionMatch = { ...instruction, matchType: 'jurisdiction', docId: docSnapshot.id };
+                            }
+                            
+                            if (!jurisdictionMatch) {
+                                for (const keyword of keywords) {
+                                    if (jurisdiction.includes(keyword) || keyword.includes(jurisdiction)) {
+                                        jurisdictionMatch = { ...instruction, matchType: 'keyword-jurisdiction', docId: docSnapshot.id };
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    // TIER 2.5: State-only match
+                    if (state && !ownerMatch && !jurisdictionMatch && !stateMatch) {
+                        if ((!dbOwner || dbOwner === '') && (!dbJurisdiction || dbJurisdiction === '')) {
+                            if (dbState && state === dbState) {
+                                stateMatch = { ...instruction, matchType: 'state', docId: docSnapshot.id };
+                            }
+                        }
+                    }
+                }
+                
+                // Return best match
+                if (ownerMatch) {
+                    return ownerMatch;
+                } else if (jurisdictionMatch) {
+                    return jurisdictionMatch;
+                } else if (stateMatch) {
+                    return stateMatch;
+                } else {
+                    return null;
+                }
+                
+            } catch (error) {
+                console.error('Error checking database:', error);
+                return null;
+            }
+        }
+
+        // Display guidance on home page (simplified - contacts and instructions only)
+        function homeDisplayGuidance(propertyData, specificInstructions) {
+            const resultsDiv = document.getElementById('homeGuidanceResults');
+            const contentDiv = document.getElementById('homeGuidanceContent');
+            const defaultSteps = document.getElementById('homeDefaultSteps');
+            
+            // Hide default steps
+            defaultSteps.style.display = 'none';
+            
+            if (specificInstructions && specificInstructions.htmlContent) {
+                // Show custom instructions
+                contentDiv.innerHTML = specificInstructions.htmlContent;
+            } else {
+                // Show default guidance
+                contentDiv.innerHTML = homeGetDefaultGuidanceHTML();
+            }
+            
+            resultsDiv.style.display = 'block';
+            
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Display default guidance on home page
+        function homeDisplayDefaultGuidance(errorInfo = null) {
+            const resultsDiv = document.getElementById('homeGuidanceResults');
+            const contentDiv = document.getElementById('homeGuidanceContent');
+            const defaultSteps = document.getElementById('homeDefaultSteps');
+            
+            defaultSteps.style.display = 'none';
+            
+            let html = '';
+            if (errorInfo) {
+                html += `<p style="color: #e74c3c; font-weight: 600; margin-bottom: 1rem;">${errorInfo}</p>`;
+            }
+            
+            html += homeGetDefaultGuidanceHTML();
+            contentDiv.innerHTML = html;
+            resultsDiv.style.display = 'block';
+            
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Get default guidance HTML
+        function homeGetDefaultGuidanceHTML() {
+            return `
+                <div class="emergency-note">
+                    <strong>⚠️ STOP! Do not disturb the artifact or the surrounding area.</strong>
+                </div>
+                
+                <div class="contact-card">
+                    <h4>📞 Contact Your Local Authorities</h4>
+                    <div class="contact-info">
+                        <p><strong>County Archaeologist or Planning Department</strong></p>
+                        <p>Search online for: "[Your County Name] archaeologist" or "[Your County Name] planning department"</p>
+                        <p style="margin-top: 1rem;"><strong>State Historic Preservation Office (SHPO)</strong></p>
+                        <p>Every state has a SHPO - search: "[Your State] historic preservation office"</p>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <h4>🏛️ Federal Resources</h4>
+                    <div class="contact-info">
+                        <p><strong>If on Federal Land:</strong></p>
+                        <p>National Park Service, Bureau of Land Management, U.S. Forest Service, etc.</p>
+                        <p style="margin-top: 1rem;"><strong>If Native American artifacts:</strong></p>
+                        <p>Contact local tribal authorities and NAGPRA coordinator</p>
+                    </div>
+                </div>
+                
+                <div class="emergency-note">
+                    <strong>⚖️ Legal Notice:</strong> Federal and state laws protect archaeological resources. The Archaeological Resources Protection Act (ARPA) and similar state laws make it illegal to excavate, remove, damage, or otherwise alter archaeological sites on public or tribal lands without a permit. Violations can result in criminal penalties including fines and imprisonment.
+                </div>
+                
+                <div class="contact-card" style="background: #e3f2fd; border-color: #90caf9;">
+                    <h4>📚 Learn More</h4>
+                    <div class="contact-info">
+                        <p>Visit the <a href="laws.html" style="color: #1976d2; font-weight: 600;">Federal Archaeology Laws</a> page to learn about your legal responsibilities.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============== END HOME PAGE ARTIFACT LOOKUP ==============
+
+        // ============== HAMBURGER MENU ==============
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+            
+            // Close menu when clicking on a link
+            const navLinkItems = navLinks.querySelectorAll('a');
+            navLinkItems.forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideNav = navLinks.contains(event.target);
+                const isClickOnHamburger = hamburger.contains(event.target);
+                
+                if (!isClickInsideNav && !isClickOnHamburger && navLinks.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }
+            });
+        }
+        // ============== END HAMBURGER MENU ==============
     </script>
 </body>
 </html>

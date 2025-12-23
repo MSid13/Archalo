@@ -1,20 +1,12 @@
-{
-  "hosting": {
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    {
+      "hosting": {
+        "public": "public",
+        "ignore": [
+          "firebase.json",
+          "**/.*",
+          "**/node_modules/**"
+        ],
     "rewrites": [
-      {
-        "source": "/archalo",
-        "destination": "/Archalo.html"
-      },
-            {
-        "source": "/Archalo",
-        "destination": "/Archalo.html"
-      },
       {
         "source": "/laws",
         "destination": "/laws.html"
@@ -33,18 +25,18 @@
       },
       {
         "source": "/",
-        "destination": "/Archalo.html"
+        "destination": "/index.html"
       }
     ],
     "redirects": [
       {
-        "source": "/index.html",
-        "destination": "/archalo",
+        "source": "/feedback",
+        "destination": "https://forms.gle/QsAZcC3v9v6xbyw79",
         "type": 301
       },
       {
-        "source": "/feedback",
-        "destination": "https://forms.gle/QsAZcC3v9v6xbyw79",
+        "source": "/Archalo.html",
+        "destination": "/index.html",
         "type": 301
       },
       {
