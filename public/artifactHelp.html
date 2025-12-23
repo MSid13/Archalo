@@ -452,6 +452,125 @@
             color: #666;
         }
         
+        /* View Toggle Styles */
+        .view-toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            width: fit-content;
+        }
+        
+        .view-toggle-label {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+        
+        .view-toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background-color: #bdc3c7;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .view-toggle.active {
+            background-color: #3498db;
+        }
+        
+        .view-toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .view-toggle.active .view-toggle-slider {
+            transform: translateX(24px);
+        }
+        
+        .view-type-label {
+            font-size: 0.85rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        /* Tabbed View Styles */
+        .tabbed-view {
+            display: none;
+        }
+        
+        .tabbed-view.active {
+            display: block;
+        }
+        
+        .tab-navigation {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e0e0e0;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #7f8c8d;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            margin-bottom: -2px;
+        }
+        
+        .tab-button:hover {
+            color: #3498db;
+            background-color: #f8f9fa;
+        }
+        
+        .tab-button.active {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .tab-panel {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        /* List View Styles */
+        .list-view {
+            display: block;
+        }
+        
+        .list-view.inactive {
+            display: none;
+        }
+        
         /* Relevant Laws Section Styles */
         .relevant-laws-section {
             margin: 2rem 0;
@@ -828,6 +947,22 @@
                 grid-template-columns: 1fr;
             }
             
+            .tab-navigation {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .tab-button {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+            
+            .view-toggle-container {
+                width: 100%;
+                justify-content: center;
+            }
+            
             .admin-modal-content {
                 padding: 1.5rem;
                 margin: 1rem;
@@ -940,14 +1075,23 @@
         }
         
         .toggle-icon {
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
             color: #7f8c8d;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .toggle-icon::before {
+            content: '+';
         }
         
         .state-header.active .toggle-icon {
-            transform: rotate(180deg);
             color: white;
+        }
+        
+        .state-header.active .toggle-icon::before {
+            content: '−';
         }
         
         .state-locations {
@@ -1447,14 +1591,23 @@
         }
         
         .toggle-icon {
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
             color: #7f8c8d;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .toggle-icon::before {
+            content: '+';
         }
         
         .state-header.active .toggle-icon {
-            transform: rotate(180deg);
             color: white;
+        }
+        
+        .state-header.active .toggle-icon::before {
+            content: '−';
         }
         
         .state-locations {
@@ -1576,7 +1729,7 @@
                     <div class="state-section">
                         <button class="state-header" onclick="toggleState(this)">
                             <span class="state-name">🌲 Washington State</span>
-                            <span class="toggle-icon">▼</span>
+                            <span class="toggle-icon"></span>
                         </button>
                         <div class="state-locations">
                             <button class="location-btn-sample" onclick="loadSampleCoords(46.8523, -121.7603, 'National Park Service')">
@@ -1622,6 +1775,16 @@
             <div id="gpsForm" class="location-form">
                 <button class="btn location-btn" onclick="getCurrentLocation()">Get My Current Location</button>
             </div>
+            
+            <!-- View Toggle for Results -->
+            <div class="view-toggle-container" style="margin-top: 2rem;">
+                <span class="view-toggle-label">Results View:</span>
+                <span class="view-type-label">List</span>
+                <div class="view-toggle" id="viewToggle">
+                    <div class="view-toggle-slider"></div>
+                </div>
+                <span class="view-type-label">Tabs</span>
+            </div>
         </div>
         
         <!-- Quick Navigation Bar -->
@@ -1654,8 +1817,20 @@
             <div id="propertyResults" style="display: none;">
                 <div class="guidance-section">
                     <h3>What to do next:</h3>
-                    <div id="guidanceContent">
+                    
+                    <!-- List View (Current View) -->
+                    <div id="guidanceContent" class="list-view">
                         <!-- Guidance content will be populated here -->
+                    </div>
+                    
+                    <!-- Tabbed View -->
+                    <div id="tabbedGuidanceContent" class="tabbed-view">
+                        <div class="tab-navigation" id="tabNavigation">
+                            <!-- Tabs will be generated dynamically -->
+                        </div>
+                        <div id="tabContentContainer">
+                            <!-- Tab content will be generated dynamically -->
+                        </div>
                     </div>
                 </div>
                 
@@ -1960,6 +2135,162 @@
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
         const auth = getAuth(app);
+
+        // ============== VIEW TOGGLE FUNCTIONALITY ==============
+        let currentView = 'list'; // 'list' or 'tabbed'
+        let currentGuidanceData = null;
+        
+        document.getElementById('viewToggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+            
+            const listView = document.getElementById('guidanceContent');
+            const tabbedView = document.getElementById('tabbedGuidanceContent');
+            const quickNav = document.getElementById('quickNav');
+            const lawsSection = document.getElementById('relevantLawsSection');
+            const mapSection = document.getElementById('parcelMapSection');
+            const timelineSection = document.getElementById('timelineSection');
+            const propertyInfo = document.getElementById('propertyInfoGrid').parentElement;
+            
+            if (currentView === 'list') {
+                currentView = 'tabbed';
+                listView.classList.add('inactive');
+                tabbedView.classList.add('active');
+                
+                // Hide quick navigation in tabbed view
+                if (quickNav) {
+                    quickNav.style.display = 'none';
+                }
+                
+                // Generate tabbed view FIRST (before hiding sections)
+                if (currentGuidanceData) {
+                    generateTabbedView(currentGuidanceData);
+                }
+                
+                // Then hide all standalone sections in tabbed view
+                if (lawsSection) lawsSection.style.display = 'none';
+                if (mapSection) mapSection.style.display = 'none';
+                if (timelineSection) timelineSection.style.display = 'none';
+                if (propertyInfo) propertyInfo.style.display = 'none';
+            } else {
+                currentView = 'list';
+                listView.classList.remove('inactive');
+                tabbedView.classList.remove('active');
+                
+                // Show quick navigation in list view (if it was previously active)
+                if (quickNav && quickNav.classList.contains('active')) {
+                    quickNav.style.display = 'block';
+                }
+                
+                // Restore standalone sections visibility in list view
+                if (lawsSection && lawsSection.dataset.wasVisible === 'true') {
+                    lawsSection.style.display = 'block';
+                }
+                if (mapSection && mapSection.dataset.wasVisible === 'true') {
+                    mapSection.style.display = 'block';
+                }
+                if (timelineSection && timelineSection.dataset.wasVisible === 'true') {
+                    timelineSection.style.display = 'block';
+                }
+                if (propertyInfo && propertyInfo.dataset.wasVisible === 'true') {
+                    propertyInfo.style.display = 'block';
+                }
+            }
+        });
+        
+        function generateTabbedView(data) {
+            const tabNavigation = document.getElementById('tabNavigation');
+            const tabContentContainer = document.getElementById('tabContentContainer');
+            
+            // Clear existing content
+            tabNavigation.innerHTML = '';
+            tabContentContainer.innerHTML = '';
+            
+            // Get content from all sections to match quick nav structure
+            const guidanceContent = document.getElementById('guidanceContent').innerHTML;
+            const lawsSection = document.getElementById('relevantLawsSection');
+            const mapSection = document.getElementById('parcelMapSection');
+            const timelineSection = document.getElementById('timelineSection');
+            const propertyInfo = document.getElementById('propertyInfoGrid').parentElement;
+            
+            // Store visibility state before checking
+            if (lawsSection && lawsSection.style.display !== 'none') {
+                lawsSection.dataset.wasVisible = 'true';
+            }
+            if (mapSection && mapSection.style.display !== 'none') {
+                mapSection.dataset.wasVisible = 'true';
+            }
+            if (timelineSection && timelineSection.style.display !== 'none') {
+                timelineSection.dataset.wasVisible = 'true';
+            }
+            if (propertyInfo && propertyInfo.style.display !== 'none') {
+                propertyInfo.dataset.wasVisible = 'true';
+            }
+            
+            // Create tabs matching quick nav sections
+            const sections = [
+                { 
+                    id: 'tabWhatToDo', 
+                    title: '\ud83d\udccb What to Do', 
+                    content: guidanceContent,
+                    available: true
+                },
+                { 
+                    id: 'tabLaws', 
+                    title: '\u2696\ufe0f Relevant Laws', 
+                    content: lawsSection ? lawsSection.innerHTML : null,
+                    available: lawsSection && lawsSection.style.display !== 'none'
+                },
+                { 
+                    id: 'tabMap', 
+                    title: '\ud83d\uddfa\ufe0f Map', 
+                    content: mapSection ? mapSection.innerHTML : null,
+                    available: mapSection && mapSection.style.display !== 'none'
+                },
+                { 
+                    id: 'tabTimeline', 
+                    title: '\ud83d\udcdc Timeline', 
+                    content: timelineSection ? timelineSection.innerHTML : null,
+                    available: timelineSection && timelineSection.style.display !== 'none'
+                },
+                { 
+                    id: 'tabProperty', 
+                    title: '\ud83c\udfe0 Property Info', 
+                    content: propertyInfo ? propertyInfo.innerHTML : null,
+                    available: true
+                }
+            ];
+            
+            let firstTab = true;
+            sections.forEach((section) => {
+                if (section.content && section.available) {
+                    // Create tab button
+                    const tabButton = document.createElement('button');
+                    tabButton.className = 'tab-button' + (firstTab ? ' active' : '');
+                    tabButton.textContent = section.title;
+                    tabButton.onclick = () => switchTab(section.id);
+                    tabNavigation.appendChild(tabButton);
+                    
+                    // Create tab content
+                    const tabContent = document.createElement('div');
+                    tabContent.id = section.id;
+                    tabContent.className = 'tab-content' + (firstTab ? ' active' : '');
+                    tabContent.innerHTML = `<div class="tab-panel">${section.content}</div>`;
+                    tabContentContainer.appendChild(tabContent);
+                    
+                    firstTab = false;
+                }
+            });
+        }
+        
+        function switchTab(tabId) {
+            // Remove active class from all tabs and contents
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to selected tab and content
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
 
         // ============== ADMIN AUTHENTICATION & PERMISSIONS ==============
         let currentUser = null;
@@ -3444,6 +3775,7 @@ async function searchInstructions(searchTerm = '') {
             }
             
             grid.innerHTML = htmlContent;
+            grid.parentElement.dataset.wasVisible = 'true';
             
             // Display timeline for specific locations
             displayTimeline(propertyData);
@@ -3636,6 +3968,7 @@ async function searchInstructions(searchTerm = '') {
             
             timelineContent.innerHTML = timelineHTML;
             timelineSection.style.display = 'block';
+            timelineSection.dataset.wasVisible = 'true';
         }
 
         // Display relevant laws for the location
@@ -3716,6 +4049,7 @@ async function searchInstructions(searchTerm = '') {
                 
                 lawsContent.innerHTML = html;
                 lawsSection.style.display = 'block';
+                lawsSection.dataset.wasVisible = 'true';
                 
             } catch (error) {
                 console.error('Error fetching laws:', error);
@@ -3762,6 +4096,7 @@ async function searchInstructions(searchTerm = '') {
             
             // Show map section FIRST
             mapSection.style.display = 'block';
+            mapSection.dataset.wasVisible = 'true';
             
             // Wait for DOM to update before creating map
             setTimeout(() => {
@@ -3915,19 +4250,54 @@ async function searchInstructions(searchTerm = '') {
                     tier = 'TIER 2.5';
                 }
                 
-                // Display match information and contacts summary
-                let contactsSummary = '';
+                // Build contacts HTML
+                let contactsHTML = '';
                 if (specificInstructions.contacts && specificInstructions.contacts.length > 0) {
-                    contactsSummary = `
-                        <p style="color: #155724; margin-top: 0.5rem;">
-                            <strong>Contacts Available:</strong> ${specificInstructions.contacts.length} contact(s) found
-                        </p>
-                    `;
+                    specificInstructions.contacts.forEach((contact, index) => {
+                        contactsHTML += '<div class="contact-card">\n';
+                        contactsHTML += `    <h4>📞 Contact ${index + 1}: ${contact.name}</h4>\n`;
+                        contactsHTML += '    <div class="contact-info">\n';
+                        
+                        if (contact.role) {
+                            contactsHTML += `        <p><strong>Role:</strong> ${contact.role}</p>\n`;
+                        }
+                        if (contact.email) {
+                            contactsHTML += `        <p><strong>Email:</strong> <a href="mailto:${contact.email}">${contact.email}</a></p>\n`;
+                        }
+                        if (contact.phone) {
+                            contactsHTML += `        <p><strong>Phone:</strong> <a href="tel:${contact.phone}">${contact.phone}</a></p>\n`;
+                        }
+                        if (contact.address) {
+                            contactsHTML += `        <p><strong>Address:</strong> ${contact.address}</p>\n`;
+                        }
+                        if (contact.specialInstructions) {
+                            contactsHTML += `        <p><strong>Instructions:</strong> ${contact.specialInstructions}</p>\n`;
+                        }
+                        
+                        contactsHTML += '    </div>\n';
+                        contactsHTML += '</div>\n';
+                    });
                 }
                 
+                // Build additional info HTML
+                let additionalInfoHTML = '';
+                if (specificInstructions.additionalInfo) {
+                    additionalInfoHTML = `<p>${specificInstructions.additionalInfo}</p>`;
+                }
+                
+                // Store data for tabbed view
+                currentGuidanceData = {
+                    immediateSteps: specificInstructions.htmlContent,
+                    contacts: contactsHTML || '<p><em>No specific contacts available.</em></p>',
+                    additionalInfo: additionalInfoHTML || '<p><em>No additional information available.</em></p>'
+                };
+                
+                // Display in list view
                 guidanceContent.innerHTML = `
                     <div class="custom-instructions-content">
                         ${specificInstructions.htmlContent}
+                        ${contactsHTML}
+                        ${additionalInfoHTML ? `<div class="contact-card"><h4>ℹ️ Additional Information</h4><div class="contact-info">${additionalInfoHTML}</div></div>` : ''}
                     </div>
                 `;
             } else {
@@ -3952,7 +4322,67 @@ async function searchInstructions(searchTerm = '') {
                 `;
             }
             
-            guidanceContent.innerHTML = getDefaultGuidanceHTML();
+            const defaultHTML = getDefaultGuidanceHTML();
+            guidanceContent.innerHTML = defaultHTML;
+            
+            // Store data for tabbed view (split default guidance into sections)
+            const immediateStepsHTML = `
+                <div class="emergency-note">
+                    <strong>⚠️ STOP! Do not disturb the artifact or the surrounding area.</strong>
+                </div>
+                <h4>Immediate Steps to Take:</h4>
+                <ol style="margin: 1rem 0; padding-left: 2rem; line-height: 1.8;">
+                    <li><strong>Stop all work</strong> in the immediate area</li>
+                    <li><strong>Do not touch or move</strong> the artifact</li>
+                    <li><strong>Mark the location</strong> with flags or cones if available</li>
+                    <li><strong>Take photos</strong> of the artifact in place (do not disturb)</li>
+                    <li><strong>Record GPS coordinates</strong> of the exact location</li>
+                    <li><strong>Contact local authorities</strong> (county archaeologist, SHPO, or tribal office)</li>
+                    <li><strong>Secure the area</strong> to prevent disturbance by others</li>
+                    <li><strong>Document everything</strong> - date, time, weather, surrounding features</li>
+                </ol>
+            `;
+            
+            const contactsHTML = `
+                <div class="contact-card">
+                    <h4>📞 Contact Your Local Authorities</h4>
+                    <div class="contact-info">
+                        <p><strong>County Archaeologist or Planning Department</strong></p>
+                        <p>Search online for: "[Your County Name] archaeologist" or "[Your County Name] planning department"</p>
+                        <p style="margin-top: 1rem;"><strong>State Historic Preservation Office (SHPO)</strong></p>
+                        <p>Every state has a SHPO - search: "[Your State] historic preservation office"</p>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <h4>🏛️ Federal Resources</h4>
+                    <div class="contact-info">
+                        <p><strong>If on Federal Land:</strong></p>
+                        <p>National Park Service, Bureau of Land Management, U.S. Forest Service, etc.</p>
+                        <p style="margin-top: 1rem;"><strong>If Native American artifacts:</strong></p>
+                        <p>Contact local tribal authorities and NAGPRA coordinator</p>
+                    </div>
+                </div>
+            `;
+            
+            const additionalInfoHTML = `
+                <div class="emergency-note">
+                    <strong>⚖️ Legal Notice:</strong> Federal and state laws protect archaeological resources. The Archaeological Resources Protection Act (ARPA) and similar state laws make it illegal to excavate, remove, damage, or otherwise alter archaeological sites on public or tribal lands without a permit. Violations can result in criminal penalties including fines and imprisonment.
+                </div>
+                
+                <div class="contact-card" style="background: #e3f2fd; border-color: #90caf9;">
+                    <h4>📚 Learn More</h4>
+                    <div class="contact-info">
+                        <p>Visit the <a href="laws.html" style="color: #1976d2; font-weight: 600;">Federal Archaeology Laws</a> page to learn about your legal responsibilities.</p>
+                    </div>
+                </div>
+            `;
+            
+            currentGuidanceData = {
+                immediateSteps: immediateStepsHTML,
+                contacts: contactsHTML,
+                additionalInfo: additionalInfoHTML
+            };
         }
 
         // Get default guidance HTML - Generic for anywhere in the US
