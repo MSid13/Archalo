@@ -2653,12 +2653,13 @@
                         .filter(k => k);
 
                     console.log('Generating HTML content...');
-                    // Generate HTML content from contacts
-                    const htmlContent = generateHTMLFromContacts(contacts, specialInstructions, generalNotes);
-
                     // Get selected laws
                     const selectedLaws = getSelectedLawIds('lawsSelection');
                     console.log('Selected laws:', selectedLaws);
+                    
+                    const probability = document.getElementById('probability').value.trim();
+                    // Generate HTML content from contacts
+                    const htmlContent = generateHTMLFromContacts(contacts, selectedLaws, probability, specialInstructions, generalNotes);
 
                     // Create instruction document
                     const instructionData = {
@@ -2812,7 +2813,7 @@
         }
 
         // Generate HTML content from contacts
-        function generateHTMLFromContacts(contacts, specialInstructions, generalNotes) {
+        function generateHTMLFromContacts(contacts, selectedLaws, probability, specialInstructions, generalNotes) {
             let html = '<div class="emergency-note">\n';
             html += '    <strong>⚠️ STOP! Do not disturb the artifact or the surrounding area.</strong>\n';
             html += '</div>\n\n';
@@ -2848,6 +2849,38 @@
                 html += '    </div>\n';
                 html += '</div>\n\n';
             });
+            
+            // Add artifact likelihood indicator if provided
+            if (probability && probability.trim()) {
+                const levels = {
+                    low: { emoji: '🟢', label: 'Low', desc: 'Few known archaeological findings in this area', bg: '#d4edda', border: '#c3e6cb' },
+                    moderate: { emoji: '🟡', label: 'Moderate', desc: 'Some historical or archaeological activity nearby', bg: '#fff3cd', border: '#ffeaa7' },
+                    elevated: { emoji: '🟠', label: 'Elevated', desc: 'Area with documented archaeological sensitivity', bg: '#ffe5cc', border: '#ffcc99' },
+                    high: { emoji: '🔴', label: 'High', desc: 'Area known for significant archaeological presence', bg: '#f8d7da', border: '#f5c6cb' }
+                };
+                
+                const level = levels[probability.toLowerCase()];
+                if (level) {
+                    html += `<div class="contact-card" style="background: ${level.bg}; border-color: ${level.border}; border-width: 2px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">\n`;
+                    html += '    <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">Artifact Likelihood Indicator</h4>\n';
+                    html += `    <div style="text-align: center; padding: 1rem 0; border-bottom: 2px solid ${level.border}; margin-bottom: 1rem;">\n`;
+                    html += `        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">${level.emoji}</div>\n`;
+                    html += `        <div style="font-size: 1.3rem; font-weight: 700; color: #2c3e50;">${level.label}</div>\n`;
+                    html += '    </div>\n';
+                    html += `    <p style="color: #2c3e50; line-height: 1.6; margin-bottom: 1rem;">${level.desc}</p>\n`;
+                    html += '    <p style="color: #2c3e50; line-height: 1.6; margin-bottom: 1rem;">Please follow guidance below and contact authorities before taking action.</p>\n';
+                    html += '    <p style="color: #666; font-size: 0.9rem; font-style: italic; margin-bottom: 1rem;">ℹ️ <strong>This is an educational estimate, not a confirmation.</strong></p>\n';
+                    html += '    <details style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.5); border-radius: 8px;">\n';
+                    html += '        <summary style="cursor: pointer; font-weight: 600; color: #2c3e50; user-select: none;">ℹ️ How is this calculated?</summary>\n';
+                    html += '        <div style="margin-top: 1rem; color: #555; line-height: 1.6; font-size: 0.95rem;">\n';
+                    html += '            <p style="margin-bottom: 0.5rem;"><strong>How this estimate works:</strong></p>\n';
+                    html += '            <p style="margin-bottom: 0.5rem;">This indicator is based on publicly available historical and archaeological records, land use history, and proximity to documented sites.</p>\n';
+                    html += '            <p style="margin: 0;"><strong>It does not confirm whether an item is an artifact.</strong></p>\n';
+                    html += '        </div>\n';
+                    html += '    </details>\n';
+                    html += '</div>\n\n';
+                }
+            }
             
             html += '<h4>Immediate Steps to Take:</h4>\n';
             html += '<ol style="margin: 1rem 0; padding-left: 2rem; line-height: 1.8;">\n';
@@ -3275,11 +3308,13 @@ async function searchInstructions(searchTerm = '') {
             }
             
             const keywords = keywordsInput.split(',').map(k => k.trim().toLowerCase()).filter(k => k);
-            const htmlContent = generateHTMLFromContacts(contacts, specialInstructions, generalNotes);
             
             // Get selected laws
             const selectedLaws = getSelectedLawIds('editLawsSelection');
             console.log('Updating with selected laws:', selectedLaws);
+            
+            const probability = document.getElementById('editProbability').value.trim();
+            const htmlContent = generateHTMLFromContacts(contacts, selectedLaws, probability, specialInstructions, generalNotes);
             
             const instructionData = {
                 htmlContent: htmlContent,
@@ -4250,54 +4285,24 @@ async function searchInstructions(searchTerm = '') {
                     tier = 'TIER 2.5';
                 }
                 
-                // Build contacts HTML
-                let contactsHTML = '';
-                if (specificInstructions.contacts && specificInstructions.contacts.length > 0) {
-                    specificInstructions.contacts.forEach((contact, index) => {
-                        contactsHTML += '<div class="contact-card">\n';
-                        contactsHTML += `    <h4>📞 Contact ${index + 1}: ${contact.name}</h4>\n`;
-                        contactsHTML += '    <div class="contact-info">\n';
-                        
-                        if (contact.role) {
-                            contactsHTML += `        <p><strong>Role:</strong> ${contact.role}</p>\n`;
-                        }
-                        if (contact.email) {
-                            contactsHTML += `        <p><strong>Email:</strong> <a href="mailto:${contact.email}">${contact.email}</a></p>\n`;
-                        }
-                        if (contact.phone) {
-                            contactsHTML += `        <p><strong>Phone:</strong> <a href="tel:${contact.phone}">${contact.phone}</a></p>\n`;
-                        }
-                        if (contact.address) {
-                            contactsHTML += `        <p><strong>Address:</strong> ${contact.address}</p>\n`;
-                        }
-                        if (contact.specialInstructions) {
-                            contactsHTML += `        <p><strong>Instructions:</strong> ${contact.specialInstructions}</p>\n`;
-                        }
-                        
-                        contactsHTML += '    </div>\n';
-                        contactsHTML += '</div>\n';
-                    });
-                }
-                
                 // Build additional info HTML
                 let additionalInfoHTML = '';
                 if (specificInstructions.additionalInfo) {
                     additionalInfoHTML = `<p>${specificInstructions.additionalInfo}</p>`;
                 }
                 
-                // Store data for tabbed view
+                // Store data for tabbed view (htmlContent already includes contacts)
                 currentGuidanceData = {
                     immediateSteps: specificInstructions.htmlContent,
-                    contacts: contactsHTML || '<p><em>No specific contacts available.</em></p>',
+                    contacts: '<p><em>See "What to Do" tab for contact information.</em></p>',
                     additionalInfo: additionalInfoHTML || '<p><em>No additional information available.</em></p>'
                 };
                 
-                // Display in list view
+                // Display in list view (htmlContent already includes all contacts from generateHTMLFromContacts)
                 guidanceContent.innerHTML = `
                     <div class="custom-instructions-content">
                         ${specificInstructions.htmlContent}
-                        ${contactsHTML}
-                        ${additionalInfoHTML ? `<div class="contact-card"><h4>ℹ️ Additional Information</h4><div class="contact-info">${additionalInfoHTML}</div></div>` : ''}
+                        ${additionalInfoHTML ? `<div class="contact-card" style="background: #e3f2fd; border-color: #90caf9;"><h4>ℹ️ Additional Information</h4><div class="contact-info">${additionalInfoHTML}</div></div>` : ''}
                     </div>
                 `;
             } else {

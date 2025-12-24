@@ -187,46 +187,6 @@
             display: block;
         }
         
-        /* Admin Buttons on Cards */
-        .admin-controls {
-            display: none;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        
-        .admin-controls.show {
-            display: flex;
-        }
-        
-        .admin-controls button {
-            flex: 1;
-            padding: 0.5rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .edit-btn {
-            background: #3498db;
-            color: white;
-        }
-        
-        .edit-btn:hover {
-            background: #2980b9;
-        }
-        
-        .delete-btn {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .delete-btn:hover {
-            background: #c0392b;
-        }
-        
         /* Modal Styles */
         .modal {
             display: none;
@@ -404,20 +364,6 @@
             font-size: 0.85rem;
             line-height: 1.6;
             color: #bdc3c7;
-        }
-        
-        .admin-link {
-            color: #bdc3c7;
-            text-decoration: none;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-bottom: 1px dotted transparent;
-        }
-        
-        .admin-link:hover {
-            color: #3498db;
-            border-bottom-color: #3498db;
         }
         
         /* Markdown Content Styles */
@@ -646,76 +592,6 @@
         </div>
     </div>
 
-    <!-- Admin Modal -->
-    <div id="adminModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeAdminModal()">&times;</button>
-            
-            <!-- Login Form -->
-            <div id="adminLoginForm">
-                <h2 style="color: #2c3e50; margin-bottom: 1.5rem;">Admin Login</h2>
-                <div class="form-group">
-                    <label for="adminEmail">Email</label>
-                    <input type="email" id="adminEmail" placeholder="Enter admin email" required>
-                </div>
-                <div class="form-group">
-                    <label for="adminPassword">Password</label>
-                    <input type="password" id="adminPassword" placeholder="Enter password" required>
-                </div>
-                <button id="loginBtn" class="submit-btn">Login</button>
-            </div>
-            
-            <!-- Admin Panel (shown after login) -->
-            <div id="adminPanelContent" style="display: none;">
-                <div style="background-color: #e8f5e9; border: 1px solid #81c784; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
-                    <p style="margin: 0.5rem 0; color: #2e7d32;"><strong>👤 Logged in as:</strong> <span id="userEmail"></span></p>
-                    <button id="logoutBtn" style="background-color: #e74c3c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 0.5rem;">
-                        Logout
-                    </button>
-                    <br><br><p> ⚠️ <b> Please ensure to verify the information is accurate before you create, edit, or delete educational resources.</b></p>
-
-                </div>
-                
-                <!-- Add/Edit Resource Form -->
-                <div id="resourceForm">
-                    <h2 style="color: #2c3e50; margin-bottom: 1.5rem;" id="formTitle">Add New Resource</h2>
-                    <input type="hidden" id="editResourceId">
-                    
-                    <div class="form-group">
-                        <label for="resourceIcon">Icon (emoji)</label>
-                        <input type="text" id="resourceIcon" placeholder="e.g., 📖, 🏛️, 🔬" maxlength="4" required>
-                        <small>Choose an emoji that represents this resource</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="resourceTitle">Title</label>
-                        <input type="text" id="resourceTitle" placeholder="Resource title" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="resourceContent">Content (Markdown)</label>
-                        <textarea id="resourceContent" placeholder="Enter content using Markdown formatting...
-
-# Main Heading
-## Subheading
-- Bullet point
-1. Numbered list
-**bold** *italic*
-[Link text](URL)
-![Image](URL)
-" required></textarea>
-                        <small>You can use Markdown syntax. The first paragraph will be shown as preview on the card.</small>
-                    </div>
-                    
-                    <button onclick="submitResource()" class="submit-btn" id="submitBtn">Add Resource</button>
-                    <button onclick="cancelEdit()" class="submit-btn" id="cancelBtn" style="display: none; background: #95a5a6; margin-top: 0.5rem;">Cancel Edit</button>
-                    
-                    <div id="submitMessage" style="margin-top: 1rem;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Resource Detail Modal -->
     <div id="resourceModal" class="modal">
         <div class="modal-content">
@@ -740,15 +616,12 @@
             <p><strong>Disclaimer:</strong> We strive to provide the most accurate and up-to-date data available; however, we cannot guarantee its completeness, accuracy, or fitness for any particular purpose. This guidance is advisory only and should never be relied upon as a substitute for official legal, regulatory, or professional advice. We assume no responsibility or liability for any losses, damages, or consequences resulting directly or indirectly from the use of this information. Users assume all risk and must always verify all information with the relevant governmental or legal authorities.</p>
         </div>
                     <p><br>Report data inaccuracies and/or website bugs <a href="https://forms.gle/NN3anqoQDDi9g5vD7" style="color: #3498db; text-decoration: underline; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.color='#5dade2'; this.style.textDecoration='none'" onmouseout="this.style.color='#3498db'; this.style.textDecoration='underline'">here</a>.</p>
-
-        <a href="#" class="admin-link" id="adminLoginBtn">Login</a>
     </footer>
 
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, setDoc, getDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCCYpXOczp5nRRP1S2Gdb1ADjIAHeJQVq0",
@@ -761,161 +634,7 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const db = getFirestore(app);
-
-        let isAuthenticated = false;
-        let currentUser = null;
-        let userPermissions = {
-            deletion: true,
-            edu: true
-        };
-
-        // Load user permissions from Firebase
-        async function loadUserPermissions(email) {
-            try {
-                const configRef = doc(db, 'config', email);
-                const configSnap = await getDoc(configRef);
-                
-                if (configSnap.exists()) {
-                    const permissions = configSnap.data();
-                    userPermissions = {
-                        deletion: permissions.deletion !== false,
-                        edu: permissions.edu !== false
-                    };
-                    console.log('User permissions loaded:', userPermissions);
-                } else {
-                    // Default all to true if no config exists
-                    userPermissions = { deletion: true, edu: true };
-                    console.log('No permission config found, using defaults');
-                }
-            } catch (error) {
-                console.error('Error loading permissions:', error);
-                // Default to all permissions on error
-                userPermissions = { deletion: true, edu: true };
-            }
-        }
-
-        // Authentication state listener
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                isAuthenticated = true;
-                currentUser = user;
-                
-                // Load permissions for this user
-                await loadUserPermissions(user.email);
-                
-                // Check if user has edu permission
-                if (!userPermissions.edu) {
-                    console.log('User does not have edu permission');
-                    alert('⛔ You do not have permission to access the Educational Resources admin panel.\n\nContact your administrator to request access.');
-                    // Sign out the user
-                    await signOut(auth);
-                    hideAdminControls();
-                    return;
-                }
-                
-                showAdminControls();
-            } else {
-                isAuthenticated = false;
-                currentUser = null;
-                // Reset to default permissions when logged out
-                userPermissions = { deletion: true, edu: true };
-                hideAdminControls();
-            }
-        });
-
-        // Open admin modal
-        function openAdminModal() {
-            document.getElementById('adminModal').style.display = 'flex';
-            if (isAuthenticated) {
-                showAdminPanel({ email: currentUser.email });
-            } else {
-                showLoginForm();
-            }
-        }
-
-        // Close admin modal
-        function closeAdminModal() {
-            document.getElementById('adminModal').style.display = 'none';
-            cancelEdit();
-        }
-
-        // Show login form
-        function showLoginForm() {
-            document.getElementById('adminLoginForm').style.display = 'block';
-            document.getElementById('adminPanelContent').style.display = 'none';
-        }
-
-        // Show admin panel
-        function showAdminPanel(user) {
-            document.getElementById('adminLoginForm').style.display = 'none';
-            document.getElementById('adminPanelContent').style.display = 'block';
-            document.getElementById('userEmail').textContent = user.email;
-        }
-
-        // Show admin controls on resource cards
-        function showAdminControls() {
-            document.querySelectorAll('.admin-controls').forEach(control => {
-                control.classList.add('show');
-            });
-        }
-
-        // Hide admin controls
-        function hideAdminControls() {
-            document.querySelectorAll('.admin-controls').forEach(control => {
-                control.classList.remove('show');
-            });
-        }
-
-        // Login functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const loginBtn = document.getElementById('loginBtn');
-            if (loginBtn) {
-                loginBtn.addEventListener('click', async function() {
-                    const email = document.getElementById('adminEmail').value.trim();
-                    const password = document.getElementById('adminPassword').value.trim();
-
-                    if (!email || !password) {
-                        alert('Please enter both email and password');
-                        return;
-                    }
-
-                    try {
-                        await signInWithEmailAndPassword(auth, email, password);
-                        showAdminPanel({ email });
-                        document.getElementById('adminEmail').value = '';
-                        document.getElementById('adminPassword').value = '';
-                    } catch (error) {
-                        console.error('Login error:', error);
-                        alert('Login failed: ' + error.message);
-                    }
-                });
-            }
-
-            // Logout functionality
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', async function() {
-                    try {
-                        await signOut(auth);
-                        showLoginForm();
-                    } catch (error) {
-                        console.error('Logout error:', error);
-                        alert('Logout failed');
-                    }
-                });
-            }
-
-            // Admin modal controls
-            const adminLoginBtn = document.getElementById('adminLoginBtn');
-            if (adminLoginBtn) {
-                adminLoginBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    openAdminModal();
-                });
-            }
-        });
 
         // Load resources
         async function loadResources() {
@@ -932,7 +651,7 @@
                         <div class="resource-card" style="text-align: center; color: #999;">
                             <div class="resource-icon">📚</div>
                             <h3>No Resources Yet</h3>
-                            <p class="resource-preview">Admin can add educational resources using the Admin button in the footer.</p>
+                            <p class="resource-preview">Educational resources will appear here once they are added.</p>
                         </div>
                     `;
                     return;
@@ -952,16 +671,10 @@
                             <p class="resource-preview">${preview}</p>
                             <span class="read-more">Read more →</span>
                         </div>
-                        <div class="admin-controls ${isAuthenticated ? 'show' : ''}">
-                            <button class="edit-btn" onclick="editResource('${doc.id}')">✏️ Edit</button>
-                            <button class="delete-btn" onclick="deleteResource('${doc.id}')">🗑️ Delete</button>
-                        </div>
                     `;
                     
                     card.addEventListener('click', (e) => {
-                        if (!e.target.closest('.admin-controls')) {
-                            viewResource(doc.id);
-                        }
+                        viewResource(doc.id);
                     });
                     
                     resourcesGrid.appendChild(card);
@@ -1090,156 +803,6 @@
             window.history.pushState({}, '', newUrl);
         };
 
-        // Submit resource (add or update)
-        window.submitResource = async function() {
-            if (!isAuthenticated) {
-                alert('You must be logged in to add resources');
-                return;
-            }
-
-            // Check edu permission for adding/editing resources
-            if (!userPermissions.edu) {
-                alert('⛔ You do not have permission to add or edit educational resources.\n\nContact your administrator to request access.');
-                return;
-            }
-
-            const submitBtn = document.getElementById('submitBtn');
-            const messageDiv = document.getElementById('submitMessage');
-            
-            const icon = document.getElementById('resourceIcon').value.trim();
-            const title = document.getElementById('resourceTitle').value.trim();
-            const content = document.getElementById('resourceContent').value.trim();
-            const resourceId = document.getElementById('editResourceId').value;
-
-            if (!icon || !title || !content) {
-                messageDiv.innerHTML = '<div class="error-message">Please fill in all required fields</div>';
-                return;
-            }
-
-            try {
-                submitBtn.disabled = true;
-                submitBtn.textContent = resourceId ? 'Updating...' : 'Adding...';
-
-                const resourceData = {
-                    icon: icon,
-                    title: title,
-                    content: content,
-                    lastModified: new Date().toISOString()
-                };
-
-                if (!resourceId) {
-                    resourceData.dateAdded = new Date().toISOString();
-                }
-
-                const docId = resourceId || title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now();
-                await setDoc(doc(db, 'educationalResources', docId), resourceData, { merge: !!resourceId });
-
-                messageDiv.innerHTML = `<div class="success-message">✓ Resource ${resourceId ? 'updated' : 'added'} successfully!</div>`;
-
-                setTimeout(() => {
-                    closeAdminModal();
-                    loadResources();
-                    clearForm();
-                }, 1500);
-
-            } catch (error) {
-                console.error('Error saving resource:', error);
-                messageDiv.innerHTML = '<div class="error-message">Error saving resource. Please try again.</div>';
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = resourceId ? 'Update Resource' : 'Add Resource';
-            }
-        };
-
-        // Edit resource
-        window.editResource = async function(resourceId) {
-            if (!isAuthenticated) {
-                alert('You must be logged in to edit resources');
-                return;
-            }
-
-            // Check edu permission
-            if (!userPermissions.edu) {
-                alert('⛔ You do not have permission to edit educational resources.\n\nContact your administrator to request access.');
-                return;
-            }
-
-            try {
-                const resourceDoc = await getDoc(doc(db, 'educationalResources', resourceId));
-                
-                if (!resourceDoc.exists()) {
-                    alert('Resource not found');
-                    return;
-                }
-
-                const resource = resourceDoc.data();
-                
-                document.getElementById('editResourceId').value = resourceId;
-                document.getElementById('resourceIcon').value = resource.icon || '';
-                document.getElementById('resourceTitle').value = resource.title || '';
-                document.getElementById('resourceContent').value = resource.content || '';
-                
-                document.getElementById('formTitle').textContent = 'Edit Resource';
-                document.getElementById('submitBtn').textContent = 'Update Resource';
-                document.getElementById('cancelBtn').style.display = 'block';
-                
-                openAdminModal();
-
-            } catch (error) {
-                console.error('Error loading resource for edit:', error);
-                alert('Error loading resource data');
-            }
-        };
-
-        // Delete resource
-        window.deleteResource = async function(resourceId) {
-            if (!isAuthenticated) {
-                alert('You must be logged in to delete resources');
-                return;
-            }
-
-            // Check deletion permission
-            if (!userPermissions.deletion) {
-                alert('⛔ You do not have permission to delete resources.\n\nContact your administrator to request deletion access.');
-                return;
-            }
-
-            if (!confirm('Are you sure you want to delete this resource? This action cannot be undone.')) {
-                return;
-            }
-
-            try {
-                await deleteDoc(doc(db, 'educationalResources', resourceId));
-                alert('Resource deleted successfully!');
-                loadResources();
-
-            } catch (error) {
-                console.error('Error deleting resource:', error);
-                alert('Error deleting resource. Please try again.');
-            }
-        };
-
-        // Cancel edit
-        window.cancelEdit = function() {
-            clearForm();
-        };
-
-        // Clear form
-        function clearForm() {
-            document.getElementById('editResourceId').value = '';
-            document.getElementById('resourceIcon').value = '';
-            document.getElementById('resourceTitle').value = '';
-            document.getElementById('resourceContent').value = '';
-            document.getElementById('formTitle').textContent = 'Add New Resource';
-            document.getElementById('submitBtn').textContent = 'Add Resource';
-            document.getElementById('cancelBtn').style.display = 'none';
-            document.getElementById('submitMessage').innerHTML = '';
-        }
-
-        // Make functions available globally
-        window.openAdminModal = openAdminModal;
-        window.closeAdminModal = closeAdminModal;
-
         // Load resources on page load
         loadResources();
 
@@ -1276,16 +839,13 @@
                 // Search functionality
         const searchInput = document.getElementById('searchInput');
         const searchResultsCount = document.getElementById('searchResultsCount');
-        let allResourceCards = [];
 
         if (searchInput) {
             searchInput.addEventListener('input', function(e) {
                 const searchTerm = e.target.value.toLowerCase().trim();
                 
-                // Get all resource cards if not already cached
-                if (allResourceCards.length === 0) {
-                    allResourceCards = Array.from(document.querySelectorAll('.resource-card'));
-                }
+                // Get all resource cards dynamically each time
+                const allResourceCards = Array.from(document.querySelectorAll('.resource-card'));
                 
                 if (searchTerm === '') {
                     // Show all cards
@@ -1321,18 +881,6 @@
                 searchResultsCount.classList.add('show');
             });
         }
-
-        // Update cache when resources are loaded
-        const originalLoadResources = loadResources;
-        loadResources = async function() {
-            await originalLoadResources();
-            // Reset cache after resources are reloaded
-            allResourceCards = [];
-            if (searchInput) {
-                searchInput.value = '';
-                searchResultsCount.classList.remove('show');
-            }
-        };
     </script>
 </body>
 </html>

@@ -1,0 +1,2591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Archalo</title>
+    <link rel="icon" type="image/png" href="owlcheologists.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fafafa;
+        }
+        
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            color: #ecf0f1;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: clamp(1rem, 3vw, 2rem);
+        }
+        
+        .nav-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            transform: translateY(-1px);
+        }
+        
+        /* Hero section */
+        .hero {
+            background: linear-gradient(135deg, #d4a574, #8b6f47);
+            color: white;
+            padding: clamp(3rem, 6vw, 4rem) 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        .hero p {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        /* Admin container */
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: clamp(2rem, 4vw, 3rem) 2rem;
+        }
+        
+        /* Login section */
+        .login-section {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+        
+        .login-section h2 {
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #3498db;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 5px 15px rgba(149, 165, 166, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+        
+        .btn-success:hover {
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .btn-danger:hover {
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        /* Admin panel sections */
+        .admin-panel {
+            display: none;
+        }
+        
+        .user-info {
+            background: #e8f5e9;
+            border: 1px solid #81c784;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .user-info p {
+            color: #2e7d32;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            padding: 0.6rem 1.5rem;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .section-card h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .section-card h3 {
+            color: #2c3e50;
+            margin: 1.5rem 0 1rem 0;
+            font-size: 1.3rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .search-result {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-result:hover {
+            background: #e3f2fd;
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+        
+        .search-result h4 {
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+        
+        .search-result p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        .search-result .actions {
+            margin-top: 0.8rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .search-result button {
+            padding: 0.4rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-btn {
+            background: #3498db;
+            color: white;
+        }
+        
+        .edit-btn:hover {
+            background: #2980b9;
+        }
+        
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .warning-banner {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            color: #856404;
+        }
+        
+        .warning-banner strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Admin Navigation Tabs */
+        .admin-nav {
+            background: white;
+            border-radius: 12px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .admin-nav-tab {
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #7f8c8d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-nav-tab:hover {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+        
+        .admin-nav-tab.active {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+        
+        .admin-section-content {
+            display: none;
+        }
+        
+        .admin-section-content.active {
+            display: block;
+        }
+        
+        /* Contact Management Styles */
+        .contact-item {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .contact-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .contact-item-header h5 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        
+        .remove-contact-btn {
+            padding: 0.5rem 1rem;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-contact-btn:hover {
+            background: #c0392b;
+        }
+        
+        .contact-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .contact-fields .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .law-type {
+            text-transform: uppercase;
+        }
+        
+        .law-type.federal {
+            background: #3498db;
+            color: white;
+        }
+        
+        .law-type.state {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .law-type.county {
+            background: #f39c12;
+            color: white;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .user-info {
+                text-align: center;
+                justify-content: center;
+            }
+            
+            .contact-fields {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" style="text-decoration: none; color: inherit;">
+                <div class="logo">Archalo</div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="laws.html">Laws</a></li>
+                <li><a href="artifactHelp.html">I Found an Artifact</a></li>
+                <li><a href="edu-resources.html">Educational Resources</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>🔐 Admin Panel</h1>
+        <p>Manage archaeology laws and resources</p>
+    </section>
+
+    <section class="admin-container">
+        <!-- Login Section -->
+        <div id="loginSection" class="login-section">
+            <h2>Admin Login</h2>
+            <div class="form-group">
+                <label for="adminEmail">Email</label>
+                <input type="email" id="adminEmail" placeholder="admin@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="adminPassword">Password</label>
+                <input type="password" id="adminPassword" placeholder="Enter password" required>
+            </div>
+            <button id="loginBtn" class="btn">Login</button>
+            <div id="loginMessage" style="margin-top: 1rem;"></div>
+        </div>
+
+        <!-- Admin Panel (shown after login) -->
+        <div id="adminPanel" class="admin-panel">
+            <div class="user-info">
+                <p>👤 Logged in as: <span id="userEmail"></span></p>
+                <button id="logoutBtn" class="logout-btn">Logout</button>
+            </div>
+
+            <div class="warning-banner">
+                <strong>⚠️ Important:</strong>
+                Please ensure to verify that all information is accurate before creating, editing, or deleting laws.
+            </div>
+
+            <!-- Admin Navigation Tabs -->
+            <div class="admin-nav">
+                <button class="admin-nav-tab active" onclick="switchAdminSection('laws')">📚 Laws</button>
+                <button class="admin-nav-tab" onclick="switchAdminSection('artifacts')">🏺 Artifact Instructions</button>
+                <button class="admin-nav-tab" onclick="switchAdminSection('education')">📖 Educational Resources</button>
+                <button class="admin-nav-tab" onclick="switchAdminSection('announcements')">📢 Announcements</button>
+                <button class="admin-nav-tab" onclick="switchAdminSection('credits')">✍️ Credits Page</button>
+            </div>
+
+            <!-- Laws Section -->
+            <div id="lawsSection" class="admin-section-content active">
+            
+            <!-- Search & Edit Section -->
+            <div class="section-card">
+                <h2>🔍 Search & Edit Laws</h2>
+                <div class="form-row">
+                    <input type="text" id="lawSearchInput" placeholder="Search by title, year, or tags..." 
+                           style="padding: 0.8rem 1rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    <button onclick="searchLaws()" class="btn" style="width: auto;">Search</button>
+                </div>
+                <div id="lawSearchResults" style="margin-top: 1.5rem;"></div>
+            </div>
+
+            <!-- Edit Law Section (hidden by default) -->
+            <div id="editLawSection" class="section-card" style="display: none;">
+                <h2>✏️ Edit Law</h2>
+                <input type="hidden" id="editLawId">
+                
+                <div class="form-group">
+                    <label for="editLawType">Law Type</label>
+                    <select id="editLawType">
+                        <option value="federal">Federal</option>
+                        <option value="state">State</option>
+                        <option value="county">County</option>
+                    </select>
+                </div>
+
+                <div id="editJurisdictionFields" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editLawState">State</label>
+                            <select id="editLawState">
+                                <option value="">Select State...</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="editCountyField" style="display: none;">
+                            <label for="editLawCounty">County (Optional)</label>
+                            <input type="text" id="editLawCounty" placeholder="e.g., Los Angeles County">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editLawTitle">Law Title *</label>
+                    <input type="text" id="editLawTitle" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editLawYear">Year Enacted *</label>
+                        <input type="text" id="editLawYear" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editLawIcon">Icon (emoji)</label>
+                        <input type="text" id="editLawIcon" maxlength="2" placeholder="⚖️">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editLawSummary">Summary *</label>
+                    <textarea id="editLawSummary" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editLawSignificance">Significance *</label>
+                    <textarea id="editLawSignificance" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editLawEnforcement">Enforcement *</label>
+                    <textarea id="editLawEnforcement" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editLawFullText">Full Text (Excerpt) *</label>
+                    <textarea id="editLawFullText" required style="min-height: 150px;"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editLawTags">Tags (comma-separated)</label>
+                    <input type="text" id="editLawTags" placeholder="e.g., ARPA, Permits, Federal Lands">
+                </div>
+                
+                <div class="form-group">
+                    <label for="editLawNotes">Notes (Optional)</label>
+                    <textarea id="editLawNotes"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <button onclick="updateLaw()" class="btn btn-success">Update Law</button>
+                    <button onclick="cancelEdit()" class="btn btn-secondary">Cancel</button>
+                </div>
+                <div id="editMessage"></div>
+            </div>
+
+            <!-- Add New Law Section -->
+            <div class="section-card">
+                <h2>➕ Add New Law</h2>
+                
+                <div class="form-group">
+                    <label for="lawType">Law Type</label>
+                    <select id="lawType">
+                        <option value="federal">Federal</option>
+                        <option value="state">State</option>
+                        <option value="county">County</option>
+                    </select>
+                </div>
+
+                <div id="jurisdictionFields" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lawState">State</label>
+                            <select id="lawState">
+                                <option value="">Select State...</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="countyField" style="display: none;">
+                            <label for="lawCounty">County (Optional)</label>
+                            <input type="text" id="lawCounty" placeholder="e.g., Los Angeles County">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lawTitle">Law Title *</label>
+                    <input type="text" id="lawTitle" placeholder="e.g., Archaeological Resources Protection Act" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="lawYear">Year Enacted *</label>
+                        <input type="text" id="lawYear" placeholder="e.g., 1979" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lawIcon">Icon (emoji)</label>
+                        <input type="text" id="lawIcon" placeholder="e.g., ⚖️" maxlength="2">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lawSummary">Summary *</label>
+                    <textarea id="lawSummary" placeholder="Brief summary of the law..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lawSignificance">Significance *</label>
+                    <textarea id="lawSignificance" placeholder="Why is this law important?" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lawEnforcement">Enforcement *</label>
+                    <textarea id="lawEnforcement" placeholder="Who enforces this law?" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lawFullText">Full Text (Excerpt) *</label>
+                    <textarea id="lawFullText" placeholder="Full text or excerpt of the law..." required style="min-height: 150px;"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lawTags">Tags (comma-separated)</label>
+                    <input type="text" id="lawTags" placeholder="e.g., ARPA, Permits, Federal Lands">
+                </div>
+                
+                <div class="form-group">
+                    <label for="lawNotes">Notes (Optional)</label>
+                    <textarea id="lawNotes" placeholder="Additional notes or comments about this law..."></textarea>
+                </div>
+                
+                <button onclick="submitLaw()" class="btn btn-success" id="submitBtn">
+                    Add Law to Database
+                </button>
+                
+                <div id="submitMessage"></div>
+            </div>
+            
+            </div>
+            <!-- End Laws Section -->
+            
+            <!-- Artifact Instructions Section -->
+            <div id="artifactsSection" class="admin-section-content">
+            
+            <!-- Search & Edit Instructions Section -->
+            <div class="section-card">
+                <h2>🔍 Search & Edit Instructions</h2>
+                <div class="form-row">
+                    <input type="text" id="instructionSearchInput" placeholder="Search by state, city, owner, keywords..." 
+                           style="padding: 0.8rem 1rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    <button onclick="searchInstructions()" class="btn" style="width: auto;">Search</button>
+                </div>
+                <div id="instructionSearchResults" style="margin-top: 1.5rem;"></div>
+            </div>
+
+            <!-- Edit Instruction Section (hidden by default) -->
+            <div id="editInstructionSection" class="section-card" style="display: none;">
+                <h2>✏️ Edit Instruction</h2>
+                <input type="hidden" id="editInstructionId">
+                
+                <h3>Location Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editInstructionState">State (2-letter code)</label>
+                        <input type="text" id="editInstructionState" maxlength="2" placeholder="e.g., CA">
+                    </div>
+                    <div class="form-group">
+                        <label for="editInstructionCity">City</label>
+                        <input type="text" id="editInstructionCity" placeholder="e.g., Los Angeles">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editInstructionJurisdiction">Jurisdiction</label>
+                        <input type="text" id="editInstructionJurisdiction" placeholder="e.g., County, Federal Land">
+                    </div>
+                    <div class="form-group">
+                        <label for="editInstructionOwner">Land Owner</label>
+                        <input type="text" id="editInstructionOwner" placeholder="e.g., BLM, Forest Service">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editInstructionKeywords">Keywords (comma-separated)</label>
+                    <input type="text" id="editInstructionKeywords" placeholder="e.g., federal, blm, public lands">
+                    <div id="editKeywordPreview" style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
+                </div>
+                
+                <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                
+                <h3>📞 Contacts</h3>
+                <div id="editContactsList">
+                    <!-- Contacts will be added here dynamically -->
+                </div>
+                
+                <button type="button" onclick="addEditContactField()" class="btn" style="background: #27ae60; margin-bottom: 1rem;">
+                    ➕ Add Contact
+                </button>
+                
+                <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                
+                <h3>⚖️ Applicable Laws</h3>
+                <button type="button" onclick="loadAvailableLaws('editLawsSelection', 'editSelectedLawsPreview')" class="btn" style="background: #9b59b6; margin-bottom: 1rem;">📜 Load Available Laws</button>
+                <div id="editLawsSelection" style="display: none; max-height: 300px; overflow-y: auto; background: #f8f9fa; padding: 1rem; border-radius: 8px; border: 1px solid #e0e0e0;">
+                    <!-- Laws checkboxes will be loaded here -->
+                </div>
+                <div id="editSelectedLawsPreview" style="margin-top: 1rem;"></div>
+                
+                <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                
+                <h3>Special Instructions</h3>
+                <div class="form-group">
+                    <label for="editInstructionProbability">Artifact Likelihood Level (Optional)</label>
+                    <select id="editInstructionProbability">
+                        <option value="">-- None / Not Shown --</option>
+                        <option value="low">🟢 Low - Few known archaeological findings in this area</option>
+                        <option value="moderate">🟡 Moderate - Some historical or archaeological activity nearby</option>
+                        <option value="elevated">🟠 Elevated - Area with documented archaeological sensitivity</option>
+                        <option value="high">🔴 High - Area known for significant archaeological presence</option>
+                    </select>
+                    <small style="color: #7f8c8d; margin-top: 0.5rem; display: block;">Educational estimate based on available records. Leave empty to hide this indicator.</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editInstructionSpecial">Special Instructions (Optional)</label>
+                    <textarea id="editInstructionSpecial" placeholder="Important specific steps or requirements for this location..."></textarea>
+                </div>
+                
+                <h3>General Notes</h3>
+                <div class="form-group">
+                    <label for="editInstructionGeneral">General Notes & Instructions (Optional)</label>
+                    <textarea id="editInstructionGeneral" placeholder="Additional guidance, procedures, legal requirements, or general information..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <button onclick="updateInstruction()" class="btn btn-success">Update Instruction</button>
+                    <button onclick="cancelEditInstruction()" class="btn btn-secondary">Cancel</button>
+                </div>
+                <div id="editInstructionMessage"></div>
+            </div>
+
+            <!-- Add New Instruction Section -->
+            <div class="section-card">
+                <h2>➕ Add New Instruction</h2>
+                
+                <h3>Location Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="instructionState">State (2-letter code)</label>
+                        <input type="text" id="instructionState" maxlength="2" placeholder="e.g., CA">
+                    </div>
+                    <div class="form-group">
+                        <label for="instructionCity">City</label>
+                        <input type="text" id="instructionCity" placeholder="e.g., Los Angeles">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="instructionJurisdiction">Jurisdiction</label>
+                        <input type="text" id="instructionJurisdiction" placeholder="e.g., County, Federal Land">
+                    </div>
+                    <div class="form-group">
+                        <label for="instructionOwner">Land Owner</label>
+                        <input type="text" id="instructionOwner" placeholder="e.g., BLM, Forest Service">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="instructionKeywords">Keywords (comma-separated)</label>
+                    <input type="text" id="instructionKeywords" placeholder="e.g., federal, blm, public lands">
+                    <div id="keywordPreview" style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
+                </div>
+                
+                <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                
+                <h3>📞 Contacts</h3>
+                <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">Add the contact information for authorities who should be notified when an artifact is found.</p>
+                
+                <div id="contactsList">
+                    <!-- Contacts will be added here dynamically -->
+                </div>
+                
+                <button type="button" onclick="addContactField()" class="btn" style="background: #27ae60; margin-bottom: 1rem;">
+                    ➕ Add Contact
+                </button>
+                
+                <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                
+                <h3>⚖️ Applicable Laws</h3>
+                <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">Select which laws apply to this location. If no laws are selected, the laws section will be hidden for this instruction.</p>
+                <button type="button" onclick="loadAvailableLaws('lawsSelection', 'selectedLawsPreview')" class="btn" style="background: #9b59b6; margin-bottom: 1rem;">📜 Load Available Laws</button>
+                <div id="lawsSelection" style="display: none; max-height: 300px; overflow-y: auto; background: #f8f9fa; padding: 1rem; border-radius: 8px; border: 1px solid #e0e0e0;">
+                    <!-- Laws checkboxes will be loaded here -->
+                </div>
+                <div id="selectedLawsPreview" style="margin-top: 1rem;"></div>
+                
+                <hr style="margin: 2rem 0; border: 1px solid #e0e0e0;">
+                
+                <h3>Special Instructions</h3>
+                <div class="form-group">
+                    <label for="instructionProbability">Artifact Likelihood Level (Optional)</label>
+                    <select id="instructionProbability">
+                        <option value="">-- None / Not Shown --</option>
+                        <option value="low">🟢 Low - Few known archaeological findings in this area</option>
+                        <option value="moderate">🟡 Moderate - Some historical or archaeological activity nearby</option>
+                        <option value="elevated">🟠 Elevated - Area with documented archaeological sensitivity</option>
+                        <option value="high">🔴 High - Area known for significant archaeological presence</option>
+                    </select>
+                    <small style="color: #7f8c8d; margin-top: 0.5rem; display: block;">Educational estimate based on available records. Leave empty to hide this indicator.</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="instructionSpecial">Special Instructions (Optional)</label>
+                    <textarea id="instructionSpecial" placeholder="Important specific steps or requirements for this location..."></textarea>
+                </div>
+                
+                <h3>General Notes</h3>
+                <div class="form-group">
+                    <label for="instructionGeneral">General Notes & Instructions (Optional)</label>
+                    <textarea id="instructionGeneral" placeholder="Additional guidance, procedures, legal requirements, or general information..."></textarea>
+                </div>
+                
+                <button onclick="submitInstruction()" class="btn btn-success" id="submitInstructionBtn">
+                    💾 Save Instruction
+                </button>
+                
+                <div id="submitInstructionMessage"></div>
+            </div>
+            
+            </div>
+            <!-- End Artifact Instructions Section -->
+            
+            <!-- Educational Resources Section -->
+            <div id="educationSection" class="admin-section-content">
+            
+            <!-- Search & Edit Resources Section -->
+            <div class="section-card">
+                <h2>🔍 Search & Edit Resources</h2>
+                <div class="form-row">
+                    <input type="text" id="resourceSearchInput" placeholder="Search by title or keywords..." 
+                           style="padding: 0.8rem 1rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    <button onclick="searchResources()" class="btn" style="width: auto;">Search</button>
+                </div>
+                <div id="resourceSearchResults" style="margin-top: 1.5rem;"></div>
+            </div>
+
+            <!-- Edit Resource Section (hidden by default) -->
+            <div id="editResourceSection" class="section-card" style="display: none;">
+                <h2>✏️ Edit Resource</h2>
+                <input type="hidden" id="editResourceId">
+                
+                <div class="form-group">
+                    <label for="editResourceIcon">Icon (emoji) *</label>
+                    <input type="text" id="editResourceIcon" maxlength="5" placeholder="e.g., 📖" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editResourceTitle">Resource Title *</label>
+                    <input type="text" id="editResourceTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editResourceContent">Content (Markdown) *</label>
+                    <textarea id="editResourceContent" required style="min-height: 300px;" placeholder="Use markdown formatting..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <button onclick="updateResource()" class="btn btn-success">Update Resource</button>
+                    <button onclick="cancelResourceEdit()" class="btn btn-secondary">Cancel</button>
+                </div>
+                <div id="editResourceMessage"></div>
+            </div>
+
+            <!-- Add New Resource Section -->
+            <div class="section-card">
+                <h2>➕ Add New Resource</h2>
+                
+                <div class="form-group">
+                    <label for="resourceIcon">Icon (emoji) *</label>
+                    <input type="text" id="resourceIcon" maxlength="5" placeholder="e.g., 📖" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="resourceTitle">Resource Title *</label>
+                    <input type="text" id="resourceTitle" placeholder="e.g., Understanding Archaeological Sites" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="resourceContent">Content (Markdown) *</label>
+                    <textarea id="resourceContent" placeholder="# Heading 1&#10;&#10;## Heading 2&#10;&#10;Your content here...&#10;&#10;**Bold text**&#10;*Italic text*&#10;&#10;- Bullet point 1&#10;- Bullet point 2" 
+                              required style="min-height: 300px;"></textarea>
+                    <small style="color: #7f8c8d; margin-top: 0.5rem; display: block;">Use Markdown formatting. Support for headers, bold, italic, lists, links, etc.</small>
+                </div>
+                
+                <button onclick="submitResource()" class="btn btn-success" id="submitResourceBtn">
+                    Add Resource
+                </button>
+                
+                <div id="submitResourceMessage"></div>
+            </div>
+            
+            </div>
+            <!-- End Educational Resources Section -->
+            
+            <!-- Announcements Section -->
+            <div id="announcementsSection" class="admin-section-content">
+            
+            <div class="section-card">
+                <h2>📢 Edit Announcements</h2>
+                <p style="color: #7f8c8d; margin-bottom: 1.5rem;">Manage the main announcement displayed on the Home page.</p>
+                
+                <div class="form-group">
+                    <label for="mainAnnouncement">Main Announcement</label>
+                    <textarea id="mainAnnouncementText" 
+                              placeholder="Enter announcement text here... Leave blank to remove announcement." 
+                              style="min-height: 150px;"></textarea>
+                    <small style="color: #7f8c8d; margin-top: 0.5rem; display: block;">This announcement will appear on the Home page. Leave empty to hide the announcement.</small>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button onclick="loadAnnouncement()" class="btn" style="background: #3498db; flex: 1;">
+                        🔄 Load Current
+                    </button>
+                    <button onclick="saveAnnouncement()" class="btn btn-success" style="flex: 1;">
+                        💾 Save Announcement
+                    </button>
+                </div>
+                
+                <div id="announcementMessage" style="margin-top: 1rem;"></div>
+            </div>
+            
+            </div>
+            <!-- End Announcements Section -->
+            
+            <!-- Credits Page Section -->
+            <div id="creditsSection" class="admin-section-content">
+            
+            <div class="section-card">
+                <h2>✍️ Edit Credits Page</h2>
+                <p style="color: #7f8c8d; margin-bottom: 1.5rem;">Edit the Credits & Attributions page content using Markdown formatting.</p>
+                
+                <div class="form-group">
+                    <label for="creditsMarkdown">Credits Content (Markdown)</label>
+                    <textarea id="creditsMarkdown" 
+                              placeholder="# Credits & Attributions&#10;&#10;## Project Name&#10;Description here...&#10;&#10;**Bold text** *Italic text*" 
+                              style="min-height: 400px; font-family: 'Courier New', monospace;"></textarea>
+                    <small style="color: #7f8c8d; margin-top: 0.5rem; display: block;">Use Markdown formatting. Supports headers (#), bold (**), italic (*), lists, links, etc.</small>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button onclick="loadCredits()" class="btn" style="background: #3498db; flex: 1;">
+                        🔄 Load Current
+                    </button>
+                    <button onclick="saveCredits()" class="btn btn-success" style="flex: 1;">
+                        💾 Save Credits Page
+                    </button>
+                </div>
+                
+                <div id="creditsMessage" style="margin-top: 1rem;"></div>
+            </div>
+            
+            </div>
+            <!-- End Credits Page Section -->
+
+        </div>
+    </section>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, setDoc, getDoc, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCYpXOczp5nRRP1S2Gdb1ADjIAHeJQVq0",
+            authDomain: "owlcheologists.firebaseapp.com",
+            projectId: "owlcheologists",
+            storageBucket: "owlcheologists.firebasestorage.app",
+            messagingSenderId: "323297596743",
+            appId: "1:323297596743:web:c9455e40779b7c09522862",
+            measurementId: "G-2CFYWTQCQ4"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let currentUser = null;
+        let isAuthenticated = false;
+
+        // US States array
+        const usStates = [
+            'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
+            'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
+            'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan',
+            'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+            'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio',
+            'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
+            'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia',
+            'Wisconsin', 'Wyoming'
+        ];
+
+        // Check auth state
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                isAuthenticated = true;
+                console.log('User logged in:', user.email);
+                showAdminPanel(user);
+            } else {
+                currentUser = null;
+                isAuthenticated = false;
+                console.log('User logged out');
+                showLoginSection();
+            }
+        });
+
+        // Show login section
+        function showLoginSection() {
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+
+        // Show admin panel
+        function showAdminPanel(user) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            document.getElementById('userEmail').textContent = user.email;
+            
+            // Populate state dropdowns
+            populateStateDropdowns();
+            
+            // Add one contact field by default
+            if (document.getElementById('contactsList').children.length === 0) {
+                addContactField();
+            }
+            
+            // Setup event listeners for artifact section
+            setupArtifactEventListeners();
+        }
+        
+        // Setup artifact section event listeners
+        function setupArtifactEventListeners() {
+            // Auto-uppercase state abbreviations
+            const stateInputs = [
+                document.getElementById('instructionState'),
+                document.getElementById('editInstructionState')
+            ];
+            stateInputs.forEach(input => {
+                if (input) {
+                    input.addEventListener('input', function() {
+                        this.value = this.value.toUpperCase();
+                    });
+                }
+            });
+            
+            // Keyword preview for add form
+            const keywordsInput = document.getElementById('instructionKeywords');
+            if (keywordsInput) {
+                keywordsInput.addEventListener('input', function() {
+                    const keywords = this.value.split(',').map(k => k.trim()).filter(k => k);
+                    const preview = document.getElementById('keywordPreview');
+                    if (preview) {
+                        preview.innerHTML = keywords.map(keyword => 
+                            `<span style="background: #3498db; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">${keyword}</span>`
+                        ).join('');
+                    }
+                });
+            }
+            
+            // Keyword preview for edit form
+            const editKeywordsInput = document.getElementById('editInstructionKeywords');
+            if (editKeywordsInput) {
+                editKeywordsInput.addEventListener('input', function() {
+                    const keywords = this.value.split(',').map(k => k.trim()).filter(k => k);
+                    const preview = document.getElementById('editKeywordPreview');
+                    if (preview) {
+                        preview.innerHTML = keywords.map(keyword => 
+                            `<span style="background: #3498db; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">${keyword}</span>`
+                        ).join('');
+                    }
+                });
+            }
+        }
+
+        // Login functionality
+        document.getElementById('loginBtn').addEventListener('click', async function() {
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const messageDiv = document.getElementById('loginMessage');
+
+            if (!email || !password) {
+                messageDiv.innerHTML = '<div class="error-message">Please enter both email and password</div>';
+                return;
+            }
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                console.log('Login successful:', userCredential.user.email);
+                messageDiv.innerHTML = '<div class="success-message">✓ Login successful!</div>';
+            } catch (error) {
+                console.error('Login error:', error);
+                messageDiv.innerHTML = `<div class="error-message">Login failed: ${error.message}</div>`;
+            }
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async function() {
+            try {
+                await signOut(auth);
+                console.log('Logout successful');
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert(`Logout failed: ${error.message}`);
+            }
+        });
+
+        // Populate state dropdowns
+        function populateStateDropdowns() {
+            const lawStateSelect = document.getElementById('lawState');
+            const editLawStateSelect = document.getElementById('editLawState');
+            
+            [lawStateSelect, editLawStateSelect].forEach(select => {
+                if (select && select.options.length <= 1) {
+                    select.innerHTML = '<option value="">Select State...</option>';
+                    usStates.forEach(state => {
+                        const option = document.createElement('option');
+                        option.value = state;
+                        option.textContent = state;
+                        select.appendChild(option);
+                    });
+                }
+            });
+        }
+
+        // Handle law type change (Add form)
+        document.getElementById('lawType').addEventListener('change', function() {
+            const jurisdictionFields = document.getElementById('jurisdictionFields');
+            const countyField = document.getElementById('countyField');
+            
+            if (this.value === 'state' || this.value === 'county') {
+                jurisdictionFields.style.display = 'block';
+                if (this.value === 'county') {
+                    countyField.style.display = 'block';
+                } else {
+                    countyField.style.display = 'none';
+                }
+            } else {
+                jurisdictionFields.style.display = 'none';
+            }
+        });
+
+        // Handle law type change (Edit form)
+        document.getElementById('editLawType').addEventListener('change', function() {
+            const editJurisdictionFields = document.getElementById('editJurisdictionFields');
+            const editCountyField = document.getElementById('editCountyField');
+            
+            if (this.value === 'state' || this.value === 'county') {
+                editJurisdictionFields.style.display = 'block';
+                if (this.value === 'county') {
+                    editCountyField.style.display = 'block';
+                } else {
+                    editCountyField.style.display = 'none';
+                }
+            } else {
+                editJurisdictionFields.style.display = 'none';
+            }
+        });
+
+        // Search laws
+        window.searchLaws = async function() {
+            if (!isAuthenticated) {
+                alert('You must be logged in to search laws');
+                return;
+            }
+
+            const searchInput = document.getElementById('lawSearchInput').value.trim().toLowerCase();
+            const resultsDiv = document.getElementById('lawSearchResults');
+
+            if (!searchInput) {
+                resultsDiv.innerHTML = '<p style="color: #7f8c8d;">Enter a search term to find laws</p>';
+                return;
+            }
+
+            resultsDiv.innerHTML = '<p style="color: #7f8c8d;">Searching...</p>';
+
+            try {
+                const lawsRef = collection(db, 'archaeologyLaws');
+                const snapshot = await getDocs(lawsRef);
+                const laws = [];
+
+                snapshot.forEach(doc => {
+                    const law = { id: doc.id, ...doc.data() };
+                    const searchStr = `${law.title} ${law.year} ${(law.tags || []).join(' ')} ${law.summary || ''}`.toLowerCase();
+                    if (searchStr.includes(searchInput)) {
+                        laws.push(law);
+                    }
+                });
+
+                if (laws.length === 0) {
+                    resultsDiv.innerHTML = '<p style="color: #7f8c8d;">No laws found matching your search</p>';
+                } else {
+                    resultsDiv.innerHTML = laws.map(law => `
+                        <div class="search-result">
+                            <h4>${law.icon || '⚖️'} ${law.title}</h4>
+                            <p>Year: ${law.year} | Type: ${law.type || 'federal'} | ID: ${law.id}</p>
+                            <div class="actions">
+                                <button class="edit-btn" onclick="editLaw('${law.id}')">✏️ Edit</button>
+                                <button class="delete-btn" onclick="deleteLaw('${law.id}')">🗑️ Delete</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error searching laws:', error);
+                resultsDiv.innerHTML = '<div class="error-message">Error searching laws. Please try again.</div>';
+            }
+        };
+
+        // Edit law
+        window.editLaw = async function(lawId) {
+            if (!isAuthenticated) {
+                alert('You must be logged in to edit laws');
+                return;
+            }
+
+            try {
+                const lawRef = doc(db, 'archaeologyLaws', lawId);
+                const lawSnap = await getDoc(lawRef);
+
+                if (!lawSnap.exists()) {
+                    alert('Law not found');
+                    return;
+                }
+
+                const law = lawSnap.data();
+
+                document.getElementById('editLawId').value = lawId;
+                document.getElementById('editLawType').value = law.type || 'federal';
+                document.getElementById('editLawTitle').value = law.title || '';
+                document.getElementById('editLawYear').value = law.year || '';
+                document.getElementById('editLawIcon').value = law.icon || '';
+                document.getElementById('editLawSummary').value = law.summary || '';
+                document.getElementById('editLawSignificance').value = law.significance || '';
+                document.getElementById('editLawEnforcement').value = law.enforcement || '';
+                document.getElementById('editLawFullText').value = law.fullText || '';
+                document.getElementById('editLawTags').value = (law.tags || []).join(', ');
+                document.getElementById('editLawNotes').value = law.notes || '';
+
+                const editJurisdictionFields = document.getElementById('editJurisdictionFields');
+                const editCountyField = document.getElementById('editCountyField');
+
+                if (law.type === 'state' || law.type === 'county') {
+                    editJurisdictionFields.style.display = 'block';
+                    document.getElementById('editLawState').value = law.state || '';
+
+                    if (law.type === 'county') {
+                        editCountyField.style.display = 'block';
+                        document.getElementById('editLawCounty').value = law.county || '';
+                    } else {
+                        editCountyField.style.display = 'none';
+                    }
+                } else {
+                    editJurisdictionFields.style.display = 'none';
+                }
+
+                document.getElementById('editLawSection').style.display = 'block';
+                document.getElementById('editLawSection').scrollIntoView({ behavior: 'smooth' });
+
+            } catch (error) {
+                console.error('Error loading law for edit:', error);
+                alert('Error loading law data. Please try again.');
+            }
+        };
+
+        // Update law
+        window.updateLaw = async function() {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to update laws');
+                return;
+            }
+
+            const messageDiv = document.getElementById('editMessage');
+            const lawId = document.getElementById('editLawId').value;
+
+            if (!lawId) {
+                messageDiv.innerHTML = '<div class="error-message">No law selected for editing</div>';
+                return;
+            }
+
+            try {
+                const lawType = document.getElementById('editLawType').value;
+                const title = document.getElementById('editLawTitle').value.trim();
+                const year = document.getElementById('editLawYear').value.trim();
+                const icon = document.getElementById('editLawIcon').value.trim() || '⚖️';
+                const summary = document.getElementById('editLawSummary').value.trim();
+                const significance = document.getElementById('editLawSignificance').value.trim();
+                const enforcement = document.getElementById('editLawEnforcement').value.trim();
+                const fullText = document.getElementById('editLawFullText').value.trim();
+                const tagsInput = document.getElementById('editLawTags').value.trim();
+                const notes = document.getElementById('editLawNotes').value.trim();
+
+                if (!title || !year || !summary || !significance || !enforcement || !fullText) {
+                    messageDiv.innerHTML = '<div class="error-message">Please fill in all required fields (*)</div>';
+                    return;
+                }
+
+                let state = '';
+                let county = '';
+                if (lawType === 'state' || lawType === 'county') {
+                    state = document.getElementById('editLawState').value;
+                    if (!state) {
+                        messageDiv.innerHTML = '<div class="error-message">Please select a state</div>';
+                        return;
+                    }
+                    if (lawType === 'county') {
+                        county = document.getElementById('editLawCounty').value.trim();
+                    }
+                }
+
+                const tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag);
+
+                const lawData = {
+                    title: title,
+                    year: year,
+                    icon: icon,
+                    summary: summary,
+                    significance: significance,
+                    enforcement: enforcement,
+                    fullText: fullText,
+                    tags: tags,
+                    type: lawType,
+                    lastModified: new Date().toISOString()
+                };
+
+                if (state) lawData.state = state;
+                if (county) lawData.county = county;
+                if (notes) lawData.notes = notes;
+
+                await setDoc(doc(db, 'archaeologyLaws', lawId), lawData, { merge: true });
+
+                messageDiv.innerHTML = '<div class="success-message">✓ Law updated successfully!</div>';
+
+                setTimeout(() => {
+                    cancelEdit();
+                    searchLaws();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error updating law:', error);
+                messageDiv.innerHTML = '<div class="error-message">Error updating law. Please try again.</div>';
+            }
+        };
+
+        // Delete law
+        window.deleteLaw = async function(lawId) {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to delete laws');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete this law? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                await deleteDoc(doc(db, 'archaeologyLaws', lawId));
+                alert('Law deleted successfully!');
+                searchLaws();
+            } catch (error) {
+                console.error('Error deleting law:', error);
+                alert('Error deleting law. Please try again.');
+            }
+        };
+
+        // Cancel edit
+        window.cancelEdit = function() {
+            document.getElementById('editLawSection').style.display = 'none';
+            document.getElementById('editMessage').innerHTML = '';
+        };
+
+        // Submit new law
+        window.submitLaw = async function() {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to add laws');
+                return;
+            }
+
+            const messageDiv = document.getElementById('submitMessage');
+            const submitBtn = document.getElementById('submitBtn');
+
+            try {
+                const lawType = document.getElementById('lawType').value;
+                const title = document.getElementById('lawTitle').value.trim();
+                const year = document.getElementById('lawYear').value.trim();
+                const icon = document.getElementById('lawIcon').value.trim() || '⚖️';
+                const summary = document.getElementById('lawSummary').value.trim();
+                const significance = document.getElementById('lawSignificance').value.trim();
+                const enforcement = document.getElementById('lawEnforcement').value.trim();
+                const fullText = document.getElementById('lawFullText').value.trim();
+                const tagsInput = document.getElementById('lawTags').value.trim();
+                const notes = document.getElementById('lawNotes').value.trim();
+
+                if (!title || !year || !summary || !significance || !enforcement || !fullText) {
+                    messageDiv.innerHTML = '<div class="error-message">Please fill in all required fields (*)</div>';
+                    return;
+                }
+
+                let state = '';
+                let county = '';
+                if (lawType === 'state' || lawType === 'county') {
+                    state = document.getElementById('lawState').value;
+                    if (!state) {
+                        messageDiv.innerHTML = '<div class="error-message">Please select a state</div>';
+                        return;
+                    }
+                    if (lawType === 'county') {
+                        county = document.getElementById('lawCounty').value.trim();
+                    }
+                }
+
+                const tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag);
+                const lawId = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+                const lawData = {
+                    title: title,
+                    year: year,
+                    icon: icon,
+                    summary: summary,
+                    significance: significance,
+                    enforcement: enforcement,
+                    fullText: fullText,
+                    tags: tags,
+                    type: lawType,
+                    createdAt: new Date().toISOString()
+                };
+
+                if (state) lawData.state = state;
+                if (county) lawData.county = county;
+                if (notes) lawData.notes = notes;
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Adding Law...';
+
+                await setDoc(doc(db, 'archaeologyLaws', lawId), lawData);
+
+                messageDiv.innerHTML = '<div class="success-message">✓ Law added successfully!</div>';
+
+                // Clear form
+                document.getElementById('lawTitle').value = '';
+                document.getElementById('lawYear').value = '';
+                document.getElementById('lawIcon').value = '';
+                document.getElementById('lawSummary').value = '';
+                document.getElementById('lawSignificance').value = '';
+                document.getElementById('lawEnforcement').value = '';
+                document.getElementById('lawFullText').value = '';
+                document.getElementById('lawTags').value = '';
+                document.getElementById('lawNotes').value = '';
+                document.getElementById('lawType').value = 'federal';
+                document.getElementById('jurisdictionFields').style.display = 'none';
+
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Add Law to Database';
+
+                setTimeout(() => {
+                    messageDiv.innerHTML = '';
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error adding law:', error);
+                messageDiv.innerHTML = '<div class="error-message">Error adding law. Please try again.</div>';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Add Law to Database';
+            }
+        };
+
+        // ============== ARTIFACT INSTRUCTIONS FUNCTIONS ==============
+        
+        // Contact management
+        let contactCounter = 0;
+        let editContactCounter = 0;
+        
+        window.addContactField = function() {
+            contactCounter++;
+            const contactsList = document.getElementById('contactsList');
+            
+            const contactItem = document.createElement('div');
+            contactItem.className = 'contact-item';
+            contactItem.dataset.contactId = contactCounter;
+            
+            contactItem.innerHTML = `
+                <div class="contact-item-header">
+                    <h5>Contact ${contactCounter}</h5>
+                    <button type="button" class="remove-contact-btn" onclick="removeContact(${contactCounter})">
+                        🗑️ Remove
+                    </button>
+                </div>
+                <div class="contact-fields">
+                    <div class="form-group">
+                        <label>Contact Name *</label>
+                        <input type="text" class="contact-name" placeholder="e.g., John Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role/Title</label>
+                        <input type="text" class="contact-role" placeholder="e.g., County Archaeologist">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="contact-email" placeholder="e.g., contact@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" class="contact-phone" placeholder="e.g., (555) 123-4567">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Physical Address</label>
+                        <input type="text" class="contact-address" placeholder="e.g., 123 Main St, City, State ZIP">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Special Instructions</label>
+                        <textarea class="contact-instructions" placeholder="e.g., Call between 9 AM - 5 PM" rows="2"></textarea>
+                    </div>
+                </div>
+            `;
+            
+            contactsList.appendChild(contactItem);
+        };
+        
+        window.addEditContactField = function(contactData = null) {
+            editContactCounter++;
+            const contactsList = document.getElementById('editContactsList');
+            
+            const contactItem = document.createElement('div');
+            contactItem.className = 'contact-item';
+            contactItem.dataset.contactId = editContactCounter;
+            
+            contactItem.innerHTML = `
+                <div class="contact-item-header">
+                    <h5>Contact ${editContactCounter}</h5>
+                    <button type="button" class="remove-contact-btn" onclick="removeEditContact(${editContactCounter})">
+                        🗑️ Remove
+                    </button>
+                </div>
+                <div class="contact-fields">
+                    <div class="form-group">
+                        <label>Contact Name *</label>
+                        <input type="text" class="contact-name" placeholder="e.g., John Smith" value="${contactData?.name || ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role/Title</label>
+                        <input type="text" class="contact-role" placeholder="e.g., County Archaeologist" value="${contactData?.role || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="contact-email" placeholder="e.g., contact@example.com" value="${contactData?.email || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" class="contact-phone" placeholder="e.g., (555) 123-4567" value="${contactData?.phone || ''}">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Physical Address</label>
+                        <input type="text" class="contact-address" placeholder="e.g., 123 Main St, City, State ZIP" value="${contactData?.address || ''}">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Special Instructions</label>
+                        <textarea class="contact-instructions" placeholder="e.g., Call between 9 AM - 5 PM" rows="2">${contactData?.specialInstructions || ''}</textarea>
+                    </div>
+                </div>
+            `;
+            
+            contactsList.appendChild(contactItem);
+        };
+        
+        window.removeContact = function(contactId) {
+            const contactItem = document.querySelector(`#contactsList [data-contact-id="${contactId}"]`);
+            if (contactItem) {
+                contactItem.remove();
+            }
+        };
+        
+        window.removeEditContact = function(contactId) {
+            const contactItem = document.querySelector(`#editContactsList [data-contact-id="${contactId}"]`);
+            if (contactItem) {
+                contactItem.remove();
+            }
+        };
+        
+        function getContactsData() {
+            const contacts = [];
+            const contactItems = document.querySelectorAll('#contactsList .contact-item');
+            
+            contactItems.forEach((item) => {
+                const name = item.querySelector('.contact-name').value.trim();
+                const role = item.querySelector('.contact-role').value.trim();
+                const email = item.querySelector('.contact-email').value.trim();
+                const phone = item.querySelector('.contact-phone').value.trim();
+                const address = item.querySelector('.contact-address').value.trim();
+                const instructions = item.querySelector('.contact-instructions').value.trim();
+                
+                if (name) {
+                    contacts.push({
+                        name: name,
+                        role: role || '',
+                        email: email || '',
+                        phone: phone || '',
+                        address: address || '',
+                        specialInstructions: instructions || ''
+                    });
+                }
+            });
+            
+            return contacts;
+        }
+        
+        function getEditContactsData() {
+            const contacts = [];
+            const contactItems = document.querySelectorAll('#editContactsList .contact-item');
+            
+            contactItems.forEach((item) => {
+                const name = item.querySelector('.contact-name').value.trim();
+                const role = item.querySelector('.contact-role').value.trim();
+                const email = item.querySelector('.contact-email').value.trim();
+                const phone = item.querySelector('.contact-phone').value.trim();
+                const address = item.querySelector('.contact-address').value.trim();
+                const instructions = item.querySelector('.contact-instructions').value.trim();
+                
+                if (name) {
+                    contacts.push({
+                        name: name,
+                        role: role || '',
+                        email: email || '',
+                        phone: phone || '',
+                        address: address || '',
+                        specialInstructions: instructions || ''
+                    });
+                }
+            });
+            
+            return contacts;
+        }
+        
+        // Generate HTML from contacts
+        function generateHTMLFromContacts(contacts, selectedLaws, probability, specialInstructions, generalNotes) {
+            let html = '<div class="emergency-note">\n';
+            html += '    <strong>⚠️ STOP! Do not disturb the artifact or the surrounding area.</strong>\n';
+            html += '</div>\n\n';
+            
+            if (specialInstructions) {
+                html += '<div class="contact-card" style="background: #fff3cd; border-color: #ffeaa7;">\n';
+                html += '    <h4>⚠️ Special Instructions</h4>\n';
+                html += `    <div class="contact-info"><p>${specialInstructions.replace(/\n/g, '<br>')}</p></div>\n`;
+                html += '</div>\n\n';
+            }
+            
+            contacts.forEach((contact, index) => {
+                html += '<div class="contact-card">\n';
+                html += `    <h4>📞 Contact ${index + 1}: ${contact.name}</h4>\n`;
+                html += '    <div class="contact-info">\n';
+                
+                if (contact.role) {
+                    html += `        <p><strong>Role:</strong> ${contact.role}</p>\n`;
+                }
+                if (contact.email) {
+                    html += `        <p><strong>Email:</strong> <a href="mailto:${contact.email}">${contact.email}</a></p>\n`;
+                }
+                if (contact.phone) {
+                    html += `        <p><strong>Phone:</strong> <a href="tel:${contact.phone}">${contact.phone}</a></p>\n`;
+                }
+                if (contact.address) {
+                    html += `        <p><strong>Address:</strong> ${contact.address}</p>\n`;
+                }
+                if (contact.specialInstructions) {
+                    html += `        <p><strong>Instructions:</strong> ${contact.specialInstructions}</p>\n`;
+                }
+                
+                html += '    </div>\n';
+                html += '</div>\n\n';
+            });
+            
+            // Add artifact likelihood indicator if provided
+            if (probability && probability.trim()) {
+                const levels = {
+                    low: { emoji: '🟢', label: 'Low', desc: 'Few known archaeological findings in this area', bg: '#d4edda', border: '#c3e6cb' },
+                    moderate: { emoji: '🟡', label: 'Moderate', desc: 'Some historical or archaeological activity nearby', bg: '#fff3cd', border: '#ffeaa7' },
+                    elevated: { emoji: '🟠', label: 'Elevated', desc: 'Area with documented archaeological sensitivity', bg: '#ffe5cc', border: '#ffcc99' },
+                    high: { emoji: '🔴', label: 'High', desc: 'Area known for significant archaeological presence', bg: '#f8d7da', border: '#f5c6cb' }
+                };
+                
+                const level = levels[probability.toLowerCase()];
+                if (level) {
+                    html += `<div class="contact-card" style="background: ${level.bg}; border-color: ${level.border}; border-width: 2px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">\n`;
+                    html += '    <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">Artifact Likelihood Indicator</h4>\n';
+                    html += `    <div style="text-align: center; padding: 1rem 0; border-bottom: 2px solid ${level.border}; margin-bottom: 1rem;">\n`;
+                    html += `        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">${level.emoji}</div>\n`;
+                    html += `        <div style="font-size: 1.3rem; font-weight: 700; color: #2c3e50;">${level.label}</div>\n`;
+                    html += '    </div>\n';
+                    html += `    <p style="color: #2c3e50; line-height: 1.6; margin-bottom: 1rem;">${level.desc}</p>\n`;
+                    html += '    <p style="color: #2c3e50; line-height: 1.6; margin-bottom: 1rem;">Please follow guidance below and contact authorities before taking action.</p>\n';
+                    html += '    <p style="color: #666; font-size: 0.9rem; font-style: italic; margin-bottom: 1rem;">ℹ️ <strong>This is an educational estimate, not a confirmation.</strong></p>\n';
+                    html += '    <details style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.5); border-radius: 8px;">\n';
+                    html += '        <summary style="cursor: pointer; font-weight: 600; color: #2c3e50; user-select: none;">ℹ️ How is this calculated?</summary>\n';
+                    html += '        <div style="margin-top: 1rem; color: #555; line-height: 1.6; font-size: 0.95rem;">\n';
+                    html += '            <p style="margin-bottom: 0.5rem;"><strong>How this estimate works:</strong></p>\n';
+                    html += '            <p style="margin-bottom: 0.5rem;">This indicator is based on publicly available historical and archaeological records, land use history, and proximity to documented sites.</p>\n';
+                    html += '            <p style="margin: 0;"><strong>It does not confirm whether an item is an artifact.</strong></p>\n';
+                    html += '        </div>\n';
+                    html += '    </details>\n';
+                    html += '</div>\n\n';
+                }
+            }
+            
+            html += '<h4>Immediate Steps to Take:</h4>\n';
+            html += '<ol style="margin: 1rem 0; padding-left: 2rem; line-height: 1.8;">\n';
+            html += '    <li><strong>Stop all work</strong> in the immediate area</li>\n';
+            html += '    <li><strong>Do not touch or move</strong> the artifact</li>\n';
+            html += '    <li><strong>Contact the above authority</strong> immediately</li>\n';
+            html += '    <li><strong>Mark the location</strong> with flags or cones if available</li>\n';
+            html += '    <li><strong>Take photos</strong> of the artifact in place (do not disturb)</li>\n';
+            html += '    <li><strong>Record GPS coordinates</strong> of the exact location</li>\n';
+            html += '    <li><strong>Secure the area</strong> to prevent disturbance by others</li>\n';
+            html += '    <li><strong>Document everything</strong> - date, time, weather, surrounding features</li>\n';
+            html += '</ol>\n';
+            
+            if (generalNotes) {
+                html += '\n<div class="contact-card" style="background: #e3f2fd; border-color: #90caf9;">\n';
+                html += '    <h4>📋 Additional Information</h4>\n';
+                html += `    <div class="contact-info">\n`;
+                html += `        <p>${generalNotes.replace(/\n/g, '<br>')}</p>\n`;
+                html += '    </div>\n';
+                html += '</div>\n';
+            }
+            
+            return html;
+        }
+        
+        // Law selection functions
+        window.loadAvailableLaws = async function(containerId, previewId) {
+            const container = document.getElementById(containerId);
+            const preview = document.getElementById(previewId);
+            
+            if (!container) {
+                console.error('Laws container not found:', containerId);
+                return;
+            }
+            
+            try {
+                container.innerHTML = '<p style="text-align: center; color: #7f8c8d;">Loading laws...</p>';
+                container.style.display = 'block';
+                
+                const lawsRef = collection(db, 'archaeologyLaws');
+                const lawsSnapshot = await getDocs(lawsRef);
+                
+                if (lawsSnapshot.empty) {
+                    container.innerHTML = '<p style="text-align: center; color: #7f8c8d;">No laws found in database</p>';
+                    return;
+                }
+                
+                const laws = [];
+                lawsSnapshot.forEach((doc) => {
+                    laws.push({ id: doc.id, ...doc.data() });
+                });
+                
+                laws.sort((a, b) => {
+                    const typeOrder = { federal: 1, state: 2, county: 3, local: 4 };
+                    const aType = typeOrder[a.type] || 99;
+                    const bType = typeOrder[b.type] || 99;
+                    if (aType !== bType) return aType - bType;
+                    return (a.state || '').localeCompare(b.state || '');
+                });
+                
+                // Get currently selected laws - check tempSelectedLaws first (for editing)
+                const currentlySelected = window.tempSelectedLaws || getSelectedLawIds(containerId);
+                
+                let html = '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
+                laws.forEach((law) => {
+                    const title = law.title || law.name || 'Untitled Law';
+                    const type = law.type || 'unknown';
+                    const state = law.state ? ` - ${law.state}` : '';
+                    const county = law.county ? ` (${law.county} County)` : '';
+                    const isChecked = currentlySelected.includes(law.id) ? 'checked' : '';
+                    
+                    html += `
+                        <label style="display: flex; align-items: start; gap: 0.5rem; padding: 0.5rem; background: white; border-radius: 6px; border: 1px solid #e0e0e0; cursor: pointer; transition: all 0.2s ease;">
+                            <input type="checkbox" 
+                                   value="${law.id}" 
+                                   ${isChecked}
+                                   onchange="updateLawSelection('${containerId}', '${previewId}')"
+                                   style="margin-top: 0.25rem; cursor: pointer;">
+                            <span style="flex: 1;">
+                                <span class="law-type ${type}" style="display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 0.5rem;">${type.toUpperCase()}</span>
+                                <strong>${title}</strong>${state}${county}
+                            </span>
+                        </label>
+                    `;
+                });
+                html += '</div>';
+                
+                container.innerHTML = html;
+                updateLawSelection(containerId, previewId);
+                
+            } catch (error) {
+                console.error('Error loading laws:', error);
+                container.innerHTML = `<p style="text-align: center; color: #e74c3c;">Error loading laws: ${error.message}</p>`;
+            }
+        };
+        
+        window.updateLawSelection = function(containerId, previewId) {
+            const container = document.getElementById(containerId);
+            const preview = document.getElementById(previewId);
+            
+            if (!container || !preview) return;
+            
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
+            const count = checkboxes.length;
+            
+            if (count === 0) {
+                preview.innerHTML = '<p style="color: #7f8c8d; font-size: 0.9rem;"><em>No laws selected - the laws section will be hidden for this instruction</em></p>';
+            } else {
+                preview.innerHTML = `<p style="color: #27ae60; font-weight: 600; font-size: 0.9rem;">✓ ${count} law${count === 1 ? '' : 's'} selected</p>`;
+            }
+        };
+        
+        function getSelectedLawIds(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return [];
+            
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+        
+        // Search instructions
+        window.searchInstructions = async function() {
+            if (!isAuthenticated) {
+                alert('You must be logged in to search instructions');
+                return;
+            }
+
+            const searchInput = document.getElementById('instructionSearchInput').value.trim().toLowerCase();
+            const resultsDiv = document.getElementById('instructionSearchResults');
+
+            if (!searchInput) {
+                resultsDiv.innerHTML = '<p style="color: #7f8c8d;">Enter a search term to find instructions</p>';
+                return;
+            }
+
+            resultsDiv.innerHTML = '<p style="color: #7f8c8d;">Searching...</p>';
+
+            try {
+                const instructionsRef = collection(db, 'artifactInstructions');
+                const snapshot = await getDocs(instructionsRef);
+                const instructions = [];
+
+                snapshot.forEach(doc => {
+                    const instruction = { id: doc.id, ...doc.data() };
+                    const searchStr = `${instruction.state || ''} ${instruction.city || ''} ${instruction.owner || ''} ${instruction.jurisdiction || ''} ${(instruction.keywords || []).join(' ')}`.toLowerCase();
+                    if (searchStr.includes(searchInput)) {
+                        instructions.push(instruction);
+                    }
+                });
+
+                if (instructions.length === 0) {
+                    resultsDiv.innerHTML = '<p style="color: #7f8c8d;">No instructions found matching your search</p>';
+                } else {
+                    resultsDiv.innerHTML = instructions.map(instruction => {
+                        const location = [instruction.city, instruction.state].filter(x => x).join(', ') || 'N/A';
+                        const owner = instruction.owner || 'N/A';
+                        const keywords = (instruction.keywords || []).join(', ') || 'N/A';
+                        
+                        return `
+                        <div class="search-result">
+                            <h4>🏺 ${location}</h4>
+                            <p><strong>Owner:</strong> ${owner}</p>
+                            <p><strong>Keywords:</strong> ${keywords}</p>
+                            <p><strong>ID:</strong> ${instruction.id}</p>
+                            <div class="actions">
+                                <button class="edit-btn" onclick="editInstruction('${instruction.id}')">✏️ Edit</button>
+                                <button class="delete-btn" onclick="deleteInstruction('${instruction.id}')">🗑️ Delete</button>
+                            </div>
+                        </div>
+                    `}).join('');
+                }
+            } catch (error) {
+                console.error('Error searching instructions:', error);
+                resultsDiv.innerHTML = '<div class="error-message">Error searching instructions. Please try again.</div>';
+            }
+        };
+
+        // Edit instruction
+        window.editInstruction = async function(instructionId) {
+            if (!isAuthenticated) {
+                alert('You must be logged in to edit instructions');
+                return;
+            }
+
+            try {
+                const instructionRef = doc(db, 'artifactInstructions', instructionId);
+                const instructionSnap = await getDoc(instructionRef);
+
+                if (!instructionSnap.exists()) {
+                    alert('Instruction not found');
+                    return;
+                }
+
+                const instruction = instructionSnap.data();
+
+                document.getElementById('editInstructionId').value = instructionId;
+                document.getElementById('editInstructionState').value = instruction.state || '';
+                document.getElementById('editInstructionCity').value = instruction.city || '';
+                document.getElementById('editInstructionJurisdiction').value = instruction.jurisdiction || '';
+                document.getElementById('editInstructionOwner').value = instruction.owner || '';
+                document.getElementById('editInstructionKeywords').value = (instruction.keywords || []).join(', ');
+                document.getElementById('editInstructionProbability').value = instruction.probability || '';
+                document.getElementById('editInstructionSpecial').value = instruction.specialInstructions || '';
+                document.getElementById('editInstructionGeneral').value = instruction.generalNotes || '';
+
+                // Load contacts
+                const editContactsList = document.getElementById('editContactsList');
+                editContactsList.innerHTML = '';
+                editContactCounter = 0;
+                if (instruction.contacts && instruction.contacts.length > 0) {
+                    instruction.contacts.forEach(contact => {
+                        addEditContactField(contact);
+                    });
+                } else {
+                    addEditContactField();
+                }
+                
+                // Store selected laws temporarily
+                window.tempSelectedLaws = instruction.selectedLaws || [];
+                
+                // Load laws if they exist
+                if (instruction.selectedLaws && instruction.selectedLaws.length > 0) {
+                    await loadAvailableLaws('editLawsSelection', 'editSelectedLawsPreview');
+                }
+
+                document.getElementById('editInstructionSection').style.display = 'block';
+                document.getElementById('editInstructionSection').scrollIntoView({ behavior: 'smooth' });
+
+            } catch (error) {
+                console.error('Error loading instruction for edit:', error);
+                alert('Error loading instruction data. Please try again.');
+            }
+        };
+
+        // Update instruction
+        window.updateInstruction = async function() {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to update instructions');
+                return;
+            }
+
+            const messageDiv = document.getElementById('editInstructionMessage');
+            const instructionId = document.getElementById('editInstructionId').value;
+
+            if (!instructionId) {
+                messageDiv.innerHTML = '<div class="error-message">No instruction selected for editing</div>';
+                return;
+            }
+
+            try {
+                const state = document.getElementById('editInstructionState').value.trim().toUpperCase();
+                const city = document.getElementById('editInstructionCity').value.trim();
+                const jurisdiction = document.getElementById('editInstructionJurisdiction').value.trim();
+                const owner = document.getElementById('editInstructionOwner').value.trim();
+                const keywordsInput = document.getElementById('editInstructionKeywords').value.trim();
+                const probability = document.getElementById('editInstructionProbability').value.trim();
+                const specialInstructions = document.getElementById('editInstructionSpecial').value.trim();
+                const generalNotes = document.getElementById('editInstructionGeneral').value.trim();
+
+                const contacts = getEditContactsData();
+                if (contacts.length === 0) {
+                    messageDiv.innerHTML = '<div class="error-message">Please add at least one contact</div>';
+                    return;
+                }
+
+                const keywords = keywordsInput.split(',').map(k => k.trim().toLowerCase()).filter(k => k);
+                const selectedLaws = getSelectedLawIds('editLawsSelection');
+                const htmlContent = generateHTMLFromContacts(contacts, selectedLaws, probability, specialInstructions, generalNotes);
+
+                const instructionData = {
+                    htmlContent: htmlContent,
+                    keywords: keywords,
+                    contacts: contacts,
+                    probability: probability,
+                    specialInstructions: specialInstructions,
+                    generalNotes: generalNotes,
+                    selectedLaws: selectedLaws,
+                    lastModified: new Date().toISOString(),
+                    lastModifiedBy: currentUser.email
+                };
+
+                if (state) instructionData.state = state;
+                if (city) instructionData.city = city;
+                if (jurisdiction) instructionData.jurisdiction = jurisdiction;
+                if (owner) instructionData.owner = owner;
+
+                await setDoc(doc(db, 'artifactInstructions', instructionId), instructionData, { merge: true });
+
+                messageDiv.innerHTML = '<div class="success-message">✓ Instruction updated successfully!</div>';
+
+                setTimeout(() => {
+                    cancelEditInstruction();
+                    searchInstructions();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error updating instruction:', error);
+                messageDiv.innerHTML = '<div class="error-message">Error updating instruction. Please try again.</div>';
+            }
+        };
+
+        // Delete instruction
+        window.deleteInstruction = async function(instructionId) {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to delete instructions');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete this instruction? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                await deleteDoc(doc(db, 'artifactInstructions', instructionId));
+                alert('Instruction deleted successfully!');
+                searchInstructions();
+            } catch (error) {
+                console.error('Error deleting instruction:', error);
+                alert('Error deleting instruction. Please try again.');
+            }
+        };
+
+        // Cancel edit instruction
+        window.cancelEditInstruction = function() {
+            document.getElementById('editInstructionSection').style.display = 'none';
+            document.getElementById('editInstructionMessage').innerHTML = '';
+            document.getElementById('editContactsList').innerHTML = '';
+            document.getElementById('editLawsSelection').style.display = 'none';
+            document.getElementById('editLawsSelection').innerHTML = '';
+            document.getElementById('editSelectedLawsPreview').innerHTML = '';
+            editContactCounter = 0;
+            window.tempSelectedLaws = null;
+        };
+
+        // Submit new instruction
+        window.submitInstruction = async function() {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to add instructions');
+                return;
+            }
+
+            const messageDiv = document.getElementById('submitInstructionMessage');
+            const submitBtn = document.getElementById('submitInstructionBtn');
+
+            try {
+                const state = document.getElementById('instructionState').value.trim().toUpperCase();
+                const city = document.getElementById('instructionCity').value.trim();
+                const jurisdiction = document.getElementById('instructionJurisdiction').value.trim();
+                const owner = document.getElementById('instructionOwner').value.trim();
+                const keywordsInput = document.getElementById('instructionKeywords').value.trim();
+                const probability = document.getElementById('instructionProbability').value.trim();
+                const specialInstructions = document.getElementById('instructionSpecial').value.trim();
+                const generalNotes = document.getElementById('instructionGeneral').value.trim();
+
+                if (!state && !city && !jurisdiction && !owner) {
+                    messageDiv.innerHTML = '<div class="error-message">Please provide at least one of: State, City, Jurisdiction, or Owner</div>';
+                    return;
+                }
+
+                const contacts = getContactsData();
+                if (contacts.length === 0) {
+                    messageDiv.innerHTML = '<div class="error-message">Please add at least one contact</div>';
+                    return;
+                }
+
+                const keywords = keywordsInput.split(',').map(k => k.trim().toLowerCase()).filter(k => k);
+                const selectedLaws = getSelectedLawIds('lawsSelection');
+                const htmlContent = generateHTMLFromContacts(contacts, selectedLaws, probability, specialInstructions, generalNotes);
+
+                const instructionData = {
+                    htmlContent: htmlContent,
+                    keywords: keywords,
+                    contacts: contacts,
+                    probability: probability,
+                    specialInstructions: specialInstructions,
+                    generalNotes: generalNotes,
+                    selectedLaws: selectedLaws,
+                    createdAt: new Date().toISOString(),
+                    createdBy: currentUser.email
+                };
+
+                if (state) instructionData.state = state;
+                if (city) instructionData.city = city;
+                if (jurisdiction) instructionData.jurisdiction = jurisdiction;
+                if (owner) instructionData.owner = owner;
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Adding Instruction...';
+
+                const docId = `instruction_${Date.now()}`;
+                await setDoc(doc(db, 'artifactInstructions', docId), instructionData);
+
+                messageDiv.innerHTML = '<div class="success-message">✓ Instruction added successfully!</div>';
+
+                // Clear form
+                document.getElementById('instructionState').value = '';
+                document.getElementById('instructionCity').value = '';
+                document.getElementById('instructionJurisdiction').value = '';
+                document.getElementById('instructionOwner').value = '';
+                document.getElementById('instructionKeywords').value = '';
+                document.getElementById('instructionProbability').value = '';
+                document.getElementById('instructionSpecial').value = '';
+                document.getElementById('instructionGeneral').value = '';
+                document.getElementById('contactsList').innerHTML = '';
+                document.getElementById('lawsSelection').style.display = 'none';
+                document.getElementById('lawsSelection').innerHTML = '';
+                document.getElementById('selectedLawsPreview').innerHTML = '';
+                document.getElementById('keywordPreview').innerHTML = '';
+                contactCounter = 0;
+                
+                // Add one contact field for next entry
+                addContactField();
+
+                submitBtn.disabled = false;
+                submitBtn.textContent = '💾 Save Instruction';
+
+                setTimeout(() => {
+                    messageDiv.innerHTML = '';
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error adding instruction:', error);
+                messageDiv.innerHTML = '<div class="error-message">Error adding instruction. Please try again.</div>';
+                submitBtn.disabled = false;
+                submitBtn.textContent = '💾 Save Instruction';
+            }
+        };
+
+        // ============== END ARTIFACT INSTRUCTIONS FUNCTIONS ==============
+
+        // ============== EDUCATIONAL RESOURCES FUNCTIONS ==============
+
+        // Search resources
+        window.searchResources = async function() {
+            const searchTerm = document.getElementById('resourceSearchInput').value.toLowerCase().trim();
+            const resultsDiv = document.getElementById('resourceSearchResults');
+
+            if (!searchTerm) {
+                resultsDiv.innerHTML = '<p style="color: #7f8c8d;">Enter a search term to find resources.</p>';
+                return;
+            }
+
+            try {
+                resultsDiv.innerHTML = '<p style="color: #7f8c8d;">Searching...</p>';
+
+                const resourcesRef = collection(db, 'educationalResources');
+                const snapshot = await getDocs(resourcesRef);
+
+                if (snapshot.empty) {
+                    resultsDiv.innerHTML = '<p style="color: #7f8c8d;">No resources found in database.</p>';
+                    return;
+                }
+
+                const results = [];
+                snapshot.forEach((doc) => {
+                    const resource = doc.data();
+                    const searchableText = `${resource.title} ${resource.content}`.toLowerCase();
+                    
+                    if (searchableText.includes(searchTerm)) {
+                        results.push({ id: doc.id, ...resource });
+                    }
+                });
+
+                if (results.length === 0) {
+                    resultsDiv.innerHTML = '<p style="color: #7f8c8d;">No resources match your search.</p>';
+                    return;
+                }
+
+                let html = '';
+                results.forEach(resource => {
+                    const preview = resource.content.substring(0, 150) + '...';
+                    html += `
+                        <div class="search-result">
+                            <h4>${resource.icon || '📖'} ${resource.title}</h4>
+                            <p>${preview}</p>
+                            <div class="actions">
+                                <button onclick="editResource('${resource.id}')" class="btn-secondary">✏️ Edit</button>
+                                <button onclick="deleteResource('${resource.id}')" class="btn" style="background: #e74c3c;">🗑️ Delete</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                resultsDiv.innerHTML = html;
+
+            } catch (error) {
+                console.error('Error searching resources:', error);
+                resultsDiv.innerHTML = '<p style="color: #e74c3c;">Error searching resources.</p>';
+            }
+        };
+
+        // Edit resource
+        window.editResource = async function(resourceId) {
+            try {
+                const resourceDoc = await getDoc(doc(db, 'educationalResources', resourceId));
+                
+                if (!resourceDoc.exists()) {
+                    alert('Resource not found');
+                    return;
+                }
+
+                const resource = resourceDoc.data();
+                
+                document.getElementById('editResourceId').value = resourceId;
+                document.getElementById('editResourceIcon').value = resource.icon || '';
+                document.getElementById('editResourceTitle').value = resource.title || '';
+                document.getElementById('editResourceContent').value = resource.content || '';
+                
+                document.getElementById('editResourceSection').style.display = 'block';
+                document.getElementById('editResourceSection').scrollIntoView({ behavior: 'smooth' });
+
+            } catch (error) {
+                console.error('Error loading resource for edit:', error);
+                alert('Error loading resource data');
+            }
+        };
+
+        // Update resource
+        window.updateResource = async function() {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to update resources');
+                return;
+            }
+
+            const messageDiv = document.getElementById('editResourceMessage');
+            const resourceId = document.getElementById('editResourceId').value;
+
+            try {
+                const icon = document.getElementById('editResourceIcon').value.trim();
+                const title = document.getElementById('editResourceTitle').value.trim();
+                const content = document.getElementById('editResourceContent').value.trim();
+
+                if (!icon || !title || !content) {
+                    messageDiv.innerHTML = '<div class="error-message">Please fill in all required fields (*)</div>';
+                    return;
+                }
+
+                const resourceData = {
+                    icon: icon,
+                    title: title,
+                    content: content,
+                    lastModified: new Date().toISOString()
+                };
+
+                await setDoc(doc(db, 'educationalResources', resourceId), resourceData, { merge: true });
+
+                messageDiv.innerHTML = '<div class="success-message">✓ Resource updated successfully!</div>';
+
+                setTimeout(() => {
+                    cancelResourceEdit();
+                    searchResources();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error updating resource:', error);
+                messageDiv.innerHTML = '<div class="error-message">Error updating resource. Please try again.</div>';
+            }
+        };
+
+        // Cancel resource edit
+        window.cancelResourceEdit = function() {
+            document.getElementById('editResourceSection').style.display = 'none';
+            document.getElementById('editResourceMessage').innerHTML = '';
+            document.getElementById('editResourceId').value = '';
+            document.getElementById('editResourceIcon').value = '';
+            document.getElementById('editResourceTitle').value = '';
+            document.getElementById('editResourceContent').value = '';
+        };
+
+        // Delete resource
+        window.deleteResource = async function(resourceId) {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to delete resources');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete this resource? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                await deleteDoc(doc(db, 'educationalResources', resourceId));
+                alert('Resource deleted successfully!');
+                searchResources();
+            } catch (error) {
+                console.error('Error deleting resource:', error);
+                alert('Error deleting resource. Please try again.');
+            }
+        };
+
+        // Submit new resource
+        window.submitResource = async function() {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to add resources');
+                return;
+            }
+
+            const messageDiv = document.getElementById('submitResourceMessage');
+            const submitBtn = document.getElementById('submitResourceBtn');
+
+            try {
+                const icon = document.getElementById('resourceIcon').value.trim();
+                const title = document.getElementById('resourceTitle').value.trim();
+                const content = document.getElementById('resourceContent').value.trim();
+
+                if (!icon || !title || !content) {
+                    messageDiv.innerHTML = '<div class="error-message">Please fill in all required fields (*)</div>';
+                    return;
+                }
+
+                const docId = title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now();
+
+                const resourceData = {
+                    icon: icon,
+                    title: title,
+                    content: content,
+                    dateAdded: new Date().toISOString(),
+                    lastModified: new Date().toISOString()
+                };
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Adding Resource...';
+
+                await setDoc(doc(db, 'educationalResources', docId), resourceData);
+
+                messageDiv.innerHTML = '<div class="success-message">✓ Resource added successfully!</div>';
+
+                // Clear form
+                document.getElementById('resourceIcon').value = '';
+                document.getElementById('resourceTitle').value = '';
+                document.getElementById('resourceContent').value = '';
+
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Add Resource';
+
+                setTimeout(() => {
+                    messageDiv.innerHTML = '';
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error adding resource:', error);
+                messageDiv.innerHTML = '<div class="error-message">Error adding resource. Please try again.</div>';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Add Resource';
+            }
+        };
+
+        // ============== END EDUCATIONAL RESOURCES FUNCTIONS ==============
+
+        // ============== ANNOUNCEMENTS FUNCTIONS ==============
+
+        // Load announcement
+        window.loadAnnouncement = async function() {
+            try {
+                const announcementDoc = await getDoc(doc(db, 'main', 'announcements'));
+                const textarea = document.getElementById('mainAnnouncementText');
+                
+                if (announcementDoc.exists()) {
+                    textarea.value = announcementDoc.data().main || '';
+                } else {
+                    textarea.value = '';
+                }
+            } catch (error) {
+                console.error('Error loading announcement:', error);
+                document.getElementById('announcementMessage').innerHTML = 
+                    '<div class="error-message">Error loading announcement: ' + error.message + '</div>';
+            }
+        };
+
+        // Save announcement
+        window.saveAnnouncement = async function() {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to save announcements');
+                return;
+            }
+
+            const messageDiv = document.getElementById('announcementMessage');
+            const announcementText = document.getElementById('mainAnnouncementText').value.trim();
+
+            try {
+                messageDiv.innerHTML = '<div class="success-message" style="background: #e3f2fd; color: #1976d2;">Saving...</div>';
+
+                await setDoc(doc(db, 'main', 'announcements'), {
+                    main: announcementText,
+                    lastUpdated: new Date().toISOString(),
+                    updatedBy: currentUser.email
+                });
+
+                messageDiv.innerHTML = '<div class="success-message">✓ Announcement saved successfully!</div>';
+
+                setTimeout(() => {
+                    messageDiv.innerHTML = '';
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error saving announcement:', error);
+                messageDiv.innerHTML = '<div class="error-message">Error saving announcement: ' + error.message + '</div>';
+            }
+        };
+
+        // ============== END ANNOUNCEMENTS FUNCTIONS ==============
+
+        // ============== CREDITS PAGE FUNCTIONS ==============
+
+        // Load credits content
+        window.loadCredits = async function() {
+            try {
+                const creditsDoc = await getDoc(doc(db, 'credits', 'credits-content'));
+                const textarea = document.getElementById('creditsMarkdown');
+                
+                if (creditsDoc.exists()) {
+                    textarea.value = creditsDoc.data().markdown || '';
+                } else {
+                    textarea.value = '# Credits & Attributions\n\nAdd your credits content here...';
+                }
+            } catch (error) {
+                console.error('Error loading credits:', error);
+                document.getElementById('creditsMessage').innerHTML = 
+                    '<div class="error-message">Error loading credits: ' + error.message + '</div>';
+            }
+        };
+
+        // Save credits content
+        window.saveCredits = async function() {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to save credits');
+                return;
+            }
+
+            const messageDiv = document.getElementById('creditsMessage');
+            const markdown = document.getElementById('creditsMarkdown').value.trim();
+
+            try {
+                messageDiv.innerHTML = '<div class="success-message" style="background: #e3f2fd; color: #1976d2;">Saving...</div>';
+
+                await setDoc(doc(db, 'credits', 'credits-content'), {
+                    markdown: markdown,
+                    lastUpdated: new Date().toISOString(),
+                    updatedBy: currentUser.email
+                });
+
+                messageDiv.innerHTML = '<div class="success-message">✓ Credits page saved successfully!</div>';
+
+                setTimeout(() => {
+                    messageDiv.innerHTML = '';
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error saving credits:', error);
+                messageDiv.innerHTML = '<div class="error-message">Error saving credits: ' + error.message + '</div>';
+            }
+        };
+
+        // ============== END CREDITS PAGE FUNCTIONS ==============
+
+        // Switch between admin sections
+        window.switchAdminSection = function(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.admin-section-content').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.admin-nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected section
+            const section = document.getElementById(sectionName + 'Section');
+            if (section) {
+                section.classList.add('active');
+            }
+            
+            // Activate clicked tab
+            event.target.classList.add('active');
+            
+            // Load data for specific sections
+            if (sectionName === 'announcements') {
+                loadAnnouncement();
+            } else if (sectionName === 'credits') {
+                loadCredits();
+            }
+        };
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            populateStateDropdowns();
+        });
+    </script>
+</body>
+</html>

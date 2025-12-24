@@ -90,19 +90,6 @@
             height: auto;
         }
 
-        #editor-container {
-            display: none;
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-top: 2rem;
-        }
-
-        #editor-container.active {
-            display: block;
-        }
-
         textarea {
             width: 100%;
             min-height: 400px;
@@ -179,32 +166,7 @@
             margin-bottom: 0;
         }
 
-        .admin-link {
-            display: inline-block;
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1.5rem;
-            border: 2px solid white;
-            border-radius: 4px;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
 
-        .admin-link:hover {
-            background: white;
-            color: #34495e;
-        }
-
-        .admin-link.logged-in {
-            border-color: #27ae60;
-            background: #27ae60;
-        }
-
-        .admin-link.logged-in:hover {
-            background: #229954;
-            border-color: #229954;
-            color: white;
-        }
 
         .modal {
             display: none;
@@ -278,14 +240,6 @@
             display: block;
         }
 
-        .admin-badge {
-            background: #27ae60;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.875rem;
-        }
-
         .loading {
             text-align: center;
             padding: 2rem;
@@ -304,58 +258,15 @@
         <div id="content" class="loading">
             <p>Loading content...</p>
         </div>
-
-        <div id="editor-container">
-            <h2>Edit Credits (Markdown)</h2>
-            <div id="editorMessage" class="message"></div>
-            <textarea id="markdownEditor" placeholder="Enter markdown content here..."></textarea>
-            <div class="editor-actions">
-                <button class="btn-primary" onclick="saveContent()">Save Changes</button>
-                <button class="btn-secondary" onclick="cancelEdit()">Cancel</button>
-            </div>
-
-            <hr style="margin: 2rem 0; border: none; border-top: 2px solid #ddd;">
-
-            <h2>Edit Announcements</h2>
-            <div id="announcementMessage" class="message"></div>
-            <div class="form-group">
-                <label for="mainAnnouncement">Main Announcement</label>
-                <textarea id="mainAnnouncement" 
-                          placeholder="Enter main announcement text..." 
-                          style="width: 100%; min-height: 150px; padding: 1rem; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; font-family: inherit; resize: vertical;"></textarea>
-            </div>
-            <div class="editor-actions">
-                <button class="btn-primary" onclick="saveAnnouncement()">Save Announcement</button>
-            </div>
-        </div>
     </main>
 
     <footer>
         <div class="footer-disclaimer">
             <p><strong>Disclaimer:</strong> We strive to provide the most accurate and up-to-date data available; however, we cannot guarantee its completeness, accuracy, or fitness for any particular purpose. This guidance is advisory only and should never be relied upon as a substitute for official legal, regulatory, or professional advice. We assume no responsibility or liability for any losses, damages, or consequences resulting directly or indirectly from the use of this information. Users assume all risk and must always verify all information with the relevant governmental or legal authorities.</p>
         </div>
-        <a href="#" id="adminLoginBtn" class="admin-link" style="border: none;" onclick="toggleAuth(); return false;">Login</a>
     </footer>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <h2>Admin Login</h2>
-            <div id="loginMessage" class="message"></div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="admin@example.com" value="admin@example.com">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter password">
-            </div>
-            <div class="editor-actions">
-                <button class="btn-primary" onclick="login()">Login</button>
-                <button class="btn-secondary" onclick="closeModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -438,31 +349,8 @@
         function setupAuthListener() {
             auth.onAuthStateChanged((user) => {
                 currentUser = user;
-                updateUIForAuth(user);
+                // User authenticated - no admin UI in this view-only page
             });
-        }
-
-        // Update UI based on auth state
-        function updateUIForAuth(user) {
-            const loginBtn = document.getElementById('adminLoginBtn');
-            const editorContainer = document.getElementById('editor-container');
-
-            if (user && user.email === ADMIN_EMAIL) {
-                loginBtn.textContent = 'Logout (Admin)';
-                loginBtn.className = 'admin-link logged-in';
-                loginBtn.onclick = function(e) { 
-                    e.preventDefault(); 
-                    logout(); 
-                };
-            } else {
-                loginBtn.textContent = 'Login';
-                loginBtn.className = 'admin-link';
-                loginBtn.onclick = function(e) { 
-                    e.preventDefault(); 
-                    toggleAuth(); 
-                };
-                editorContainer.classList.remove('active');
-            }
         }
 
         // Load content from Firestore
@@ -521,169 +409,6 @@
             }
         }
 
-        // Toggle auth modal
-        function toggleAuth() {
-            if (currentUser && currentUser.email === ADMIN_EMAIL) {
-                showEditEditor();
-            } else {
-                document.getElementById('loginModal').classList.add('active');
-            }
-        }
-
-        // Close modal
-        function closeModal() {
-            document.getElementById('loginModal').classList.remove('active');
-            clearLoginForm();
-        }
-
-        // Clear login form
-        function clearLoginForm() {
-            document.getElementById('password').value = '';
-            hideMessage('loginMessage');
-        }
-
-        // Login function
-        async function login() {
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-
-            if (email !== ADMIN_EMAIL) {
-                showMessage('loginMessage', 'Only admin@example.com can login.', 'error');
-                return;
-            }
-
-            if (!password) {
-                showMessage('loginMessage', 'Please enter a password.', 'error');
-                return;
-            }
-
-            try {
-                await auth.signInWithEmailAndPassword(email, password);
-                closeModal();
-                showMessage('editorMessage', 'Successfully logged in!', 'success');
-                showEditEditor();
-            } catch (error) {
-                console.error('Login error:', error);
-                showMessage('loginMessage', error.message, 'error');
-            }
-        }
-
-        // Logout function
-        async function logout() {
-            try {
-                await auth.signOut();
-                document.getElementById('editor-container').classList.remove('active');
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
-        }
-
-        // Show edit editor
-        async function showEditEditor() {
-            if (!currentUser || currentUser.email !== ADMIN_EMAIL) {
-                showMessage('loginMessage', 'Unauthorized access.', 'error');
-                return;
-            }
-
-            try {
-                const doc = await db.collection('credits').doc(CREDITS_DOC_ID).get();
-                const editor = document.getElementById('markdownEditor');
-                
-                if (doc.exists) {
-                    editor.value = doc.data().markdown || '';
-                } else {
-                    editor.value = '# Credits & Attributions\n\nAdd your credits here...';
-                }
-
-                // Load announcement too
-                await loadAnnouncement();
-
-                document.getElementById('editor-container').classList.add('active');
-                editor.focus();
-            } catch (error) {
-                console.error('Error loading editor:', error);
-                showMessage('editorMessage', 'Error loading editor content.', 'error');
-            }
-        }
-
-        // Load announcement when editor opens
-        async function loadAnnouncement() {
-            try {
-                const doc = await db.collection('config').doc(ANNOUNCEMENTS_DOC_ID).get();
-                const textarea = document.getElementById('mainAnnouncement');
-                
-                if (doc.exists) {
-                    textarea.value = doc.data().main || '';
-                } else {
-                    textarea.value = '';
-                }
-            } catch (error) {
-                console.error('Error loading announcement:', error);
-                showMessage('announcementMessage', 'Error loading announcement: ' + error.message, 'error');
-            }
-        }
-
-        // Save content
-        async function saveContent() {
-            if (!currentUser || currentUser.email !== ADMIN_EMAIL) {
-                showMessage('editorMessage', 'Unauthorized access.', 'error');
-                return;
-            }
-
-            const markdown = document.getElementById('markdownEditor').value;
-
-            try {
-                await db.collection('credits').doc(CREDITS_DOC_ID).set({
-                    markdown: markdown,
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedBy: currentUser.email
-                });
-
-                showMessage('editorMessage', 'Content saved successfully!', 'success');
-                loadContent();
-                
-                setTimeout(() => {
-                    hideMessage('editorMessage');
-                }, 3000);
-            } catch (error) {
-                console.error('Error saving content:', error);
-                showMessage('editorMessage', 'Error saving content: ' + error.message, 'error');
-            }
-        }
-
-        // Save announcement
-        async function saveAnnouncement() {
-            if (!currentUser || currentUser.email !== ADMIN_EMAIL) {
-                showMessage('announcementMessage', 'Unauthorized access.', 'error');
-                return;
-            }
-
-            const mainText = document.getElementById('mainAnnouncement').value;
-
-            try {
-                await db.collection('config').doc(ANNOUNCEMENTS_DOC_ID).set({
-                    main: mainText,
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedBy: currentUser.email
-                });
-
-                showMessage('announcementMessage', 'Announcement saved successfully!', 'success');
-                
-                setTimeout(() => {
-                    hideMessage('announcementMessage');
-                }, 3000);
-            } catch (error) {
-                console.error('Error saving announcement:', error);
-                showMessage('announcementMessage', 'Error saving announcement: ' + error.message, 'error');
-            }
-        }
-
-        // Cancel edit
-        function cancelEdit() {
-            document.getElementById('editor-container').classList.remove('active');
-            hideMessage('editorMessage');
-        }
-
         // Show message
         function showMessage(elementId, message, type) {
             const msgElement = document.getElementById(elementId);
@@ -695,15 +420,6 @@
         function hideMessage(elementId) {
             const msgElement = document.getElementById(elementId);
             msgElement.className = 'message';
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const loginModal = document.getElementById('loginModal');
-            
-            if (event.target === loginModal) {
-                closeModal();
-            }
         }
     </script>
 </body>
