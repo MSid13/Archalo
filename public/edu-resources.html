@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Educational Resources - Archalo</title>
     <link rel="icon" type="image/png" href="owlcheologists.png">
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LfiAjYsAAAAABjnkEQXCk7t9qBN0Ut8V9R-8tyX"></script>
     
     <style>
         * {
@@ -622,6 +623,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCCYpXOczp5nRRP1S2Gdb1ADjIAHeJQVq0",
@@ -635,6 +637,12 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        // Initialize App Check with reCAPTCHA Enterprise
+        const appCheck = initializeAppCheck(app, {
+            provider: new ReCaptchaEnterpriseProvider('6LfiAjYsAAAAABjnkEQXCk7t9qBN0Ut8V9R-8tyX'),
+            isTokenAutoRefreshEnabled: true
+        });
 
         // Load resources
         async function loadResources() {

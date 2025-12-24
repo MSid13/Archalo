@@ -40,6 +40,11 @@
         "type": 301
       },
       {
+        "source": "/artifact",
+        "destination": "/artifactHelp.html",
+        "type": 301
+      },
+      {
         "source": "/guide",
         "destination": "/edu-resources.html?id=website-guide-1764127149518",
         "type": 301

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Archalo</title>
     <link rel="icon" type="image/png" href="owlcheologists.png">
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LfiAjYsAAAAABjnkEQXCk7t9qBN0Ut8V9R-8tyX"></script>
     
     <style>
         * {
@@ -357,38 +358,91 @@
             margin-bottom: 0.5rem;
         }
         
-        /* Admin Navigation Tabs */
+        /* Admin Layout */
+        .admin-panel-wrapper {
+            display: flex;
+            gap: 2rem;
+            position: relative;
+        }
+        
+        /* Mobile Menu Toggle Button */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 80px;
+            left: 1rem;
+            z-index: 1001;
+            padding: 0.8rem 1rem;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+        }
+        
+        /* Admin Navigation Sidebar */
         .admin-nav {
             background: white;
             border-radius: 12px;
-            padding: 0.5rem;
-            margin-bottom: 2rem;
+            padding: 1rem;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             display: flex;
+            flex-direction: column;
             gap: 0.5rem;
-            flex-wrap: wrap;
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        
+        .admin-nav-separator {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 0.5rem 0;
         }
         
         .admin-nav-tab {
-            padding: 0.8rem 1.5rem;
+            padding: 1rem 1.2rem;
             background: transparent;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: #7f8c8d;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .admin-nav-tab:hover {
             background: #ecf0f1;
             color: #2c3e50;
+            transform: translateX(4px);
         }
         
         .admin-nav-tab.active {
             background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
+            transform: translateX(0);
+        }
+        
+        .admin-content-wrapper {
+            flex: 1;
+            min-width: 0;
         }
         
         .admin-section-content {
@@ -397,6 +451,53 @@
         
         .admin-section-content.active {
             display: block;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 968px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .admin-panel-wrapper {
+                flex-direction: column;
+            }
+            
+            .admin-nav {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 280px;
+                height: 100vh;
+                max-height: 100vh;
+                z-index: 1000;
+                transition: left 0.3s ease;
+                border-radius: 0;
+                padding-top: 1.5rem;
+            }
+            
+            .admin-nav.mobile-open {
+                left: 0;
+            }
+            
+            .mobile-menu-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            
+            .mobile-menu-overlay.active {
+                display: block;
+            }
+            
+            .admin-content-wrapper {
+                margin-top: 3rem;
+            }
         }
         
         /* Contact Management Styles */
@@ -482,6 +583,10 @@
             .contact-fields {
                 grid-template-columns: 1fr;
             }
+            
+            .admin-container {
+                padding: clamp(1rem, 4vw, 3rem) 1rem;
+            }
         }
     </style>
 </head>
@@ -533,18 +638,37 @@
                 Please ensure to verify that all information is accurate before creating, editing, or deleting laws.
             </div>
 
-            <!-- Admin Navigation Tabs -->
-            <div class="admin-nav">
-                <button class="admin-nav-tab active" onclick="switchAdminSection('laws')">📚 Laws</button>
-                <button class="admin-nav-tab" onclick="switchAdminSection('artifacts')">🏺 Artifact Instructions</button>
-                <button class="admin-nav-tab" onclick="switchAdminSection('education')">📖 Educational Resources</button>
-                <button class="admin-nav-tab" onclick="switchAdminSection('announcements')">📢 Announcements</button>
-                <button class="admin-nav-tab" onclick="switchAdminSection('credits')">✍️ Credits Page</button>
-            </div>
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰ Menu</button>
+            
+            <!-- Mobile Menu Overlay -->
+            <div class="mobile-menu-overlay" onclick="closeMobileMenu()"></div>
+            
+            <div class="admin-panel-wrapper">
+                <!-- Admin Navigation Sidebar -->
+                <div class="admin-nav" id="adminNav">
+                    <button class="admin-nav-tab active" onclick="switchAdminSection('laws')">📚 Laws</button>
+                    <div class="admin-nav-separator"></div>
+                    <button class="admin-nav-tab" onclick="switchAdminSection('artifacts')">🏺 Artifact Instructions</button>
+                    <div class="admin-nav-separator"></div>
+                    <button class="admin-nav-tab" onclick="switchAdminSection('education')">📖 Educational Resources</button>
+                    <div class="admin-nav-separator"></div>
+                    <button class="admin-nav-tab" onclick="switchAdminSection('announcements')">📢 Announcements</button>
+                    <div class="admin-nav-separator"></div>
+                    <button class="admin-nav-tab" onclick="switchAdminSection('credits')">✍️ Credits Page</button>
+                    <div class="admin-nav-separator"></div>
+                    <button class="admin-nav-tab" onclick="switchAdminSection('parcelViewers')">🗺️ Parcel Viewers</button>
+                </div>
+                
+                <div class="admin-content-wrapper">
 
             <!-- Laws Section -->
             <div id="lawsSection" class="admin-section-content active">
-            
+            <div class="warning-banner">
+                <strong>⚠️ Important:</strong>
+                Please ensure to verify that all information is accurate before creating, editing, or deleting laws.
+            </div>
+
             <!-- Search & Edit Section -->
             <div class="section-card">
                 <h2>🔍 Search & Edit Laws</h2>
@@ -724,7 +848,11 @@
             
             <!-- Artifact Instructions Section -->
             <div id="artifactsSection" class="admin-section-content">
-            
+                        <div class="warning-banner">
+                <strong>⚠️ Important:</strong>
+                Do not make click "View Property Information" to find parcel data, go to "parcel viewers" tab to find parcel data. 
+            </div>
+
             <!-- Search & Edit Instructions Section -->
             <div class="section-card">
                 <h2>🔍 Search & Edit Instructions</h2>
@@ -992,14 +1120,22 @@
             
             <div class="section-card">
                 <h2>📢 Edit Announcements</h2>
-                <p style="color: #7f8c8d; margin-bottom: 1.5rem;">Manage the main announcement displayed on the Home page.</p>
+                <p style="color: #7f8c8d; margin-bottom: 1.5rem;">Manage announcements displayed on different pages.</p>
                 
                 <div class="form-group">
-                    <label for="mainAnnouncement">Main Announcement</label>
+                    <label for="mainAnnouncement">Home Page Announcement</label>
                     <textarea id="mainAnnouncementText" 
-                              placeholder="Enter announcement text here... Leave blank to remove announcement." 
+                              placeholder="Enter announcement text for Home page... Leave blank to remove announcement." 
                               style="min-height: 150px;"></textarea>
                     <small style="color: #7f8c8d; margin-top: 0.5rem; display: block;">This announcement will appear on the Home page. Leave empty to hide the announcement.</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="artifactHelpAnnouncement">Artifact Help Page Announcement</label>
+                    <textarea id="artifactHelpAnnouncementText" 
+                              placeholder="Enter announcement text for 'I Found an Artifact' page... Leave blank to remove announcement." 
+                              style="min-height: 150px;"></textarea>
+                    <small style="color: #7f8c8d; margin-top: 0.5rem; display: block;">This announcement will appear on the "I Found an Artifact" page. Leave empty to hide the announcement.</small>
                 </div>
                 
                 <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
@@ -1007,7 +1143,7 @@
                         🔄 Load Current
                     </button>
                     <button onclick="saveAnnouncement()" class="btn btn-success" style="flex: 1;">
-                        💾 Save Announcement
+                        💾 Save Announcements
                     </button>
                 </div>
                 
@@ -1046,6 +1182,58 @@
             
             </div>
             <!-- End Credits Page Section -->
+            
+            <!-- Parcel Viewers Section -->
+            <div id="parcelViewersSection" class="admin-section-content">
+            
+            <div class="section-card">
+                <h2>🗺️ Manage Parcel Viewers</h2>
+                <p style="color: #7f8c8d; margin-bottom: 1.5rem;">Manage parcel viewer links organized by state and county.</p>
+                
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
+                    <button onclick="loadParcelViewers()" class="btn" style="background: #3498db; flex: 1;">
+                        🔄 Load Parcel Viewers
+                    </button>
+                    <button onclick="saveParcelViewers()" class="btn btn-success" style="flex: 1;">
+                        💾 Save All Changes
+                    </button>
+                </div>
+                
+                <div id="parcelViewersMessage" style="margin-bottom: 1rem;"></div>
+                
+                <!-- Add New Entry Form -->
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                    <h3 style="color: #2c3e50; margin-bottom: 1rem;">➕ Add New Parcel Viewer</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="newParcelState">State</label>
+                            <input type="text" id="newParcelState" placeholder="e.g., Washington" />
+                        </div>
+                        <div class="form-group">
+                            <label for="newParcelCounty">County</label>
+                            <input type="text" id="newParcelCounty" placeholder="e.g., King County" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="newParcelUrl">Parcel Viewer URL</label>
+                        <input type="url" id="newParcelUrl" placeholder="https://example.com/parcel-viewer" />
+                    </div>
+                    <button onclick="addParcelViewer()" class="btn btn-success">
+                        ➕ Add Parcel Viewer
+                    </button>
+                </div>
+                
+                <!-- Parcel Viewers List -->
+                <div id="parcelViewersList" style="margin-top: 2rem;">
+                    <p style="color: #7f8c8d; text-align: center; padding: 2rem;">Click "Load Parcel Viewers" to view existing entries</p>
+                </div>
+            </div>
+            
+            </div>
+            <!-- End Parcel Viewers Section -->
+            
+                </div><!-- End admin-content-wrapper -->
+            </div><!-- End admin-panel-wrapper -->
 
         </div>
     </section>
@@ -1056,6 +1244,7 @@
         import { getFirestore, collection, getDocs, doc, setDoc, getDoc, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
 
         // Firebase configuration
         const firebaseConfig = {
@@ -1073,6 +1262,12 @@
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
         const auth = getAuth(app);
+
+        // Initialize App Check with reCAPTCHA Enterprise
+        const appCheck = initializeAppCheck(app, {
+            provider: new ReCaptchaEnterpriseProvider('6LfiAjYsAAAAABjnkEQXCk7t9qBN0Ut8V9R-8tyX'),
+            isTokenAutoRefreshEnabled: true
+        });
 
         let currentUser = null;
         let isAuthenticated = false;
@@ -2449,25 +2644,38 @@
 
         // ============== ANNOUNCEMENTS FUNCTIONS ==============
 
-        // Load announcement
+        // Load announcements
         window.loadAnnouncement = async function() {
             try {
-                const announcementDoc = await getDoc(doc(db, 'main', 'announcements'));
-                const textarea = document.getElementById('mainAnnouncementText');
+                // Load Home page announcement from main/announcements
+                const mainAnnouncementDoc = await getDoc(doc(db, 'main', 'announcements'));
+                const mainTextarea = document.getElementById('mainAnnouncementText');
                 
-                if (announcementDoc.exists()) {
-                    textarea.value = announcementDoc.data().main || '';
+                if (mainAnnouncementDoc.exists()) {
+                    const data = mainAnnouncementDoc.data();
+                    mainTextarea.value = data.main || data.announcement || data.content || data.message || '';
                 } else {
-                    textarea.value = '';
+                    mainTextarea.value = '';
+                }
+                
+                // Load Artifact Help page announcement from config/announcements
+                const artifactAnnouncementDoc = await getDoc(doc(db, 'config', 'announcements'));
+                const artifactHelpTextarea = document.getElementById('artifactHelpAnnouncementText');
+                
+                if (artifactAnnouncementDoc.exists()) {
+                    const data = artifactAnnouncementDoc.data();
+                    artifactHelpTextarea.value = data.artifactHelp || '';
+                } else {
+                    artifactHelpTextarea.value = '';
                 }
             } catch (error) {
-                console.error('Error loading announcement:', error);
+                console.error('Error loading announcements:', error);
                 document.getElementById('announcementMessage').innerHTML = 
-                    '<div class="error-message">Error loading announcement: ' + error.message + '</div>';
+                    '<div class="error-message">Error loading announcements: ' + error.message + '</div>';
             }
         };
 
-        // Save announcement
+        // Save announcements
         window.saveAnnouncement = async function() {
             if (!isAuthenticated) {
                 alert('You must be authenticated to save announcements');
@@ -2475,26 +2683,36 @@
             }
 
             const messageDiv = document.getElementById('announcementMessage');
-            const announcementText = document.getElementById('mainAnnouncementText').value.trim();
+            const mainAnnouncementText = document.getElementById('mainAnnouncementText').value.trim();
+            const artifactHelpAnnouncementText = document.getElementById('artifactHelpAnnouncementText').value.trim();
 
             try {
                 messageDiv.innerHTML = '<div class="success-message" style="background: #e3f2fd; color: #1976d2;">Saving...</div>';
 
+                // Save Home page announcement to main/announcements
                 await setDoc(doc(db, 'main', 'announcements'), {
-                    main: announcementText,
+                    main: mainAnnouncementText,
+                    announcement: mainAnnouncementText,
                     lastUpdated: new Date().toISOString(),
                     updatedBy: currentUser.email
                 });
 
-                messageDiv.innerHTML = '<div class="success-message">✓ Announcement saved successfully!</div>';
+                // Save Artifact Help page announcement to config/announcements
+                await setDoc(doc(db, 'config', 'announcements'), {
+                    artifactHelp: artifactHelpAnnouncementText,
+                    lastUpdated: new Date().toISOString(),
+                    updatedBy: currentUser.email
+                });
+
+                messageDiv.innerHTML = '<div class="success-message">✓ Announcements saved successfully!</div>';
 
                 setTimeout(() => {
                     messageDiv.innerHTML = '';
                 }, 3000);
 
             } catch (error) {
-                console.error('Error saving announcement:', error);
-                messageDiv.innerHTML = '<div class="error-message">Error saving announcement: ' + error.message + '</div>';
+                console.error('Error saving announcements:', error);
+                messageDiv.innerHTML = '<div class="error-message">Error saving announcements: ' + error.message + '</div>';
             }
         };
 
@@ -2552,6 +2770,186 @@
         };
 
         // ============== END CREDITS PAGE FUNCTIONS ==============
+        
+        // ============== PARCEL VIEWERS FUNCTIONS ==============
+        
+        let parcelViewersData = {};
+        
+        // Load parcel viewers from database
+        window.loadParcelViewers = async function() {
+            try {
+                const messageDiv = document.getElementById('parcelViewersMessage');
+                messageDiv.innerHTML = '<div class="success-message" style="background: #e3f2fd; color: #1976d2;">Loading...</div>';
+                
+                const parcelDoc = await getDoc(doc(db, 'config', 'parcelViewers'));
+                
+                if (parcelDoc.exists()) {
+                    parcelViewersData = parcelDoc.data().viewers || {};
+                } else {
+                    parcelViewersData = {};
+                }
+                
+                displayParcelViewers();
+                messageDiv.innerHTML = '<div class="success-message">✓ Parcel viewers loaded successfully!</div>';
+                
+                setTimeout(() => {
+                    messageDiv.innerHTML = '';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error loading parcel viewers:', error);
+                document.getElementById('parcelViewersMessage').innerHTML = 
+                    '<div class="error-message">Error loading parcel viewers: ' + error.message + '</div>';
+            }
+        };
+        
+        // Display parcel viewers in organized structure
+        function displayParcelViewers() {
+            const listDiv = document.getElementById('parcelViewersList');
+            
+            if (Object.keys(parcelViewersData).length === 0) {
+                listDiv.innerHTML = '<p style="color: #7f8c8d; text-align: center; padding: 2rem;">No parcel viewers found. Add your first one above!</p>';
+                return;
+            }
+            
+            let html = '<h3 style="color: #2c3e50; margin-bottom: 1.5rem;">📍 Parcel Viewers by State</h3>';
+            
+            // Sort states alphabetically
+            const sortedStates = Object.keys(parcelViewersData).sort();
+            
+            sortedStates.forEach(state => {
+                html += `
+                    <div style="background: white; border: 2px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                        <h4 style="color: #3498db; margin-bottom: 1rem; font-size: 1.2rem;">🌲 ${state}</h4>
+                `;
+                
+                // Sort counties alphabetically
+                const sortedCounties = Object.keys(parcelViewersData[state]).sort();
+                
+                sortedCounties.forEach(county => {
+                    const url = parcelViewersData[state][county];
+                    const entryId = `${state}|||${county}`.replace(/\s/g, '_');
+                    
+                    html += `
+                        <div style="background: #f8f9fa; border-left: 4px solid #27ae60; padding: 1rem; margin-bottom: 0.75rem; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; color: #2c3e50; margin-bottom: 0.25rem;">${county}</div>
+                                <div style="font-size: 0.9rem; color: #7f8c8d; word-break: break-all;">
+                                    <a href="${url}" target="_blank" style="color: #3498db; text-decoration: none;">🔗 ${url}</a>
+                                </div>
+                            </div>
+                            <button onclick="removeParcelViewer('${state}', '${county}')" 
+                                    style="background: #e74c3c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; margin-left: 1rem; white-space: nowrap;">
+                                🗑️ Remove
+                            </button>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            });
+            
+            listDiv.innerHTML = html;
+        }
+        
+        // Add new parcel viewer
+        window.addParcelViewer = function() {
+            const state = document.getElementById('newParcelState').value.trim();
+            const county = document.getElementById('newParcelCounty').value.trim();
+            const url = document.getElementById('newParcelUrl').value.trim();
+            const messageDiv = document.getElementById('parcelViewersMessage');
+            
+            if (!state || !county || !url) {
+                messageDiv.innerHTML = '<div class="error-message">Please fill in all fields</div>';
+                return;
+            }
+            
+            // Validate URL
+            try {
+                new URL(url);
+            } catch (e) {
+                messageDiv.innerHTML = '<div class="error-message">Please enter a valid URL</div>';
+                return;
+            }
+            
+            // Add to data structure
+            if (!parcelViewersData[state]) {
+                parcelViewersData[state] = {};
+            }
+            
+            parcelViewersData[state][county] = url;
+            
+            // Clear inputs
+            document.getElementById('newParcelState').value = '';
+            document.getElementById('newParcelCounty').value = '';
+            document.getElementById('newParcelUrl').value = '';
+            
+            // Update display
+            displayParcelViewers();
+            
+            messageDiv.innerHTML = '<div class="success-message">✓ Parcel viewer added! Don\'t forget to click "Save All Changes"</div>';
+            
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 3000);
+        };
+        
+        // Remove parcel viewer
+        window.removeParcelViewer = function(state, county) {
+            if (!confirm(`Remove parcel viewer for ${county}, ${state}?`)) {
+                return;
+            }
+            
+            if (parcelViewersData[state] && parcelViewersData[state][county]) {
+                delete parcelViewersData[state][county];
+                
+                // If state has no counties left, remove state
+                if (Object.keys(parcelViewersData[state]).length === 0) {
+                    delete parcelViewersData[state];
+                }
+                
+                displayParcelViewers();
+                
+                const messageDiv = document.getElementById('parcelViewersMessage');
+                messageDiv.innerHTML = '<div class="success-message">✓ Parcel viewer removed! Don\'t forget to click "Save All Changes"</div>';
+                
+                setTimeout(() => {
+                    messageDiv.innerHTML = '';
+                }, 3000);
+            }
+        };
+        
+        // Save all parcel viewers to database
+        window.saveParcelViewers = async function() {
+            if (!isAuthenticated) {
+                alert('You must be authenticated to save parcel viewers');
+                return;
+            }
+            
+            const messageDiv = document.getElementById('parcelViewersMessage');
+            
+            try {
+                messageDiv.innerHTML = '<div class="success-message" style="background: #e3f2fd; color: #1976d2;">Saving...</div>';
+                
+                await setDoc(doc(db, 'config', 'parcelViewers'), {
+                    viewers: parcelViewersData,
+                    lastUpdated: new Date().toISOString(),
+                    updatedBy: currentUser.email
+                });
+                
+                messageDiv.innerHTML = '<div class="success-message">✓ Parcel viewers saved successfully!</div>';
+                
+                setTimeout(() => {
+                    messageDiv.innerHTML = '';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Error saving parcel viewers:', error);
+                messageDiv.innerHTML = '<div class="error-message">Error saving parcel viewers: ' + error.message + '</div>';
+            }
+        };
+        
+        // ============== END PARCEL VIEWERS FUNCTIONS ==============
 
         // Switch between admin sections
         window.switchAdminSection = function(sectionName) {
@@ -2574,12 +2972,32 @@
             // Activate clicked tab
             event.target.classList.add('active');
             
+            // Close mobile menu after selection
+            if (window.innerWidth <= 968) {
+                closeMobileMenu();
+            }
+            
             // Load data for specific sections
             if (sectionName === 'announcements') {
                 loadAnnouncement();
             } else if (sectionName === 'credits') {
                 loadCredits();
             }
+        };
+        
+        // Mobile menu toggle functions
+        window.toggleMobileMenu = function() {
+            const nav = document.getElementById('adminNav');
+            const overlay = document.querySelector('.mobile-menu-overlay');
+            nav.classList.toggle('mobile-open');
+            overlay.classList.toggle('active');
+        };
+        
+        window.closeMobileMenu = function() {
+            const nav = document.getElementById('adminNav');
+            const overlay = document.querySelector('.mobile-menu-overlay');
+            nav.classList.remove('mobile-open');
+            overlay.classList.remove('active');
         };
 
         // Initialize on page load
