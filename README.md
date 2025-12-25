@@ -17,9 +17,10 @@ To empower the public to protect cultural heritage by simplifying the process of
 - **Property lookup**: Integrates with parcel data APIs to determine jurisdiction
 - **Smart matching system**: 4-tier fallback system for finding relevant contacts
   - Tier 1: Specific property owner (e.g., National Park Service)
-  - Tier 2: County/jurisdiction match
-  - Tier 2.5: State-level fallback
-  - Tier 3: Default national guidance
+  - Tier 2: City (e.g. New York City)
+  - Tier 3: County/jurisdiction match
+  - Tier 4: State-level fallback
+  - Tier 5: Default national guidance
 - **Contact information**: Displays relevant archaeological authorities with phone, email, and special instructions
 - **Interactive maps**: Shows property boundaries using Leaflet.js and OpenStreetMap
 - **Historical timelines**: Displays property and regional history for context
@@ -179,4 +180,4 @@ Please refer to the repository for licensing information.
 
 - **Team**: FLL Owlcheologists Team #41991
 
-For full attributions, visit the [Credits page](public/credits.html).
+For full attributions, visit the [Credits page](archalo.org/credits.html).
