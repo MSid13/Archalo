@@ -848,9 +848,25 @@
                 </a> page.
             </p>
             <p><strong>Disclaimer:</strong> We strive to provide the most accurate and up-to-date data available; however, we cannot guarantee its completeness, accuracy, or fitness for any particular purpose. This guidance is advisory only and should never be relied upon as a substitute for official legal, regulatory, or professional advice. We assume no responsibility or liability for any losses, damages, or consequences resulting directly or indirectly from the use of this information. Users assume all risk and must always verify all information with the relevant governmental or legal authorities.</p>
-            <p><br>Report data inaccuracies and/or website bugs <a href="https://forms.gle/NN3anqoQDDi9g5vD7" style="color: #3498db; text-decoration: underline; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.color='#5dade2'; this.style.textDecoration='none'" onmouseout="this.style.color='#3498db'; this.style.textDecoration='underline'">here</a>.</p>
+            <p><br>Report data inaccuracies and/or website bugs <a href="https://forms.gle/NN3anqoQDDi9g5vD7" style="color: #3498db; text-decoration: underline; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.color='#5dade2'; this.style.textDecoration='none'" onmouseout="this.style.color='#3498db'; this.style.textDecoration='underline'">here</a>. | 
+                <button id="loginButton" onclick="handleLogin()" style="padding: 0.25rem 0.5rem; background: #667eea; color: white; border: none; border-radius: 3px; font-size: 0.75rem; cursor: pointer; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Login</button>
+                <span id="loginStatus" style="display: none; color: #27ae60; font-size: 0.75rem;">✓ Logged In</span>
+            </p>
         </div>
     </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 2rem; border-radius: 10px; max-width: 400px; width: 90%;">
+            <h3 style="margin-top: 0;">Login</h3>
+            <input type="email" id="loginEmail" placeholder="Email" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+            <input type="password" id="loginPassword" placeholder="Password" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+            <div style="display: flex; gap: 1rem;">
+                <button onclick="submitLogin()" style="flex: 1; padding: 0.75rem; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">Login</button>
+                <button onclick="closeLoginModal()" style="flex: 1; padding: 0.75rem; background: #e0e0e0; color: #333; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">Cancel</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Marked.js for Markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -859,7 +875,8 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
         import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
 
@@ -879,12 +896,127 @@
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
         // Initialize App Check with reCAPTCHA Enterprise
         const appCheck = initializeAppCheck(app, {
             provider: new ReCaptchaEnterpriseProvider('6LfiAjYsAAAAABjnkEQXCk7t9qBN0Ut8V9R-8tyX'),
             isTokenAutoRefreshEnabled: true
         });
+
+        // Track authentication state
+        let userAuthenticated = false;
+
+        // Monitor auth state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("User authenticated:", user.uid);
+                userAuthenticated = true;
+                updateLoginUI(true);
+            } else {
+                console.log("User not authenticated");
+                userAuthenticated = false;
+                updateLoginUI(false);
+            }
+        });
+
+        // Handle login button click
+        window.handleLogin = function() {
+            const modal = document.getElementById('loginModal');
+            modal.style.display = 'flex';
+        };
+
+        // Close login modal
+        window.closeLoginModal = function() {
+            const modal = document.getElementById('loginModal');
+            modal.style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        };
+
+        // Submit login
+        window.submitLogin = async function() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                alert('Please enter email and password');
+                return;
+            }
+            
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                console.log("Successfully logged in");
+                closeLoginModal();
+            } catch (error) {
+                console.error("Error logging in:", error);
+                alert('Login failed: ' + error.message);
+            }
+        };
+
+        // Update login UI
+        function updateLoginUI(isLoggedIn) {
+            const button = document.getElementById('loginButton');
+            const status = document.getElementById('loginStatus');
+            
+            if (button && status) {
+                if (isLoggedIn) {
+                    button.style.display = 'none';
+                    status.style.display = 'inline';
+                } else {
+                    button.style.display = 'inline-block';
+                    button.disabled = false;
+                    button.textContent = 'Login';
+                    status.style.display = 'none';
+                }
+            }
+        }
+
+        // Signup function
+        window.signupUser = async function() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                alert('Please enter email and password');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters');
+                return;
+            }
+            
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                document.getElementById('loginModal').style.display = 'none';
+                alert('Account created successfully!');
+            } catch (error) {
+                console.error('Signup error:', error);
+                alert('Signup failed: ' + error.message);
+            }
+        };
+
+        // Logout function
+        window.logoutUser = async function() {
+            try {
+                await signOut(auth);
+                alert('Logged out successfully');
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert('Logout failed: ' + error.message);
+            }
+        };
+
+        // Show login modal
+        window.showLoginModal = function() {
+            document.getElementById('loginModal').style.display = 'flex';
+        };
+
+        // Close login modal
+        window.closeLoginModal = function() {
+            document.getElementById('loginModal').style.display = 'none';
+        };
 
         // ============== ANNOUNCEMENT LOADING ==============
         // Wait for marked.js to be available
@@ -1138,6 +1270,12 @@
                     if (artifact) {
                         console.log("Fetched artifact:", artifact.title);
                         
+                        // Check if user is authenticated before writing
+                        if (!userAuthenticated) {
+                            console.log("User not authenticated, cannot save artifact");
+                            return artifact; // Return the artifact but don't save it
+                        }
+                        
                         // Save to Firestore
                         console.log("Saving new artifact to Firestore...");
                         const docData = { 
@@ -1174,13 +1312,14 @@
                 // Check if it's a permissions error
                 if (error.code === 'permission-denied') {
                     console.error("PERMISSION DENIED: Check Firestore security rules");
-                    console.log("Suggested Firestore rules for testing:");
+                    console.log("Suggested Firestore rules for authenticated users:");
                     console.log(`
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if request.auth != null;
     }
   }
 }
