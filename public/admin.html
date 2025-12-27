@@ -658,6 +658,8 @@
                     <button class="admin-nav-tab" onclick="switchAdminSection('credits')">✍️ Credits Page</button>
                     <div class="admin-nav-separator"></div>
                     <button class="admin-nav-tab" onclick="switchAdminSection('parcelViewers')">🗺️ Parcel Viewers</button>
+                    <div class="admin-nav-separator"></div>
+                    <button class="admin-nav-tab" onclick="switchAdminSection('artifactOfDay')">🏺 Artifact of the Day</button>
                 </div>
                 
                 <div class="admin-content-wrapper">
@@ -1231,6 +1233,124 @@
             
             </div>
             <!-- End Parcel Viewers Section -->
+
+            <!-- Artifact of the Day Section -->
+            <div id="artifactOfDaySection" class="admin-section-content">
+                <div class="section-card">
+                    <h2>🏺 Artifact of the Day Management</h2>
+                    <p style="color: #7f8c8d; margin-bottom: 1.5rem;">Manage the daily featured artifact displayed on the homepage.</p>
+                    
+                    <div class="warning-banner">
+                        <strong>ℹ️ How it works:</strong>
+                        The artifact of the day is automatically fetched from the Smithsonian API. You can manually set a specific artifact for any date, or clear an existing entry to allow automatic fetching.
+                    </div>
+
+                    <!-- Current Artifact Display -->
+                    <div style="background: #e3f2fd; border: 2px solid #2196f3; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                        <h3 style="color: #1976d2; margin-bottom: 1rem;">📅 Today's Artifact</h3>
+                        <div id="currentArtifactDisplay">
+                            <p style="color: #7f8c8d; text-align: center;">Loading...</p>
+                        </div>
+                        <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+                            <button onclick="loadTodaysArtifact()" class="btn btn-secondary" style="width: auto;">🔄 Refresh</button>
+                            <button onclick="clearTodaysArtifact()" class="btn btn-danger" style="width: auto;">🗑️ Clear Today's Artifact</button>
+                        </div>
+                    </div>
+
+                    <!-- Set Artifact for Specific Date -->
+                    <div style="background: #f8f9fa; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                        <h3 style="color: #2c3e50; margin-bottom: 1rem;">📆 Set Artifact for Specific Date</h3>
+                        
+                        <div class="form-group">
+                            <label for="artifactDate">Date</label>
+                            <input type="date" id="artifactDate" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="artifactTitle">Artifact Title</label>
+                            <input type="text" id="artifactTitle" placeholder="Enter artifact title" />
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="artifactCulture">Culture</label>
+                                <input type="text" id="artifactCulture" placeholder="e.g., Ancestral Puebloan, Native Americans" />
+                            </div>
+                            <div class="form-group">
+                                <label for="artifactPeriod">Date/Period</label>
+                                <input type="text" id="artifactPeriod" placeholder="e.g., 900-1150 CE" />
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="artifactPlace">Place/Location</label>
+                                <input type="text" id="artifactPlace" placeholder="e.g., USA, New Mexico" />
+                            </div>
+                            <div class="form-group">
+                                <label for="artifactUnitCode">Collection/Unit Code</label>
+                                <input type="text" id="artifactUnitCode" placeholder="e.g., NMAI" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="artifactDescription">Description</label>
+                            <textarea id="artifactDescription" placeholder="Enter artifact description" rows="4"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="artifactImageUrl">Image URL</label>
+                            <input type="url" id="artifactImageUrl" placeholder="https://ids.si.edu/ids/deliveryService?id=..." />
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="artifactRecordLink">Record Link (ark URL)</label>
+                                <input type="url" id="artifactRecordLink" placeholder="http://n2t.net/ark:/65665/..." />
+                            </div>
+                            <div class="form-group">
+                                <label for="artifactUrl">EDAN ID/URL</label>
+                                <input type="text" id="artifactUrl" placeholder="edanmdm:NMAI_..." />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="artifactId">Artifact ID (optional)</label>
+                            <input type="text" id="artifactId" placeholder="Auto-generated if left empty" />
+                        </div>
+
+                        <div id="artifactMessage" style="margin: 1rem 0;"></div>
+
+                        <div style="display: flex; gap: 1rem;">
+                            <button onclick="setArtifactForDate()" class="btn btn-success" style="width: auto;">💾 Save Artifact</button>
+                            <button onclick="clearArtifactForm()" class="btn btn-secondary" style="width: auto;">🔄 Clear Form</button>
+                        </div>
+                    </div>
+
+                    <!-- View Artifacts by Date -->
+                    <div style="background: #fff3e0; border: 2px solid #ff9800; border-radius: 12px; padding: 1.5rem;">
+                        <h3 style="color: #e65100; margin-bottom: 1rem;">🔍 View Artifact by Date</h3>
+                        
+                        <div style="display: flex; gap: 1rem; align-items: end;">
+                            <div class="form-group" style="flex: 1; margin: 0;">
+                                <label for="viewArtifactDate">Select Date</label>
+                                <input type="date" id="viewArtifactDate" />
+                            </div>
+                            <button onclick="viewArtifactByDate()" class="btn" style="width: auto; height: fit-content;">🔍 View</button>
+                        </div>
+
+                        <div id="viewArtifactDisplay" style="margin-top: 1.5rem;">
+                            <p style="color: #7f8c8d; text-align: center;">Select a date to view its artifact</p>
+                        </div>
+
+                        <div id="viewArtifactActions" style="margin-top: 1rem; display: none; gap: 1rem;">
+                            <button onclick="editViewedArtifact()" class="btn btn-secondary" style="width: auto;">✏️ Edit This Artifact</button>
+                            <button onclick="clearViewedArtifact()" class="btn btn-danger" style="width: auto;">🗑️ Clear This Artifact</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Artifact of the Day Section -->
             
                 </div><!-- End admin-content-wrapper -->
             </div><!-- End admin-panel-wrapper -->
@@ -2951,6 +3071,280 @@
         
         // ============== END PARCEL VIEWERS FUNCTIONS ==============
 
+        // ============== ARTIFACT OF THE DAY FUNCTIONS ==============
+        
+        // Helper function to format date as YYYY-MM-DD
+        function formatDateString(date) {
+            const d = new Date(date);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Load today's artifact
+        window.loadTodaysArtifact = async function() {
+            if (!isAuthenticated) {
+                alert('You must be logged in to view artifacts');
+                return;
+            }
+
+            const displayDiv = document.getElementById('currentArtifactDisplay');
+            displayDiv.innerHTML = '<p style="color: #7f8c8d;">Loading...</p>';
+
+            try {
+                const today = formatDateString(new Date());
+                const docRef = doc(db, 'artifactOfDay', today);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const artifact = data.artifact;
+                    displayDiv.innerHTML = `
+                        <div style="border-left: 4px solid #2196f3; padding-left: 1rem;">
+                            <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">${artifact.title || 'Untitled'}</h4>
+                            ${artifact.culture ? `<p><strong>Culture:</strong> ${artifact.culture}</p>` : ''}
+                            ${artifact.date ? `<p><strong>Date:</strong> ${artifact.date}</p>` : ''}
+                            ${artifact.place ? `<p><strong>Place:</strong> ${artifact.place}</p>` : ''}
+                            ${artifact.unitCode ? `<p><strong>Collection:</strong> ${artifact.unitCode}</p>` : ''}
+                            ${artifact.description ? `<p style="margin-top: 0.5rem;">${artifact.description}</p>` : ''}
+                            ${artifact.image ? `<p><strong>Image:</strong> <a href="${artifact.image}" target="_blank" style="color: #2196f3; text-decoration: underline;">View Image</a></p>` : ''}
+                            ${artifact.recordLink ? `<p><strong>Record:</strong> <a href="${artifact.recordLink}" target="_blank" style="color: #2196f3; text-decoration: underline;">View Record</a></p>` : ''}
+                            <p style="color: #7f8c8d; font-size: 0.85rem; margin-top: 0.5rem;">Saved: ${data.timestamp || 'Unknown'}</p>
+                        </div>
+                    `;
+                } else {
+                    displayDiv.innerHTML = '<p style="color: #7f8c8d;">No artifact set for today. The system will automatically fetch one when a user visits the homepage.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading artifact:', error);
+                displayDiv.innerHTML = `<div class="error-message">Error loading artifact: ${error.message}</div>`;
+            }
+        };
+
+        // Clear today's artifact
+        window.clearTodaysArtifact = async function() {
+            if (!isAuthenticated) {
+                alert('You must be logged in to clear artifacts');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to clear today\'s artifact? A new one will be automatically fetched when a user visits the homepage.')) {
+                return;
+            }
+
+            try {
+                const today = formatDateString(new Date());
+                const docRef = doc(db, 'artifactOfDay', today);
+                await deleteDoc(docRef);
+                
+                document.getElementById('currentArtifactDisplay').innerHTML = '<div class="success-message">✓ Today\'s artifact has been cleared!</div>';
+                setTimeout(loadTodaysArtifact, 2000);
+            } catch (error) {
+                console.error('Error clearing artifact:', error);
+                alert(`Error clearing artifact: ${error.message}`);
+            }
+        };
+
+        // Set artifact for specific date
+        window.setArtifactForDate = async function() {
+            if (!isAuthenticated) {
+                alert('You must be logged in to set artifacts');
+                return;
+            }
+
+            const dateInput = document.getElementById('artifactDate').value;
+            const title = document.getElementById('artifactTitle').value.trim();
+            const culture = document.getElementById('artifactCulture').value.trim();
+            const period = document.getElementById('artifactPeriod').value.trim();
+            const description = document.getElementById('artifactDescription').value.trim();
+            const place = document.getElementById('artifactPlace').value.trim();
+            const unitCode = document.getElementById('artifactUnitCode').value.trim();
+            const imageUrl = document.getElementById('artifactImageUrl').value.trim();
+            const recordLink = document.getElementById('artifactRecordLink').value.trim();
+            const url = document.getElementById('artifactUrl').value.trim();
+            const id = document.getElementById('artifactId').value.trim();
+            const messageDiv = document.getElementById('artifactMessage');
+
+            if (!dateInput) {
+                messageDiv.innerHTML = '<div class="error-message">Please select a date</div>';
+                return;
+            }
+
+            if (!title) {
+                messageDiv.innerHTML = '<div class="error-message">Please enter an artifact title</div>';
+                return;
+            }
+
+            const artifact = {
+                title: title,
+                culture: culture || "Unknown",
+                date: period || "Date unknown",
+                description: description || "No description available",
+                place: place || "",
+                unitCode: unitCode || "",
+                image: imageUrl || "",
+                recordLink: recordLink || "",
+                url: url || "",
+                id: id || `manual-${Date.now()}`
+            };
+
+            try {
+                const docRef = doc(db, 'artifactOfDay', dateInput);
+                await setDoc(docRef, {
+                    artifact: artifact,
+                    date: dateInput,
+                    timestamp: new Date().toISOString()
+                });
+
+                messageDiv.innerHTML = '<div class="success-message">✓ Artifact saved successfully!</div>';
+                clearArtifactForm();
+                
+                // Refresh today's artifact if we just set it
+                const today = formatDateString(new Date());
+                if (dateInput === today) {
+                    setTimeout(loadTodaysArtifact, 1000);
+                }
+            } catch (error) {
+                console.error('Error saving artifact:', error);
+                messageDiv.innerHTML = `<div class="error-message">Error saving artifact: ${error.message}</div>`;
+            }
+        };
+
+        // Clear artifact form
+        window.clearArtifactForm = function() {
+            document.getElementById('artifactDate').value = '';
+            document.getElementById('artifactTitle').value = '';
+            document.getElementById('artifactCulture').value = '';
+            document.getElementById('artifactPeriod').value = '';
+            document.getElementById('artifactDescription').value = '';
+            document.getElementById('artifactPlace').value = '';
+            document.getElementById('artifactUnitCode').value = '';
+            document.getElementById('artifactImageUrl').value = '';
+            document.getElementById('artifactRecordLink').value = '';
+            document.getElementById('artifactUrl').value = '';
+            document.getElementById('artifactId').value = '';
+            document.getElementById('artifactMessage').innerHTML = '';
+        };
+
+        // View artifact by date
+        window.viewArtifactByDate = async function() {
+            if (!isAuthenticated) {
+                alert('You must be logged in to view artifacts');
+                return;
+            }
+
+            const dateInput = document.getElementById('viewArtifactDate').value;
+            const displayDiv = document.getElementById('viewArtifactDisplay');
+            const actionsDiv = document.getElementById('viewArtifactActions');
+
+            if (!dateInput) {
+                displayDiv.innerHTML = '<div class="error-message">Please select a date</div>';
+                actionsDiv.style.display = 'none';
+                return;
+            }
+
+            displayDiv.innerHTML = '<p style="color: #7f8c8d;">Loading...</p>';
+            actionsDiv.style.display = 'none';
+
+            try {
+                const docRef = doc(db, 'artifactOfDay', dateInput);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const artifact = data.artifact;
+                    displayDiv.innerHTML = `
+                        <div style="background: white; border: 2px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
+                            <h4 style="color: #2c3e50; margin-bottom: 1rem;">${artifact.title || 'Untitled'}</h4>
+                            ${artifact.culture ? `<p><strong>Culture:</strong> ${artifact.culture}</p>` : ''}
+                            ${artifact.date ? `<p><strong>Date:</strong> ${artifact.date}</p>` : ''}
+                            ${artifact.place ? `<p><strong>Place:</strong> ${artifact.place}</p>` : ''}
+                            ${artifact.unitCode ? `<p><strong>Collection:</strong> ${artifact.unitCode}</p>` : ''}
+                            ${artifact.description ? `<p style="margin-top: 0.5rem;">${artifact.description}</p>` : ''}
+                            ${artifact.image ? `<p><strong>Image:</strong> <a href="${artifact.image}" target="_blank" style="color: #2196f3; text-decoration: underline;">View Image</a></p>` : ''}
+                            ${artifact.recordLink ? `<p><strong>Record Link:</strong> <a href="${artifact.recordLink}" target="_blank" style="color: #2196f3; text-decoration: underline;">View Record</a></p>` : ''}
+                            ${artifact.url ? `<p><strong>EDAN ID:</strong> ${artifact.url}</p>` : ''}
+                            <p style="color: #7f8c8d; font-size: 0.85rem; margin-top: 1rem; border-top: 1px solid #e0e0e0; padding-top: 0.5rem;">Saved: ${data.timestamp || 'Unknown'}</p>
+                        </div>
+                    `;
+                    actionsDiv.style.display = 'flex';
+                    // Store the viewed artifact data for potential editing
+                    window.viewedArtifactData = { date: dateInput, artifact: artifact };
+                } else {
+                    displayDiv.innerHTML = '<p style="color: #7f8c8d;">No artifact found for this date.</p>';
+                    actionsDiv.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error viewing artifact:', error);
+                displayDiv.innerHTML = `<div class="error-message">Error loading artifact: ${error.message}</div>`;
+                actionsDiv.style.display = 'none';
+            }
+        };
+
+        // Edit viewed artifact
+        window.editViewedArtifact = function() {
+            if (!window.viewedArtifactData) {
+                alert('No artifact data to edit');
+                return;
+            }
+
+            const { date, artifact } = window.viewedArtifactData;
+            
+            // Populate the form
+            document.getElementById('artifactDate').value = date;
+            document.getElementById('artifactTitle').value = artifact.title || '';
+            document.getElementById('artifactCulture').value = artifact.culture || '';
+            document.getElementById('artifactPeriod').value = artifact.date || '';
+            document.getElementById('artifactDescription').value = artifact.description || '';
+            document.getElementById('artifactPlace').value = artifact.place || '';
+            document.getElementById('artifactUnitCode').value = artifact.unitCode || '';
+            document.getElementById('artifactImageUrl').value = artifact.image || '';
+            document.getElementById('artifactRecordLink').value = artifact.recordLink || '';
+            document.getElementById('artifactUrl').value = artifact.url || '';
+            document.getElementById('artifactId').value = artifact.id || '';
+
+            // Scroll to form
+            document.querySelector('#artifactOfDaySection .section-card > div:nth-of-type(3)').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Show message
+            document.getElementById('artifactMessage').innerHTML = '<div style="background: #fff3cd; border: 1px solid #ffc107; color: #856404; padding: 1rem; border-radius: 8px;">Editing artifact for ' + date + '. Make your changes and click Save.</div>';
+        };
+
+        // Clear viewed artifact
+        window.clearViewedArtifact = async function() {
+            if (!window.viewedArtifactData) {
+                alert('No artifact data to clear');
+                return;
+            }
+
+            const { date } = window.viewedArtifactData;
+            
+            if (!confirm(`Are you sure you want to clear the artifact for ${date}?`)) {
+                return;
+            }
+
+            try {
+                const docRef = doc(db, 'artifactOfDay', date);
+                await deleteDoc(docRef);
+                
+                document.getElementById('viewArtifactDisplay').innerHTML = '<div class="success-message">✓ Artifact cleared successfully!</div>';
+                document.getElementById('viewArtifactActions').style.display = 'none';
+                window.viewedArtifactData = null;
+                
+                // Refresh today's artifact if we just cleared it
+                const today = formatDateString(new Date());
+                if (date === today) {
+                    setTimeout(loadTodaysArtifact, 1000);
+                }
+            } catch (error) {
+                console.error('Error clearing artifact:', error);
+                alert(`Error clearing artifact: ${error.message}`);
+            }
+        };
+
+        // ============== END ARTIFACT OF THE DAY FUNCTIONS ==============
+
         // Switch between admin sections
         window.switchAdminSection = function(sectionName) {
             // Hide all sections
@@ -2982,6 +3376,11 @@
                 loadAnnouncement();
             } else if (sectionName === 'credits') {
                 loadCredits();
+            } else if (sectionName === 'artifactOfDay') {
+                loadTodaysArtifact();
+                // Set today's date as default in the date input
+                const today = formatDateString(new Date());
+                document.getElementById('artifactDate').value = today;
             }
         };
         
