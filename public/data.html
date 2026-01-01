@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Accuracy & Verification - Archalo</title>
+    <meta name="description" content="Learn about Archalo's commitment to data accuracy through multi-stage verification, city and county collaboration, and in-person archaeologist consultations nationwide.">
+    <link rel="icon" type="image/png" href="owlcheologists.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        
+        body {
+            background-color: #fff;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            color: #ecf0f1;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: clamp(1rem, 3vw, 2rem);
+        }
+        
+        .nav-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            transform: translateY(-1px);
+        }
+        
+        .nav-links a.active {
+            background-color: rgba(212, 112, 74, 0.3);
+            color: #d4704a;
+        }
+        
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #ecf0f1;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: #fff;
+            padding: clamp(4rem, 12vw, 8rem) 2rem clamp(3rem, 10vw, 6rem);
+            text-align: center;
+            color: #1a1a1a;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, #d4704a, #c0603c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+        
+        /* Content Section */
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: clamp(3rem, 8vw, 5rem) 2rem;
+        }
+        
+        .verification-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .verification-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        .verification-card:hover {
+            border-color: #d4704a;
+            box-shadow: 0 4px 20px rgba(212, 112, 74, 0.12);
+        }
+        
+        .verification-card h3 {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+        
+        .verification-card p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+        
+        .section-title {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+        
+        .honest-box {
+            background: #f8f9fa;
+            border-left: 4px solid #d4704a;
+            padding: 2.5rem;
+            border-radius: 8px;
+            margin: 3rem 0;
+            text-align: left;
+        }
+        
+        .honest-box h2 {
+            font-size: clamp(1.6rem, 4vw, 2rem);
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .honest-box p {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: #4a4a4a;
+            margin-bottom: 1rem;
+        }
+        
+        .honest-box p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* Section Divider */
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #d4704a, transparent);
+            margin: 4rem auto;
+            max-width: 80%;
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: #ecf0f1;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .nav-links {
+                position: fixed;
+                right: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: #2c3e50;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0,0,0,0.05);
+                padding: 2rem 0;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .verification-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Archalo</div>
+            <button class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index1.html">Home</a></li>
+                <li><a href="data.html" class="active">Data Accuracy</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>We're trying our best</h1>
+        <p>Honest talk about how we handle data — and where we're still improving</p>
+    </section>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="honest-box">
+            <h2>The Reality</h2>
+            <p>We're not perfect. Archaeological data is complex, regulations change, and contact information goes out of date. But we're committed to being as accurate as possible.</p>
+            <p>We verify information by calling cities and counties, meeting with archaeologists across the coasts, and cross-checking multiple sources. When we find errors or outdated info, we fix them. When users report issues, we investigate immediately.</p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2 class="section-title">What We Actually Do</h2>
+        <p class="section-subtitle">Here's how we try to keep things accurate (even when it's hard)</p>
+
+        <div class="verification-grid">
+            <div class="verification-card">
+                <h3>We Call Around</h3>
+                <p>We contact cities and counties to verify contact info and protocols. Sometimes they don't pick up. Sometimes info changes the next week. We do our best to stay current.</p>
+            </div>
+
+            <div class="verification-card">
+                <h3>Multiple Check-Ins</h3>
+                <p>We cross-reference official sources and check things multiple times. But we're human — mistakes happen. That's why we fix them quickly when they're found.</p>
+            </div>
+
+            <div class="verification-card">
+                <h3>Real Conversations</h3>
+                <p>We've met with archaeologists across both coasts to understand local practices. These conversations help, but coverage is still growing. We don't have relationships everywhere yet.</p>
+            </div>
+
+            <div class="verification-card">
+                <h3>Regular Updates</h3>
+                <p>Laws and contacts change constantly. We try to catch updates, but we can't monitor everything 24/7. If something's wrong, let us know.</p>
+            </div>
+
+            <div class="verification-card">
+                <h3>Source Tracking</h3>
+                <p>We trace info back to government sites and official sources. When possible. Sometimes sources conflict or are unclear. We do our best to interpret them correctly.</p>
+            </div>
+
+            <div class="verification-card">
+                <h3>You Keep Us Honest</h3>
+                <p>User reports are critical. When you tell us something's wrong, we investigate and fix it. Your feedback makes this tool better for everyone.</p>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="honest-box">
+            <h2>Our Coverage (The Honest Version)</h2>
+            <p>We've met with archaeologists on both coasts and built some relationships with local offices in those regions. It's a start, but we're nowhere near complete coverage.</p>
+            <p>Every connection takes time — calling offices, scheduling meetings, verifying information. We're expanding, but it's slow work. If your area isn't well-covered yet, we're sorry. We're working on it.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Archalo. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.getElementById('navLinks');
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

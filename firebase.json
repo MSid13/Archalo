@@ -26,6 +26,10 @@
       {
         "source": "/",
         "destination": "/index.html"
+      },
+      {
+        "source": "/promise",
+        "destination": "/data.html"
       }
     ],
     "redirects": [

@@ -1152,6 +1152,87 @@
             margin-left: auto;
         }
         
+        /* Sub-category Styles */
+        .owner-category {
+            margin-bottom: 0.75rem;
+            border: 1px solid #d0d0d0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+        
+        .owner-category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, #f0f0f0, #fafafa);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            width: 100%;
+            text-align: left;
+        }
+        
+        .owner-category-header:hover {
+            background: linear-gradient(135deg, #e0e8f0, #eef4f8);
+        }
+        
+        .owner-category-header.active {
+            background: linear-gradient(135deg, #5dade2, #3498db);
+            color: white;
+        }
+        
+        .owner-category-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #34495e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .owner-category-header.active .owner-category-name {
+            color: white;
+        }
+        
+        .owner-toggle-icon {
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            color: #95a5a6;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .owner-toggle-icon::before {
+            content: '+';
+        }
+        
+        .owner-category-header.active .owner-toggle-icon {
+            color: white;
+        }
+        
+        .owner-category-header.active .owner-toggle-icon::before {
+            content: '−';
+        }
+        
+        .owner-locations {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            background: #f8f8f8;
+        }
+        
+        .owner-locations.active {
+            max-height: 1000px;
+            padding: 0.75rem;
+        }
+        
+        .owner-locations .location-btn-sample {
+            font-size: 0.9rem;
+            padding: 0.75rem 1rem;
+        }
+        
         /* Timeline Styles */
         .timeline-section {
             background: white;
@@ -1788,41 +1869,273 @@
                             <span class="toggle-icon"></span>
                         </button>
                         <div class="state-locations">
-                            <button class="location-btn-sample" onclick="loadSampleCoords(46.8523, -121.7603, 'National Park Service')">
-                                <span class="location-icon">🏞️</span>
-                                <span>Mt. Rainier National Park</span>
-                                <span class="location-type">Federal</span>
-                            </button>
-                            <button class="location-btn-sample" onclick="loadSampleCoords(48.052727359509, -121.3570518501979, 'National Forest Service')">
-                                <span class="location-icon">🌲</span>
-                                <span>Mt. Baker-Snoqualmie National Forest</span>
-                                <span class="location-type">Federal</span>
-                            </button>
-                            <button class="location-btn-sample" onclick="loadSampleCoords(47.55858371570509, -122.05892874774389, 'Washington State Parks')">
-                                <span class="location-icon">🏕️</span>
-                                <span>Lake Sammamish State Park</span>
-                                <span class="location-type">State</span>
-                            </button>
-                            <button class="location-btn-sample" onclick="loadSampleCoords(47.668265406752234, -122.1461806080578, 'City of Redmond Park')">
-                                <span class="location-icon">🎡</span>
-                                <span>Grass Lawn Park, Redmond</span>
-                                <span class="location-type">City</span>
-                            </button>
-                            <button class="location-btn-sample" onclick="loadSampleCoords(47.6611, -122.1133, 'King County Park')">
-                                <span class="location-icon">🌳</span>
-                                <span>Marymoor Park</span>
-                                <span class="location-type">County</span>
-                            </button>
-                            <button class="location-btn-sample" onclick="loadSampleCoords(47.6062, -122.3321, 'Private Property - Seattle')">
-                                <span class="location-icon">🏠</span>
-                                <span>Private Property, Seattle</span>
-                                <span class="location-type">Private</span>
-                            </button>
-                            <button class="location-btn-sample" onclick="loadSampleCoords(47.6611, -122.1133, 'Private Property - King County')">
-                                <span class="location-icon">🏘️</span>
-                                <span>Private Property, King County</span>
-                                <span class="location-type">Private</span>
-                            </button>
+                            
+                            <!-- Federal Lands -->
+                            <div class="owner-category">
+                                <button class="owner-category-header" onclick="toggleOwnerCategory(this)">
+                                    <span class="owner-category-name">🏛️ Federal Lands</span>
+                                    <span class="owner-toggle-icon"></span>
+                                </button>
+                                <div class="owner-locations">
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(46.8523, -121.7603, 'National Park Service')">
+                                        <span class="location-icon">🏞️</span>
+                                        <span>Mt. Rainier National Park</span>
+                                        <span class="location-type">Federal</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(48.052727359509, -121.3570518501979, 'National Forest Service')">
+                                        <span class="location-icon">🌲</span>
+                                        <span>Mt. Baker-Snoqualmie National Forest</span>
+                                        <span class="location-type">Federal</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(47.8021, -123.6044, 'National Park Service')">
+                                        <span class="location-icon">🌲</span>
+                                        <span>Olympic National Park</span>
+                                        <span class="location-type">Federal</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(48.7718, -121.2985, 'National Park Service')">
+                                        <span class="location-icon">⛰️</span>
+                                        <span>North Cascades National Park</span>
+                                        <span class="location-type">Federal</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(45.7029, -121.5065, 'National Scenic Area')">
+                                        <span class="location-icon">🌊</span>
+                                        <span>Columbia River Gorge National Scenic Area</span>
+                                        <span class="location-type">Federal</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- State Lands -->
+                            <div class="owner-category">
+                                <button class="owner-category-header" onclick="toggleOwnerCategory(this)">
+                                    <span class="owner-category-name">🏛️ State Lands</span>
+                                    <span class="owner-toggle-icon"></span>
+                                </button>
+                                <div class="owner-locations">
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(47.55858371570509, -122.05892874774389, 'Washington State Parks')">
+                                        <span class="location-icon">🏕️</span>
+                                        <span>Lake Sammamish State Park</span>
+                                        <span class="location-type">State</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(48.4040, -122.6468, 'Washington State Parks')">
+                                        <span class="location-icon">🌉</span>
+                                        <span>Deception Pass State Park</span>
+                                        <span class="location-type">State</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(46.6637, -118.2276, 'Washington State Parks')">
+                                        <span class="location-icon">💧</span>
+                                        <span>Palouse Falls State Park</span>
+                                        <span class="location-type">State</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(46.1912, -122.1944, 'Washington State Parks')">
+                                        <span class="location-icon">🌋</span>
+                                        <span>Mt. St. Helens Volcanic Monument</span>
+                                        <span class="location-type">State</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- City/Municipal Lands -->
+                            <div class="owner-category">
+                                <button class="owner-category-header" onclick="toggleOwnerCategory(this)">
+                                    <span class="owner-category-name">🏙️ City/Municipal Lands</span>
+                                    <span class="owner-toggle-icon"></span>
+                                </button>
+                                <div class="owner-locations">
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(47.668265406752234, -122.1461806080578, 'City of Redmond Park')">
+                                        <span class="location-icon">🎡</span>
+                                        <span>Grass Lawn Park, Redmond</span>
+                                        <span class="location-type">City</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(47.6564, -122.4086, 'Seattle Parks')">
+                                        <span class="location-icon">🏞️</span>
+                                        <span>Discovery Park, Seattle</span>
+                                        <span class="location-type">City</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(47.6303, -122.3150, 'Seattle Parks')">
+                                        <span class="location-icon">🌳</span>
+                                        <span>Volunteer Park, Seattle</span>
+                                        <span class="location-type">City</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(47.6456, -122.3344, 'Seattle Parks')">
+                                        <span class="location-icon">⚙️</span>
+                                        <span>Gas Works Park, Seattle</span>
+                                        <span class="location-type">City</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- County Lands -->
+                            <div class="owner-category">
+                                <button class="owner-category-header" onclick="toggleOwnerCategory(this)">
+                                    <span class="owner-category-name">🏞️ County Lands</span>
+                                    <span class="owner-toggle-icon"></span>
+                                </button>
+                                <div class="owner-locations">
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(47.6611, -122.1133, 'King County Park')">
+                                        <span class="location-icon">🌳</span>
+                                        <span>Marymoor Park</span>
+                                        <span class="location-type">County</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(47.4966, -122.0909, 'King County Park')">
+                                        <span class="location-icon">🏔️</span>
+                                        <span>Cougar Mountain Regional Wildland Park</span>
+                                        <span class="location-type">County</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Private Property -->
+                            <div class="owner-category">
+                                <button class="owner-category-header" onclick="toggleOwnerCategory(this)">
+                                    <span class="owner-category-name">🏠 Private Property</span>
+                                    <span class="owner-toggle-icon"></span>
+                                </button>
+                                <div class="owner-locations">
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(47.6062, -122.3321, 'Private Property - Seattle')">
+                                        <span class="location-icon">🏠</span>
+                                        <span>Private Property, Seattle</span>
+                                        <span class="location-type">Private</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(47.6611, -122.1133, 'Private Property - King County')">
+                                        <span class="location-icon">🏘️</span>
+                                        <span>Private Property, King County</span>
+                                        <span class="location-type">Private</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    <!-- Texas State -->
+                    <div class="state-section">
+                        <button class="state-header" onclick="toggleState(this)">
+                            <span class="state-name">🌵 Texas State</span>
+                            <span class="toggle-icon"></span>
+                        </button>
+                        <div class="state-locations">
+                            
+                            <!-- Federal Lands -->
+                            <div class="owner-category">
+                                <button class="owner-category-header" onclick="toggleOwnerCategory(this)">
+                                    <span class="owner-category-name">🏛️ Federal Lands</span>
+                                    <span class="owner-toggle-icon"></span>
+                                </button>
+                                <div class="owner-locations">
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(29.2500, -103.2500, 'National Park Service')">
+                                        <span class="location-icon">🏜️</span>
+                                        <span>Big Bend National Park</span>
+                                        <span class="location-type">Federal</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(31.8937, -104.8600, 'National Park Service')">
+                                        <span class="location-icon">⛰️</span>
+                                        <span>Guadalupe Mountains National Park</span>
+                                        <span class="location-type">Federal</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(27.4467, -97.3166, 'National Park Service')">
+                                        <span class="location-icon">🏖️</span>
+                                        <span>Padre Island National Seashore</span>
+                                        <span class="location-type">Federal</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- State Lands -->
+                            <div class="owner-category">
+                                <button class="owner-category-header" onclick="toggleOwnerCategory(this)">
+                                    <span class="owner-category-name">🏛️ State Lands</span>
+                                    <span class="owner-toggle-icon"></span>
+                                </button>
+                                <div class="owner-locations">
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(30.2747, -97.7404, 'Texas State Capitol')">
+                                        <span class="location-icon">🏛️</span>
+                                        <span>Texas State Capitol, Austin</span>
+                                        <span class="location-type">State</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(34.9803, -101.0707, 'Texas State Parks')">
+                                        <span class="location-icon">🏔️</span>
+                                        <span>Palo Duro Canyon State Park</span>
+                                        <span class="location-type">State</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(32.7158, -94.1339, 'Texas State Parks')">
+                                        <span class="location-icon">🛶</span>
+                                        <span>Caddo Lake State Park</span>
+                                        <span class="location-type">State</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(29.7496, -95.0806, 'State Historic Site')">
+                                        <span class="location-icon">🗿</span>
+                                        <span>San Jacinto Monument, Houston</span>
+                                        <span class="location-type">State</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- City/Municipal Lands -->
+                            <div class="owner-category">
+                                <button class="owner-category-header" onclick="toggleOwnerCategory(this)">
+                                    <span class="owner-category-name">🏙️ City/Municipal Lands</span>
+                                    <span class="owner-toggle-icon"></span>
+                                </button>
+                                <div class="owner-locations">
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(30.2672, -97.7731, 'Austin City Park')">
+                                        <span class="location-icon">🌳</span>
+                                        <span>Zilker Park, Austin</span>
+                                        <span class="location-type">City</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(30.2500, -97.7500, 'Austin City Park')">
+                                        <span class="location-icon">🌊</span>
+                                        <span>Lady Bird Lake, Austin</span>
+                                        <span class="location-type">City</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(30.3177, -97.7722, 'Austin City Park')">
+                                        <span class="location-icon">⛰️</span>
+                                        <span>Mount Bonnell, Austin</span>
+                                        <span class="location-type">City</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(30.2644, -97.7708, 'Austin City Park')">
+                                        <span class="location-icon">🏊</span>
+                                        <span>Barton Springs Pool, Austin</span>
+                                        <span class="location-type">City</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- University Lands -->
+                            <div class="owner-category">
+                                <button class="owner-category-header" onclick="toggleOwnerCategory(this)">
+                                    <span class="owner-category-name">🎓 University Lands</span>
+                                    <span class="owner-toggle-icon"></span>
+                                </button>
+                                <div class="owner-locations">
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(30.2862, -97.7394, 'University Property')">
+                                        <span class="location-icon">🎓</span>
+                                        <span>University of Texas at Austin</span>
+                                        <span class="location-type">University</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Historic Sites -->
+                            <div class="owner-category">
+                                <button class="owner-category-header" onclick="toggleOwnerCategory(this)">
+                                    <span class="owner-category-name">🏰 Historic Sites</span>
+                                    <span class="owner-toggle-icon"></span>
+                                </button>
+                                <div class="owner-locations">
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(29.4252, -98.4861, 'Historic Site')">
+                                        <span class="location-icon">🏰</span>
+                                        <span>The Alamo, San Antonio</span>
+                                        <span class="location-type">Historic</span>
+                                    </button>
+                                    <button class="location-btn-sample" onclick="loadSampleCoords(32.7896, -97.3464, 'Historic District')">
+                                        <span class="location-icon">🤠</span>
+                                        <span>Fort Worth Stockyards</span>
+                                        <span class="location-type">Historic</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -4639,6 +4952,16 @@ async function searchInstructions(searchTerm = '') {
             // Toggle active class on header and locations
             headerElement.classList.toggle('active');
             stateLocations.classList.toggle('active');
+        };
+        
+        // Toggle owner category collapse/expand (sub-categories within states)
+        window.toggleOwnerCategory = function(headerElement) {
+            const ownerCategory = headerElement.parentElement;
+            const ownerLocations = ownerCategory.querySelector('.owner-locations');
+            
+            // Toggle active class on header and locations
+            headerElement.classList.toggle('active');
+            ownerLocations.classList.toggle('active');
         };
 
         // ============== HAMBURGER MENU ==============
