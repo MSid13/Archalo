@@ -466,41 +466,7 @@
         }
         
         /* Responsive Design */
-        @media (max-width: 768px) {
-            .hamburger {
-                display: flex;
-            }
-            
-            .nav-links {
-                position: fixed;
-                left: -100%;
-                top: 70px;
-                flex-direction: column;
-                background: linear-gradient(135deg, #2c3e50, #34495e);
-                width: 100%;
-                text-align: center;
-                transition: left 0.3s ease;
-                box-shadow: 0 10px 27px rgba(0,0,0,0.3);
-                padding: 1rem 0;
-                gap: 0;
-            }
-            
-            .nav-links.active {
-                left: 0;
-            }
-            
-            .nav-links li {
-                padding: 0.5rem 0;
-                width: 100%;
-            }
-            
-            .nav-links a {
-                display: block;
-                padding: 1rem;
-                width: 100%;
-            }
-            
-            .resources-grid {
+        @media (max-width: 768px) {\n            .resources-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
@@ -516,24 +482,8 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <a href="index.html" style="text-decoration: none; color: inherit;">
-                <div class="logo">Archalo</div>
-            </a>
-            <button class="hamburger" id="hamburger" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="laws.html">Laws</a></li>
-                <li><a href="artifactHelp.html">I Found an Artifact</a></li>
-                <li><a href="edu-resources.html" class="active">Educational Resources</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Navigation loaded by shared_nav.js -->
+    <script src="js/shared_nav.js"></script>
 
     <div class="header-section">
         <h1>📚 Educational Resources</h1>
@@ -814,37 +764,9 @@
         // Load resources on page load
         loadResources();
 
-        // Hamburger menu functionality
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
+        // Navigation functionality is now handled by shared_nav.js
         
-        if (hamburger) {
-            hamburger.addEventListener('click', () => {
-                hamburger.classList.toggle('active');
-                navLinks.classList.toggle('active');
-            });
-            
-            // Close menu when clicking on a link
-            const navLinkItems = navLinks.querySelectorAll('a');
-            navLinkItems.forEach(link => {
-                link.addEventListener('click', () => {
-                    hamburger.classList.remove('active');
-                    navLinks.classList.remove('active');
-                });
-            });
-
-            // Close menu when clicking outside
-            document.addEventListener('click', (event) => {
-                const isClickInsideNav = navLinks.contains(event.target);
-                const isClickOnHamburger = hamburger.contains(event.target);
-                
-                if (!isClickInsideNav && !isClickOnHamburger && navLinks.classList.contains('active')) {
-                    hamburger.classList.remove('active');
-                    navLinks.classList.remove('active');
-                }
-            });
-        }
-                // Search functionality
+        // Search functionality
         const searchInput = document.getElementById('searchInput');
         const searchResultsCount = document.getElementById('searchResultsCount');
 

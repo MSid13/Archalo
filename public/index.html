@@ -81,96 +81,6 @@
             line-height: 1.6;
         }
         
-        /* Navigation */
-        nav {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-        
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-        
-        .logo {
-            color: #ecf0f1;
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: clamp(1rem, 3vw, 2rem);
-        }
-        
-        .nav-links a {
-            color: #ecf0f1;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: clamp(0.9rem, 2vw, 1rem);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-links a:hover {
-            background-color: rgba(52, 152, 219, 0.2);
-            color: #3498db;
-            transform: translateY(-1px);
-        }
-        
-        /* Hamburger Menu */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 0.5rem;
-            z-index: 1001;
-        }
-        
-        .hamburger span {
-            width: 25px;
-            height: 3px;
-            background-color: #ecf0f1;
-            margin: 3px 0;
-            transition: all 0.3s ease;
-            border-radius: 2px;
-        }
-        
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(-45deg) translate(-5px, 6px);
-        }
-        
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-        
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(45deg) translate(-5px, -6px);
-        }
-        
-        /* Mobile menu toggle */
-        .mobile-menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: #ecf0f1;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
         /* Artifact of the day section */
         .artifact-of-day {
             background-color: #f9f9f9;
@@ -180,121 +90,284 @@
 
         /* Full Height Hero Section */
         .hero {
-            height: 100vh;
+            min-height: 70vh;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: white;
-            padding: 24px;
+            padding: 4rem 2rem 3rem 2rem;
             
             /* High-resolution background image with overlay */
-            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.55)), 
-                        url('https://wallpaperaccess.com/full/1321419.jpg') no-repeat center center;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), 
+                        url('banner.PNG') no-repeat center center;
             background-size: cover;
             background-attachment: scroll;
+            position: relative;
         }
 
         .hero-inner-content {
             width: 100%;
-            max-width: 650px;
+            max-width: 1200px;
             z-index: 2;
         }
 
         .hero-inner-content h1 {
-            font-size: clamp(2.8rem, 10vw, 5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: -2px;
-            line-height: 0.85;
-            margin-bottom: 12px;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            margin-bottom: 1rem;
             color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         .subtitle {
-            font-family: 'Georgia', serif;
-            font-style: italic;
-            font-size: clamp(1.4rem, 5vw, 2.2rem);
-            color: rgba(255,255,255,0.9);
-            margin-bottom: 50px;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.3);
+        }
+
+        /* Location Search Container */
+        .location-search-container {
+            display: flex;
+            gap: 1rem;
+            max-width: 700px;
+            margin: 0 auto 3rem auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .location-input-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+            max-width: 500px;
+        }
+
+        .location-icon-right {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #2563eb;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            padding: 0.5rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+        }
+
+        .location-icon-right:hover {
+            background: #1d4ed8;
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+        }
+
+        .location-icon-right:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        #locationInput {
+            width: 100%;
+            padding: 1rem 3.5rem 1rem 1rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #locationInput::placeholder {
+            color: #999;
         }
 
         /* Modern Gradient Button Style */
         .btn-instant {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
             text-decoration: none;
             color: #fff;
-            background: linear-gradient(135deg, #d4704a 0%, #c0603c 100%);
-            padding: 18px 48px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            padding: 1rem 2rem;
+            font-weight: 600;
             font-size: 1rem;
             border: none;
             border-radius: 8px;
             transition: all 0.3s ease;
-            margin-bottom: 30px;
-            width: auto;
-            max-width: 100%;
-            box-shadow: 0 6px 20px rgba(212, 112, 74, 0.35);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-instant::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn-instant:hover::before {
-            left: 100%;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            cursor: pointer;
+            white-space: nowrap;
         }
 
         .btn-instant:hover {
-            background: linear-gradient(135deg, #e88054 0%, #d4704a 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(212, 112, 74, 0.45);
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
         }
 
         .btn-instant:active {
-            transform: translateY(-1px);
+            transform: translateY(0);
         }
 
-        /* Fine Text Link */
-        .secondary-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: rgba(255,255,255,0.85);
+        /* Current Location Button */
+        .btn-current-location {
+            display: none;
+        }
+
+        .btn-current-location:hover {
+            display: none;
+        }
+
+        .btn-current-location:active {
+            transform: translateY(0);
+        }
+
+        /* Privacy Notice */
+        .privacy-notice {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            background: rgba(0,0,0,0.5);
+            border-radius: 12px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .privacy-notice h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .privacy-notice p {
             font-size: 0.95rem;
-            font-weight: 400;
-            transition: color 0.3s ease;
-            gap: 10px;
+            line-height: 1.6;
         }
 
-        .secondary-link:hover {
-            color: #fff;
+        /* Feature Cards Section */
+        .feature-cards-section {
+            padding: 3rem 2rem;
+            background: rgba(255,255,255,0.05);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .feature-cards-section {
+                padding: 2rem 0.25rem;
+            }
         }
 
-        .secondary-link span {
-            border-bottom: 1px solid rgba(255,255,255,0.3);
+        .feature-cards-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            max-width: 1400px;
+            justify-content: center;
         }
 
-        .arrow {
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
+        @media (max-width: 1100px) {
+            .feature-cards-grid {
+                gap: 1.2rem;
+            }
         }
 
-        .secondary-link:hover .arrow {
-            transform: translateX(6px);
+        .feature-card-item {
+            background: white;
+            padding: 1rem 1rem 1.2rem 1rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            max-width: 180px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .feature-card-item {
+                max-width: none;
+                width: 100%;
+                padding: 2.5rem 2rem;
+            }
+            
+            .feature-icon-img {
+                width: 160px;
+                height: 160px;
+            }
+            
+            .feature-card-item h3 {
+                font-size: 1.5rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .feature-card-item p {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (min-width: 1000px) {
+            .feature-card-item {
+                max-width: 185px;
+                padding: 1.3rem 1.2rem 1.5rem 1.2rem;
+            }
+        }
+
+        .feature-card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon-img {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 0.5rem auto;
+            object-fit: contain;
+        }
+
+        @media (min-width: 1000px) {
+            .feature-icon-img {
+                width: 120px;
+                height: 120px;
+                margin: 0 auto 0.7rem auto;
+            }
+        }
+
+        .feature-card-item h3 {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            color: #2c3e50;
+            line-height: 1.3;
+        }
+
+        @media (min-width: 1000px) {
+            .feature-card-item h3 {
+                font-size: 1.1rem;
+                margin-bottom: 0.4rem;
+            }
+        }
+
+        .feature-card-item p {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.4;
         }
 
         .feedback-link {
@@ -426,12 +499,21 @@
 
         @media (max-width: 768px) {
             .feature-card {
-                flex: 0 0 240px;
-                padding: 1.5rem 1rem;
+                flex: 0 0 calc(100vw - 4rem);
+                max-width: 400px;
+                padding: 1.8rem 1.5rem;
             }
 
             .carousel-track {
-                gap: 1rem;
+                gap: 1.5rem;
+                padding: 1rem 1rem 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .feature-card {
+                flex: 0 0 calc(100vw - 3rem);
+                padding: 2rem 1.5rem;
             }
         }
 
@@ -449,6 +531,72 @@
         @media (max-width: 768px) {
             .found-artifact-content > div[style*="grid-template-columns"] {
                 grid-template-columns: 1fr !important;
+            }
+
+            .hero {
+                min-height: 60vh;
+                padding: 3rem 1rem 2rem 1rem;
+            }
+
+            .location-search-container {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .location-input-wrapper {
+                min-width: 100%;
+            }
+
+            .btn-instant {
+                width: 100%;
+                padding: 0.9rem 1.5rem;
+            }
+
+            .btn-current-location {
+                width: 100%;
+                padding: 0.7rem 1.2rem;
+            }
+
+            .feature-cards-grid {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1.5rem;
+                padding: 0;
+            }
+
+            .feature-cards-section {
+                padding: 2rem 0.25rem;
+            }
+
+            .privacy-notice {
+                padding: 1.2rem;
+            }
+
+            .privacy-notice h3 {
+                font-size: 1rem;
+            }
+
+            .privacy-notice p {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-inner-content h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .feature-card-item {
+                padding: 1.5rem;
+            }
+
+            .feature-card-item h3 {
+                font-size: 1.1rem;
             }
         }
 
@@ -757,43 +905,6 @@
         
         /* Responsive breakpoints */
         @media (max-width: 768px) {
-            .hamburger {
-                display: flex;
-            }
-            
-            .nav-links {
-                position: fixed;
-                left: -100%;
-                top: 70px;
-                flex-direction: column;
-                background: linear-gradient(135deg, #2c3e50, #34495e);
-                width: 100%;
-                text-align: center;
-                transition: left 0.3s ease;
-                box-shadow: 0 10px 27px rgba(0,0,0,0.3);
-                padding: 1rem 0;
-                gap: 0;
-            }
-            
-            .nav-links.active {
-                left: 0;
-            }
-            
-            .nav-links li {
-                padding: 0.5rem 0;
-                width: 100%;
-            }
-            
-            .nav-links a {
-                display: block;
-                padding: 1rem;
-                width: 100%;
-            }
-            
-            .mobile-menu-toggle {
-                display: none;
-            }
-            
             .artifact-content {
                 grid-template-columns: 1fr;
                 text-align: center;
@@ -836,10 +947,6 @@
         }
         
         @media (max-width: 480px) {
-            .nav-container {
-                padding: 0 1rem;
-            }
-            
             .artifact-of-day {
                 padding: 2rem 1rem;
             }
@@ -978,27 +1085,363 @@
                 font-size: 0.7rem;
             }
         }
+
+        /* Visual Process Timeline Styles */
+        .process-timeline-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: clamp(3rem, 8vw, 5rem) clamp(1rem, 3vw, 2rem);
+            overflow: hidden;
+        }
+
+        .process-timeline-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .process-timeline-container h2 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .timeline-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            margin-bottom: 3rem;
+            font-weight: 400;
+        }
+
+        .timeline-wrapper {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        /* Progress Bar */
+        .timeline-progress-bar {
+            position: absolute;
+            top: 80px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(212, 112, 74, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .timeline-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d4704a 0%, #c0603c 100%);
+            width: 0;
+            border-radius: 2px;
+            transition: width 2s ease-in-out;
+        }
+
+        /* Timeline Steps Container */
+        .timeline-steps {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Individual Step */
+        .timeline-step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .timeline-step:nth-child(1) { animation-delay: 0.2s; }
+        .timeline-step:nth-child(2) { animation-delay: 0.4s; }
+        .timeline-step:nth-child(3) { animation-delay: 0.6s; }
+        .timeline-step:nth-child(4) { animation-delay: 0.8s; }
+        .timeline-step:nth-child(5) { animation-delay: 1s; }
+
+        /* Step Icon */
+        .step-icon {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 3px solid #d4704a;
+        }
+
+        .timeline-step:hover .step-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(212, 112, 74, 0.3);
+        }
+
+        .icon-emoji {
+            font-size: 2.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        .timeline-step:hover .icon-emoji {
+            animation: bounce 0.5s infinite;
+        }
+
+        /* Step Content */
+        .step-content h3 {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            padding: 0 0.5rem;
+        }
+
+        /* Step Number Badge */
+        .step-number {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #d4704a, #c0603c);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 8px rgba(212, 112, 74, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Mobile Responsive Timeline */
+        @media (max-width: 1024px) {
+            .timeline-steps {
+                gap: 0.5rem;
+            }
+            
+            .step-icon {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .icon-emoji {
+                font-size: 2rem;
+            }
+            
+            .step-content h3 {
+                font-size: 1.1rem;
+            }
+            
+            .step-content p {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Timeline CTA Box */
+        .timeline-cta-box {
+            margin-top: 4rem;
+            background: linear-gradient(135deg, #d4704a 0%, #c0603c 100%);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 8px 30px rgba(212, 112, 74, 0.3);
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            animation: fadeInUp 0.6s ease forwards;
+            animation-delay: 1.2s;
+            opacity: 0;
+        }
+
+        .cta-icon {
+            font-size: 4rem;
+            flex-shrink: 0;
+            animation: pulse 2s infinite;
+        }
+
+        .cta-content {
+            flex: 1;
+            color: white;
+        }
+
+        .cta-content h3 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .cta-content p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            padding: 0;
+        }
+
+        .cta-content p strong {
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            color: #d4704a;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+            background: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-cta-box {
+                flex-direction: column;
+                text-align: center;
+                padding: 2rem 1.5rem;
+                gap: 1.5rem;
+            }
+
+            .cta-icon {
+                font-size: 3rem;
+            }
+
+            .cta-content h3 {
+                font-size: 1.5rem;
+            }
+
+            .cta-content p {
+                font-size: 1rem;
+            }
+
+            .cta-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .timeline-steps {
+                flex-direction: column;
+                gap: 3rem;
+            }
+            
+            .timeline-progress-bar {
+                top: 50px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 4px;
+                height: calc(100% - 100px);
+            }
+            
+            .timeline-progress-fill {
+                width: 100%;
+                height: 0;
+                transition: height 2s ease-in-out;
+            }
+            
+            .timeline-step {
+                flex-direction: row;
+                text-align: left;
+                gap: 1.5rem;
+            }
+            
+            .step-icon {
+                flex-shrink: 0;
+                width: 100px;
+                height: 100px;
+                margin-bottom: 0;
+            }
+            
+            .icon-emoji {
+                font-size: 2.5rem;
+            }
+            
+            .step-content {
+                flex: 1;
+            }
+            
+            .step-content h3 {
+                font-size: 1.4rem;
+                text-align: left;
+            }
+            
+            .step-content p {
+                font-size: 1rem;
+                text-align: left;
+                padding: 0;
+            }
+        }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <a href="index.html" style="text-decoration: none; color: inherit;">
-                <div class="logo">Archalo</div>
-            </a>
-            <button class="hamburger" id="hamburger" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="laws.html">Laws</a></li>
-                <li><a href="artifactHelp.html">I Found an Artifact</a></li>
-                <li><a href="edu-resources.html">Educational Resources</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Navigation is loaded by shared_nav.js -->
+    <script src="js/shared_nav.js"></script>
+    
     <div id="announcement-banner" style="background: linear-gradient(135deg, #e8f4f8, #d6e9f1); padding: 0.8rem 1.5rem; margin: 0; border-bottom: 2px solid rgba(52, 152, 219, 0.15);">
         <div id="announcement-content" style="color: #2c3e50; font-size: 0.85rem; text-align: center; margin: 0; font-weight: 400; line-height: 1.4;">
             📢 Loading announcement...
@@ -1008,26 +1451,63 @@
     <!-- I Found an Artifact Info Section -->
     <section class="hero">
         <div class="hero-inner-content">
-            <h1>FOUND AN ARTIFACT?</h1>
-            <p class="subtitle">Get location-specific guidance for your discovery</p>
+            <h1>Found an artifact?</h1>
+            <p class="subtitle">Learn what steps to take if you've uncovered a potential artifact.</p>
             
-            <a href="artifactHelp.html" class="btn-instant">START HERE</a>
-            
-            <a href="/promise" class="secondary-link">
-                <span>Learn about our commitment</span>
-                <b class="arrow">→</b>
-            </a>
-            
-            <a href="https://forms.gle/NN3anqoQDDi9g5vD7" target="_blank" class="feedback-link">
-                <span>Give us feedback</span>
-                <b class="arrow">→</b>
-            </a>
+            <div class="location-search-container">
+                <div class="location-input-wrapper">
+                    <input type="text" id="locationInput" placeholder="Enter latitude, longitude (e.g., 47.6062, -122.3321)">
+                    <span class="location-icon-right" id="useCurrentLocationIcon" title="Use my current location">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </span>
+                </div>
+                <button class="btn-instant" id="getGuidanceBtn">
+                    📍 Get guidance
+                </button>
+            </div>
+
+            <div class="feature-cards-section">
+                <div class="feature-cards-grid">
+                    <a href="artifactHelp.html" class="feature-card-item">
+                        <img src="icons/wa_state_icon-bg.png" alt="Location guidance" class="feature-icon-img">
+                        <h3>Receive location-based guidance</h3>
+                    </a>
+
+                    <a href="laws.html" class="feature-card-item">
+                        <img src="icons/hammer_icon-bg.png" alt="Archaeology laws" class="feature-icon-img">
+                        <h3>Understand archaeology laws</h3>
+                    </a>
+
+                    <a href="edu-resources.html" class="feature-card-item">
+                        <img src="icons/map-paper_icon-bg.png" alt="Historical timeline" class="feature-icon-img">
+                        <h3>Historical Timeline</h3>
+                    </a>
+
+                    <a href="#artifact-of-day" class="feature-card-item">
+                        <img src="icons/pot_icon-bg.png" alt="Artifact highlights" class="feature-icon-img">
+                        <h3>Artifact highlights</h3>
+                    </a>
+                </div>
+            </div>
+
+            <div class="privacy-notice">
+                <h3>Cultural heritage is a shared resource — help protect it!</h3>
+                
+                <p>Your exact coordinates are not shared publicly or saved</p>
+                <p style="margin-top: 1rem;">
+                    <a href="data.html" style="color: rgba(255,255,255,0.9); font-weight: 500; transition: color 0.3s ease;">
+                        Learn about our commitment to accuracy →
+                    </a>
+                </p>
+            </div>
         </div>
     </section>
 
     <hr class="section-divider">
 
-    <section class="artifact-of-day">
+    <section class="artifact-of-day" id="artifact-of-day">
         <h2>Artifact of the Day</h2>
         <div class="artifact-placeholder" id="artifact-container">
             <p class="loading">Loading today's artifact...</p>
@@ -1036,40 +1516,26 @@
 
     <hr class="section-divider">
 
-    <section class="features-carousel">
-        <h2>Discover What We Offer</h2>
-        <p class="subtitle">Comprehensive tools to help you handle your archaeological discovery</p>
-        
-        <div class="carousel-container">
-            <div class="carousel-track">
-                <a href="artifactHelp.html" class="feature-card">
-                    <span class="feature-icon">📞</span>
-                    <h3>Who to Contact</h3>
-                    <p>Get instant access to local authorities, state offices, and federal contacts for your specific location</p>
-                </a>
-                
-                <a href="artifactHelp.html" class="feature-card">
-                    <span class="feature-icon">⚖️</span>
-                    <h3>Relevant Laws</h3>
-                    <p>Understand federal, state, and local laws that apply to your discovery</p>
-                </a>
-                
-                <a href="artifactHelp.html" class="feature-card">
-                    <span class="feature-icon">🗺️</span>
-                    <h3>Interactive Map</h3>
-                    <p>View parcel boundaries and land ownership information on an interactive map</p>
-                </a>
-                
-                <a href="artifactHelp.html" class="feature-card">
-                    <span class="feature-icon">📜</span>
-                    <h3>Historical Timeline</h3>
-                    <p>Explore the property's history and past land uses through detailed timelines</p>
-                </a>
+    <!-- Location-Aware CTA Section -->
+    <section class="process-timeline-section">
+        <div class="process-timeline-container">
+            <div class="timeline-wrapper">
+                <!-- Location-Aware CTA Box -->
+                <div class="timeline-cta-box">
+                    <div class="cta-icon">🎯</div>
+                    <div class="cta-content">
+                        <h3>Artifact finds made easy. </h3>
+                        <p>Enter your coordinates at <strong>archalo.org/artifact</strong> and we'll provide personalized guidance including who to contact, relevant laws, property history, and interactive maps — all specific to where you found the artifact.</p>
+                        <a href="artifactHelp.html" class="cta-button">
+                            Get Location-Specific Guidance →
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <hr class="section-divider">
+
     
     <section class="content">
         <!-- Hidden elements for JavaScript functionality -->
@@ -1978,37 +2444,130 @@ service cloud.firestore {
 
         // ============== END HOME PAGE ARTIFACT LOOKUP ==============
 
-        // ============== HAMBURGER MENU ==============
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
-        
-        if (hamburger) {
-            hamburger.addEventListener('click', function() {
-                hamburger.classList.toggle('active');
-                navLinks.classList.toggle('active');
-            });
-            
-            // Close menu when clicking on a link
-            const navLinkItems = navLinks.querySelectorAll('a');
-            navLinkItems.forEach(link => {
-                link.addEventListener('click', function() {
-                    hamburger.classList.remove('active');
-                    navLinks.classList.remove('active');
-                });
-            });
-            
-            // Close menu when clicking outside
-            document.addEventListener('click', function(event) {
-                const isClickInsideNav = navLinks.contains(event.target);
-                const isClickOnHamburger = hamburger.contains(event.target);
-                
-                if (!isClickInsideNav && !isClickOnHamburger && navLinks.classList.contains('active')) {
-                    hamburger.classList.remove('active');
-                    navLinks.classList.remove('active');
+        // Navigation functionality is now handled by shared_nav.js
+
+        // ============== LOCATION SEARCH FUNCTIONALITY ==============
+        const locationInput = document.getElementById('locationInput');
+        const getGuidanceBtn = document.getElementById('getGuidanceBtn');
+        const useCurrentLocationIcon = document.getElementById('useCurrentLocationIcon');
+
+        // Handle location icon click to get current location
+        if (useCurrentLocationIcon) {
+            useCurrentLocationIcon.addEventListener('click', function() {
+                if ("geolocation" in navigator) {
+                    // Show loading state
+                    const originalIcon = this.textContent;
+                    this.textContent = '⏳';
+                    this.style.cursor = 'wait';
+                    
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const lat = position.coords.latitude.toFixed(6);
+                            const lon = position.coords.longitude.toFixed(6);
+                            
+                            // Redirect to artifactHelp.html with coordinates
+                            window.location.href = `artifactHelp.html?lat=${lat}&lng=${lon}`;
+                        },
+                        (error) => {
+                            // Reset icon state
+                            this.textContent = originalIcon;
+                            this.style.cursor = 'pointer';
+                            
+                            let errorMessage = 'Unable to get your location.';
+                            if (error.code === error.PERMISSION_DENIED) {
+                                errorMessage = 'Location access denied. Please enable location permissions and try again.';
+                            } else if (error.code === error.POSITION_UNAVAILABLE) {
+                                errorMessage = 'Location information unavailable. Please enter coordinates manually.';
+                            } else if (error.code === error.TIMEOUT) {
+                                errorMessage = 'Location request timed out. Please try again.';
+                            }
+                            alert(errorMessage);
+                            console.error('Geolocation error:', error);
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0
+                        }
+                    );
+                } else {
+                    alert('Geolocation is not supported by your browser. Please enter coordinates manually.');
                 }
             });
         }
-        // ============== END HAMBURGER MENU ==============
+
+        // Handle guidance button click
+        if (getGuidanceBtn) {
+            getGuidanceBtn.addEventListener('click', function() {
+                let coordinates = locationInput.value.trim();
+                
+                if (coordinates === '' || coordinates === 'Getting your location...') {
+                    alert('Please enter coordinates or use your current location.');
+                    return;
+                }
+                
+                // Parse coordinates
+                const coordPattern = /^(-?\d+\.?\d*)[,\s]+(-?\d+\.?\d*)$/;
+                const match = coordinates.match(coordPattern);
+                
+                if (match) {
+                    const lat = parseFloat(match[1]);
+                    const lon = parseFloat(match[2]);
+                    
+                    // Validate coordinates
+                    if (lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180) {
+                        // Redirect to artifactHelp.html with coordinates
+                        window.location.href = `artifactHelp.html?lat=${lat}&lng=${lon}`;
+                    } else {
+                        alert('Invalid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180.');
+                    }
+                } else {
+                    alert('Please enter coordinates in the format: latitude, longitude (e.g., 47.6062, -122.3321)');
+                }
+            });
+
+            // Allow Enter key to trigger search
+            locationInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    getGuidanceBtn.click();
+                }
+            });
+        }
+        // ============== END LOCATION SEARCH FUNCTIONALITY ==============
+
+        // ============== TIMELINE PROGRESS BAR ANIMATION ==============
+        // Animate progress bar on scroll or page load
+        function animateTimeline() {
+            const progressFill = document.querySelector('.timeline-progress-fill');
+            const timelineSection = document.querySelector('.process-timeline-section');
+            
+            if (!progressFill || !timelineSection) return;
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // On desktop: animate width, on mobile: animate height
+                        const isMobile = window.innerWidth <= 768;
+                        if (isMobile) {
+                            progressFill.style.height = '100%';
+                        } else {
+                            progressFill.style.width = '100%';
+                        }
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            observer.observe(timelineSection);
+        }
+        
+        // Run animation when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', animateTimeline);
+        } else {
+            animateTimeline();
+        }
+        // ============== END TIMELINE ANIMATION ==============
     </script>
 </body>
 </html>

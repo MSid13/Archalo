@@ -21,54 +21,6 @@
             background-color: #fafafa;
         }
         
-        /* Navigation */
-        nav {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-        
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-        
-        .logo {
-            color: #ecf0f1;
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: clamp(1rem, 3vw, 2rem);
-        }
-        
-        .nav-links a {
-            color: #ecf0f1;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: clamp(0.9rem, 2vw, 1rem);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-links a:hover {
-            background-color: rgba(52, 152, 219, 0.2);
-            color: #3498db;
-            transform: translateY(-1px);
-        }
-        
         /* Hero section */
         .hero {
             background: linear-gradient(135deg, #d4a574, #8b6f47);
@@ -591,19 +543,8 @@
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <a href="index.html" style="text-decoration: none; color: inherit;">
-                <div class="logo">Archalo</div>
-            </a>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="laws.html">Laws</a></li>
-                <li><a href="artifactHelp.html">I Found an Artifact</a></li>
-                <li><a href="edu-resources.html">Educational Resources</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Navigation loaded by shared_nav.js -->
+    <script src="js/shared_nav.js"></script>
 
     <section class="hero">
         <h1>🔐 Admin Panel</h1>

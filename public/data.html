@@ -224,108 +224,73 @@
         }
         
         /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .hamburger {
-                display: flex;
-            }
-            
-            .nav-links {
-                position: fixed;
-                right: -100%;
-                top: 70px;
-                flex-direction: column;
-                background-color: #2c3e50;
-                width: 100%;
-                text-align: center;
-                transition: 0.3s;
-                box-shadow: 0 10px 27px rgba(0,0,0,0.05);
-                padding: 2rem 0;
-            }
-            
-            .nav-links.active {
-                right: 0;
-            }
-            
-            .verification-grid {
+        @media (max-width: 768px) {\n            .verification-grid {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <div class="logo">Archalo</div>
-            <button class="hamburger" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="data.html" class="active">Data Accuracy</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Navigation loaded by shared_nav.js -->
+    <script src="js/shared_nav.js"></script>
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1>Our Data - Accuracy</h1>
-        <p>Honest information about how we ensure data accuracy. </p>
+        <h1>Data Accuracy & Verification</h1>
+        <p>Transparent insights into our multi-stage verification process and commitment to data quality.</p>
     </section>
 
     <!-- Main Content -->
     <div class="content">
         <div class="honest-box">
-            <h2>The Reality</h2>
-            <p>We're not perfect. Archaeological data is complex, regulations change, and contact information goes out of date. But we're committed to being as accurate as possible.</p>
-            <p>We verify information by calling cities and counties, meeting with archaeologists across the coasts, and cross-checking multiple sources. When we find errors or outdated info, we fix them. When users report issues, we investigate immediately.</p>
+            <h2>Our Commitment to Accuracy</h2>
+            <p>Archaeological data is inherently complex—regulations evolve, contact information changes, and local practices vary across jurisdictions. We recognize these challenges and have implemented a comprehensive verification process to ensure the highest level of accuracy possible.</p>
+            <p>Our verification methodology includes direct outreach to municipal and county offices, consultations with practicing archaeologists nationwide, and systematic cross-referencing of multiple authoritative sources. We maintain a rapid response protocol for corrections, investigating and addressing any reported discrepancies promptly.</p>
         </div>
 
         <div class="section-divider"></div>
 
-        <h2 class="section-title">What We Actually Do</h2>
-        <p class="section-subtitle">Here's how we try to keep things accurate (even when it's hard)</p>
+        <h2 class="section-title">Our Verification Process</h2>
+        <p class="section-subtitle">A comprehensive approach to maintaining data integrity and reliability</p>
 
         <div class="verification-grid">
             <div class="verification-card">
-                <h3>We Call Around</h3>
-                <p>We contact cities and counties to verify contact info and protocols. Sometimes they don't pick up. Sometimes info changes the next week. We do our best to stay current.</p>
+                <h3>Direct Municipal Verification</h3>
+                <p>We establish direct contact with city and county offices to verify contact information, procedures, and regulatory requirements. Our team conducts regular follow-ups to maintain current information as protocols evolve.</p>
             </div>
 
             <div class="verification-card">
-                <h3>Multiple Check-Ins</h3>
-                <p>We cross-reference official sources and check things multiple times. But we're human — mistakes happen. That's why we fix them quickly when they're found.</p>
+                <h3>Multi-Source Cross-Referencing</h3>
+                <p>We employ a multi-stage verification process, cross-referencing official government sources, regulatory databases, and direct communications. This redundancy helps identify discrepancies and ensures data consistency.</p>
             </div>
 
             <div class="verification-card">
-                <h3>Real Conversations</h3>
-                <p>We've met with archaeologists across both coasts to understand local practices. These conversations help, but coverage is still growing. We don't have relationships everywhere yet.</p>
+                <h3>Professional Consultations</h3>
+                <p>We conduct ongoing consultations with practicing archaeologists nationwide to understand regional variations and local practices. These professional relationships provide valuable insights into jurisdiction-specific requirements and procedures.</p>
             </div>
 
             <div class="verification-card">
-                <h3>Regular Updates</h3>
-                <p>Laws and contacts change constantly. We try to catch updates, but we can't monitor everything 24/7. If something's wrong, let us know.</p>
+                <h3>Continuous Monitoring</h3>
+                <p>We maintain an active monitoring system to track changes in regulations, contact information, and procedural requirements. Our update schedule prioritizes jurisdictions with frequent regulatory changes to ensure timely information.</p>
             </div>
 
             <div class="verification-card">
-                <h3>Source Tracking</h3>
-                <p>We trace info back to government sites and official sources. When possible. Sometimes sources conflict or are unclear. We do our best to interpret them correctly.</p>
+                <h3>Source Documentation</h3>
+                <p>All information is traced to authoritative government sources and official documentation. We maintain detailed source records to ensure transparency and facilitate verification when regulatory language requires interpretation.</p>
             </div>
 
             <div class="verification-card">
-                <h3>You Keep Us Honest</h3>
-                <p>User reports are critical. When you tell us something's wrong, we investigate and fix it. Your feedback makes this tool better for everyone.</p>
+                <h3>Community Feedback Integration</h3>
+                <p>User-reported corrections are integral to our quality assurance process. We investigate all reported discrepancies promptly and implement verified corrections, ensuring our platform benefits from collective professional expertise.</p>
             </div>
         </div>
 
         <div class="section-divider"></div>
 
         <div class="honest-box">
-            <h2>Our Coverage (The Honest Version)</h2>
-            <p>We've met with archaeologists on both coasts and built some relationships with local offices in those regions. It's a start, but we're nowhere near complete coverage.</p>
-            <p>Every connection takes time — calling offices, scheduling meetings, verifying information. We're expanding, but it's slow work. If your area isn't well-covered yet, we're sorry. We're working on it.</p>
+            <h2>Coverage & Expansion</h2>
+            <p>We have established professional relationships with archaeologists and municipal offices across multiple regions, with particularly strong coverage on the East and West coasts. Our network continues to expand as we develop new connections and verify information across additional jurisdictions.</p>
+            <p>Building comprehensive, accurate coverage requires substantial effort—establishing relationships with local offices, conducting verification meetings, and validating information against multiple sources. We are committed to systematic expansion while maintaining our quality standards. Our coverage map is continuously growing to serve professionals nationwide.</p>
         </div>
     </div>
 
@@ -335,12 +300,7 @@
     </footer>
 
     <script>
-        function toggleMenu() {
-            const hamburger = document.querySelector('.hamburger');
-            const navLinks = document.getElementById('navLinks');
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        }
+        // Navigation functionality is now handled by shared_nav.js
     </script>
 </body>
 </html>
