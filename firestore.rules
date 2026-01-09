@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+
+    // Match all other documents in the database
+    match /{document=**} {
+      
+      // 1. Allow READ access (viewing)
+      // The request.auth object is null for non-authenticated (public) users, 
+      // but it is NOT null for authenticated users.
+      // Since it's a view-only rule for public, we allow it for everyone (if true).
+      allow read: if true;
+      
+      // 2. Allow WRITE access (edit, create, delete)
+      // The request.auth object is null for non-authenticated users.
+      // Checking 'request.auth != null' ensures only signed-in users can write.
+      allow write: if request.auth != null;
+    }
+  }

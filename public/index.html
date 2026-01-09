@@ -10,6 +10,9 @@
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://owlcheologists.web.app/">
     
+    <!-- Leaflet CSS for OpenStreetMap -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://owlcheologists.web.app/">
@@ -838,6 +841,85 @@
             text-align: center;
         }
 
+        /* Regions Covered Section */
+        .regions-section {
+            background: #ffffff;
+            padding: clamp(3rem, 6vw, 5rem) 2rem;
+            text-align: center;
+        }
+
+        .regions-section h2 {
+            color: #2c3e50;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            margin-bottom: 3rem;
+            font-weight: 700;
+        }
+
+        .map-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 500px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        #regionsMap {
+            width: 100%;
+            height: 100%;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .legend-color.covered {
+            background: #27ae60;
+        }
+
+        .legend-color.coming-soon {
+            background: #f39c12;
+        }
+
+        .legend-text {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .map-container {
+                height: 400px;
+            }
+            
+            .legend {
+                gap: 1.5rem;
+            }
+            
+            .legend-item {
+                font-size: 0.95rem;
+            }
+        }
+
         .about-section h2 {
             color: #2c3e50;
             font-size: clamp(2rem, 4vw, 2.8rem);
@@ -1442,9 +1524,8 @@
     <!-- Navigation is loaded by shared_nav.js -->
     <script src="js/shared_nav.js"></script>
     
-    <div id="announcement-banner" style="background: linear-gradient(135deg, #e8f4f8, #d6e9f1); padding: 0.8rem 1.5rem; margin: 0; border-bottom: 2px solid rgba(52, 152, 219, 0.15);">
+    <div id="announcement-banner" style="display: none; background: linear-gradient(135deg, #e8f4f8, #d6e9f1); padding: 0.8rem 1.5rem; margin: 0; border-bottom: 2px solid rgba(52, 152, 219, 0.15);">
         <div id="announcement-content" style="color: #2c3e50; font-size: 0.85rem; text-align: center; margin: 0; font-weight: 400; line-height: 1.4;">
-            📢 Loading announcement...
         </div>
     </div>
 
@@ -1516,25 +1597,72 @@
 
     <hr class="section-divider">
 
-    <!-- Location-Aware CTA Section -->
-    <section class="process-timeline-section">
-        <div class="process-timeline-container">
-            <div class="timeline-wrapper">
-                <!-- Location-Aware CTA Box -->
-                <div class="timeline-cta-box">
-                    <div class="cta-icon">🎯</div>
-                    <div class="cta-content">
-                        <h3>Artifact finds made easy. </h3>
-                        <p>Enter your coordinates at <strong>archalo.org/artifact</strong> and we'll provide personalized guidance including who to contact, relevant laws, property history, and interactive maps — all specific to where you found the artifact.</p>
-                        <a href="artifactHelp.html" class="cta-button">
-                            Get Location-Specific Guidance →
-                        </a>
-                    </div>
-                </div>
+    <!-- Regions Covered Section -->
+    <section class="regions-section">
+        <h2>Regions Covered</h2>
+        <div class="map-container">
+            <div id="regionsMap"></div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color covered"></div>
+                <span class="legend-text">Available Now: Washington, Texas</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color coming-soon"></div>
+                <span class="legend-text">Coming Soon: Arizona, California</span>
             </div>
         </div>
     </section>
 
+    <hr class="section-divider">
+
+    <!-- Leaflet JS for OpenStreetMap -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map centered on US
+        const regionsMap = L.map('regionsMap').setView([37.8, -96], 4);
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
+        }).addTo(regionsMap);
+
+        // Create custom icons
+        const greenIcon = L.divIcon({
+            className: 'custom-marker',
+            html: '<div style="background-color: #27ae60; width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+
+        const orangeIcon = L.divIcon({
+            className: 'custom-marker',
+            html: '<div style="background-color: #f39c12; width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+
+        // Add markers for covered states (Available Now)
+        L.marker([47.5, -120.5], {icon: greenIcon})
+            .addTo(regionsMap)
+            .bindPopup('<b>Washington</b><br>Available Now');
+
+        L.marker([31.0, -100.0], {icon: greenIcon})
+            .addTo(regionsMap)
+            .bindPopup('<b>Texas</b><br>Available Now');
+
+        // Add markers for coming soon states
+        L.marker([34.0, -111.5], {icon: orangeIcon})
+            .addTo(regionsMap)
+            .bindPopup('<b>Arizona</b><br>Coming Soon');
+
+        L.marker([36.7, -119.7], {icon: orangeIcon})
+            .addTo(regionsMap)
+            .bindPopup('<b>California</b><br>Coming Soon');
+    </script>
 
     
     <section class="content">
@@ -1579,6 +1707,14 @@
                    onmouseover="this.style.borderColor='#3498db'" 
                    onmouseout="this.style.borderColor='transparent'">
                     Credits & Attributions
+                </a> page.
+            </p>
+            <p style="margin: 1rem 0; font-size: 0.95rem;">
+                <strong>Terms of Use & Data Access Agreement:</strong> By using this website you have read and agreed to our 
+                <a href="terms.html" style="color: #3498db; text-decoration: none; font-weight: 600; border-bottom: 2px solid transparent; transition: border-color 0.3s ease;" 
+                   onmouseover="this.style.borderColor='#3498db'" 
+                   onmouseout="this.style.borderColor='transparent'">
+                    Terms of Use & Data Access Agreement
                 </a> page.
             </p>
             <p><strong>Disclaimer:</strong> We strive to provide the most accurate and up-to-date data available; however, we cannot guarantee its completeness, accuracy, or fitness for any particular purpose. This guidance is advisory only and should never be relied upon as a substitute for official legal, regulatory, or professional advice. We assume no responsibility or liability for any losses, damages, or consequences resulting directly or indirectly from the use of this information. Users assume all risk and must always verify all information with the relevant governmental or legal authorities.</p>
