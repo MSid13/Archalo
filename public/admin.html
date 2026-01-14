@@ -320,19 +320,22 @@
         /* Mobile Menu Toggle Button */
         .mobile-menu-toggle {
             display: none;
-            position: fixed;
-            top: 80px;
-            left: 1rem;
+            position: sticky;
+            top: 1rem;
+            left: 0;
             z-index: 1001;
             padding: 0.8rem 1rem;
             background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
             transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            width: fit-content;
         }
         
         .mobile-menu-toggle:hover {
@@ -408,7 +411,7 @@
         /* Mobile Responsive */
         @media (max-width: 968px) {
             .mobile-menu-toggle {
-                display: block;
+                display: block !important;
             }
             
             .admin-panel-wrapper {
