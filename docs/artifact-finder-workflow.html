@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Found an Artifact - How It Works</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 3rem 2rem;
+        }
+
+        h2 {
+            color: #667eea;
+            margin: 2rem 0 1rem 0;
+            font-size: 2rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin: 1.5rem 0 1rem 0;
+            font-size: 1.5rem;
+        }
+
+        .overview-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 5px solid #667eea;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        /* Flow Diagram */
+        .flow-step {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem auto;
+            max-width: 600px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            position: relative;
+        }
+
+        .flow-step::after {
+            content: '↓';
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: #667eea;
+        }
+
+        .flow-step:last-of-type::after {
+            display: none;
+        }
+
+        .flow-step h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .flow-step p {
+            color: #555;
+        }
+
+        .flow-step.highlight {
+            background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+            border-color: #764ba2;
+        }
+
+        /* Tier System */
+        .tier-system {
+            margin: 3rem 0;
+        }
+
+        .tier-explanation {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tier-explanation h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+
+        .tier-explanation ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .tier-explanation li {
+            margin: 0.5rem 0;
+        }
+
+        .tier-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border-left: 8px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tier-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+        }
+
+        .tier-card.tier-1 {
+            border-color: #dc3545;
+            background: linear-gradient(135deg, #fff 0%, #ffe5e5 100%);
+        }
+
+        .tier-card.tier-2 {
+            border-color: #fd7e14;
+            background: linear-gradient(135deg, #fff 0%, #fff3e5 100%);
+        }
+
+        .tier-card.tier-3 {
+            border-color: #ffc107;
+            background: linear-gradient(135deg, #fff 0%, #fffbe5 100%);
+        }
+
+        .tier-card.tier-4 {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #fff 0%, #e8f5e9 100%);
+        }
+
+        .tier-card.tier-5 {
+            border-color: #6c757d;
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+        }
+
+        .tier-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tier-badge {
+            background: white;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .tier-1 .tier-badge {
+            background: #dc3545;
+        }
+
+        .tier-2 .tier-badge {
+            background: #fd7e14;
+        }
+
+        .tier-3 .tier-badge {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .tier-4 .tier-badge {
+            background: #28a745;
+        }
+
+        .tier-5 .tier-badge {
+            background: #6c757d;
+        }
+
+        .tier-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .tier-description {
+            margin: 1rem 0;
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .tier-criteria {
+            background: rgba(255,255,255,0.8);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .tier-criteria h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-criteria ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .tier-criteria li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .tier-criteria li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .example-box {
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .example-box h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .example-box code {
+            background: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .database-structure {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+
+        .database-structure pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .use-cases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .use-case {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .use-case h4 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .use-case .step {
+            padding: 0.5rem 0;
+            border-left: 3px solid #667eea;
+            padding-left: 1rem;
+            margin: 0.5rem 0;
+            color: #555;
+        }
+
+        .use-case .result {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            color: #155724;
+        }
+
+        .info-note {
+            background: #d1ecf1;
+            border-left: 5px solid #17a2b8;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-note {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .success-note {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .visual-flow {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: #667eea;
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 1.5rem 1rem;
+            }
+
+            .tier-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏺 "I Found an Artifact"</h1>
+            <p>Understanding How the System Works</p>
+        </header>
+
+        <div class="content">
+            <div class="overview-box">
+                <h3>🎯 What Does This Tool Do?</h3>
+                <p>The "I Found an Artifact" tool helps users get <strong>location-specific guidance</strong> on what to do when they discover archaeological artifacts. The system uses coordinates to look up property information and provides tailored instructions based on a sophisticated 5-tier matching system.</p>
+            </div>
+
+            <h2>📊 System Flow Overview</h2>
+            
+            <div class="flow-step">
+                <h4>1️⃣ User Enters Location</h4>
+                <p>User provides coordinates either manually or via GPS</p>
+            </div>
+
+            <div class="flow-step">
+                <h4>2️⃣ API Lookup</h4>
+                <p>System calls <code>getPropertyInfo(lat, lng)</code> to retrieve:<br>
+                • Owner name<br>
+                • City<br>
+                • Jurisdiction (County)<br>
+                • State<br>
+                • Parcel boundaries</p>
+            </div>
+
+            <div class="flow-step highlight">
+                <h4>3️⃣ Database Matching (5-Tier System)</h4>
+                <p><strong>This is the key step!</strong> System searches Firebase database to find the best matching instructions.</p>
+            </div>
+
+            <div class="flow-step">
+                <h4>4️⃣ Display Results</h4>
+                <p>Show property info, specific guidance, relevant laws, map, and timeline</p>
+            </div>
+
+            <h2>💾 How Database Data is Saved</h2>
+
+            <div class="info-note">
+                <h3>📦 Firebase Firestore Structure</h3>
+                <p>All artifact instructions are stored in <strong>Firebase Firestore</strong>, a cloud-based NoSQL database. Admins create and manage these entries through the admin panel.</p>
+            </div>
+
+            <h3>🗄️ Database Collection Structure</h3>
+
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 12px; margin: 2rem 0;">
+                <h4>Collection: <code>artifactInstructions</code></h4>
+                <p>Each document in this collection represents one set of instructions for a specific location or type of property.</p>
+                
+                <div class="database-structure" style="margin-top: 1rem;">
+<pre>artifactInstructions/
+├── doc_id_1 (auto-generated or custom)
+│   ├── owner: "National Park Service"
+│   ├── city: ""
+│   ├── jurisdiction: ""
+│   ├── state: "WA, OR, CA"
+│   ├── keywords: ["nps", "park service", "federal park"]
+│   ├── title: "Federal Land - National Park"
+│   ├── steps: "1. Leave artifact in place..."
+│   ├── contacts: [...]
+│   ├── laws: ["ARPA", "NAGPRA"]
+│   └── officialLinks: [...]
+│
+├── doc_id_2
+│   ├── owner: ""  ← Empty = City-wide
+│   ├── city: "Seattle"
+│   ├── jurisdiction: "King County"
+│   ├── state: "WA"
+│   ├── keywords: []
+│   ├── title: "Seattle City Property"
+│   ├── steps: "Contact Seattle City Archaeologist..."
+│   └── ...
+│
+└── doc_id_3
+    ├── owner: ""  ← All empty = State-wide
+    ├── city: ""
+    ├── jurisdiction: ""
+    ├── state: "WA"
+    ├── title: "Washington State Archaeologist"
+    └── ...</pre>
+                </div>
+            </div>
+
+            <h3>📝 Complete Document Schema</h3>
+
+            <div class="database-structure">
+<pre>{
+  // MATCHING FIELDS (used by 5-tier system)
+  "owner": "string",           // Specific owner name (e.g., "National Park Service")
+  "city": "string",            // City name (e.g., "Seattle")
+  "jurisdiction": "string",    // County/jurisdiction (e.g., "King County")
+  "state": "string",           // State abbreviation(s) (e.g., "WA" or "WA, OR, ID")
+  "keywords": ["array"],       // Alternative search terms (e.g., ["nps", "park"])
+
+  // CONTENT FIELDS (displayed to users)
+  "title": "string",           // Title of instructions (e.g., "Federal Land - National Park")
+  "steps": "string",           // Detailed step-by-step guidance (supports HTML)
+  
+  "contacts": [                // Contact information array
+    {
+      "name": "John Doe",
+      "title": "State Archaeologist",
+      "organization": "WA Dept of Archaeology",
+      "email": "john.doe@example.gov",
+      "phone": "(555) 123-4567",
+      "address": "123 Main St, Olympia, WA"
+    }
+  ],
+  
+  "laws": ["array"],           // Relevant law IDs (e.g., ["ARPA", "NAGPRA"])
+  
+  "officialLinks": [           // Official resource links
+    {
+      "title": "NPS Archaeological Resources",
+      "url": "https://www.nps.gov/archeology/"
+    }
+  ]
+}</pre>
+            </div>
+
+            <h3>👤 How Admins Create Database Entries</h3>
+
+            <div class="flow-step" style="margin-bottom: 2rem;">
+                <h4>Step 1: Admin Logs In</h4>
+                <p>Admin navigates to <code>artifactHelp.html</code> and clicks "Admin Login" button</p>
+            </div>
+
+            <div class="flow-step" style="margin-bottom: 2rem;">
+                <h4>Step 2: Access Admin Panel</h4>
+                <p>After authentication, admin sees the "Create New Artifact Instruction" form</p>
+            </div>
+
+            <div class="flow-step" style="margin-bottom: 2rem;">
+                <h4>Step 3: Fill Out Form</h4>
+                <p>Admin fills in matching fields (owner, city, jurisdiction, state) and content fields (title, steps, contacts)</p>
+            </div>
+
+            <div class="flow-step" style="margin-bottom: 2rem;">
+                <h4>Step 4: Add Contacts (Optional)</h4>
+                <p>Admin can add multiple contacts with "Add Another Contact" button. Each contact has name, title, org, email, phone, and address fields.</p>
+            </div>
+
+            <div class="flow-step" style="margin-bottom: 2rem;">
+                <h4>Step 5: Select Laws</h4>
+                <p>Admin selects relevant laws from checkboxes (Federal, State, County laws loaded from <code>laws</code> collection)</p>
+            </div>
+
+            <div class="flow-step" style="margin-bottom: 2rem;">
+                <h4>Step 6: Add Official Links (Optional)</h4>
+                <p>Admin can add resource links with titles and URLs</p>
+            </div>
+
+            <div class="flow-step" style="margin-bottom: 2rem;">
+                <h4>Step 7: Submit</h4>
+                <p>Clicks "Create Artifact Instruction" → Data saved to Firestore with auto-generated document ID</p>
+            </div>
+
+            <div class="success-note">
+                <h3>✅ What Happens When Saved</h3>
+                <ol>
+                    <li><strong>Validation:</strong> System validates all required fields are filled</li>
+                    <li><strong>Firebase Write:</strong> Document added to <code>artifactInstructions</code> collection</li>
+                    <li><strong>Auto-ID:</strong> Firebase generates unique document ID automatically</li>
+                    <li><strong>Instant Availability:</strong> New instruction is immediately available for matching</li>
+                    <li><strong>Success Message:</strong> Admin sees confirmation message</li>
+                </ol>
+            </div>
+
+            <h3>✏️ Editing Existing Entries</h3>
+
+            <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 12px; padding: 1.5rem; margin: 2rem 0;">
+                <h4>Edit Workflow:</h4>
+                <ol style="margin: 1rem 0; padding-left: 1.5rem;">
+                    <li>Admin searches for instruction in admin panel</li>
+                    <li>Clicks "Edit" button on the instruction card</li>
+                    <li>Form pre-fills with existing data</li>
+                    <li>Admin modifies fields as needed</li>
+                    <li>Clicks "Update" → Firebase updates the document</li>
+                    <li>Changes take effect immediately</li>
+                </ol>
+            </div>
+
+            <h3>🗑️ Deleting Entries</h3>
+
+            <div class="warning-note">
+                <h4>⚠️ Deletion Process (Permission Required)</h4>
+                <p>Only admins with <code>deletion: true</code> permission can delete entries:</p>
+                <ol style="margin: 1rem 0; padding-left: 1.5rem;">
+                    <li>Search and find the instruction</li>
+                    <li>Click "Delete" button</li>
+                    <li>Confirm deletion in popup dialog</li>
+                    <li>Firebase removes document permanently</li>
+                    <li>Instruction immediately stops matching for new searches</li>
+                </ol>
+            </div>
+
+            <h3>🔄 Real-Time Updates</h3>
+
+            <div style="background: #d1ecf1; border: 2px solid #17a2b8; border-radius: 12px; padding: 1.5rem; margin: 2rem 0;">
+                <h4>💡 How Changes Take Effect</h4>
+                <p><strong>Immediate Effect:</strong> When an admin creates, updates, or deletes an instruction, the changes are saved to Firebase Firestore and are immediately available.</p>
+                
+                <ul style="margin-top: 1rem;">
+                    <li><strong>No Cache:</strong> Each user search queries the live database</li>
+                    <li><strong>No Restart Needed:</strong> No server restart or deployment required</li>
+                    <li><strong>User Impact:</strong> Next user search will use the updated data</li>
+                    <li><strong>Global Changes:</strong> All users worldwide see the same data instantly</li>
+                </ul>
+            </div>
+
+            <h3>📊 Data Flow Diagram</h3>
+
+            <div class="visual-flow">
+                <div style="background: #e3f2fd; border: 3px solid #2196F3; padding: 1.5rem; border-radius: 12px; margin: 1rem auto; max-width: 600px;">
+                    <strong>👤 Admin Creates/Edits Entry</strong><br>
+                    Fills form in admin panel
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div style="background: #fff3e0; border: 3px solid #FF9800; padding: 1.5rem; border-radius: 12px; margin: 1rem auto; max-width: 600px;">
+                    <strong>✅ Form Validation</strong><br>
+                    Client-side checks (required fields, format)
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div style="background: #ffebee; border: 3px solid #f44336; padding: 1.5rem; border-radius: 12px; margin: 1rem auto; max-width: 600px;">
+                    <strong>🔐 Firebase Authentication</strong><br>
+                    Verify user has admin permissions
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div style="background: #e8f5e9; border: 3px solid #4CAF50; padding: 1.5rem; border-radius: 12px; margin: 1rem auto; max-width: 600px;">
+                    <strong>💾 Firestore Write Operation</strong><br>
+                    Document saved to <code>artifactInstructions</code> collection
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div style="background: #f3e5f5; border: 3px solid #9C27B0; padding: 1.5rem; border-radius: 12px; margin: 1rem auto; max-width: 600px;">
+                    <strong>🌍 Globally Available</strong><br>
+                    All users can now access this instruction instantly
+                </div>
+            </div>
+
+            <h3>🔒 Data Security & Permissions</h3>
+
+            <table style="margin: 2rem 0;">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Required Permission</th>
+                        <th>What It Controls</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>View Instructions</strong></td>
+                        <td>None (Public)</td>
+                        <td>Anyone can view instructions by entering coordinates</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Access Admin Panel</strong></td>
+                        <td>Authentication Required</td>
+                        <td>Must log in with authorized email/password</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Create/Edit Instructions</strong></td>
+                        <td><code>found: true</code></td>
+                        <td>Can create and modify artifact instructions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Delete Instructions</strong></td>
+                        <td><code>deletion: true</code></td>
+                        <td>Can permanently remove instructions</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="database-structure" style="margin-top: 2rem;">
+                <h4>Firebase Security Rules Example:</h4>
+<pre>// Firestore Security Rules
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Public read access to instructions
+    match /artifactInstructions/{docId} {
+      allow read: if true;  // Anyone can read
+      allow write: if request.auth != null;  // Only authenticated admins
+    }
+    
+    // Laws collection (used for selection)
+    match /laws/{lawId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}</pre>
+            </div>
+
+            <h3>💡 Best Practices for Data Management</h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0;">
+                <div style="background: #e8f5e9; padding: 1.5rem; border-radius: 12px; border-left: 5px solid #4CAF50;">
+                    <h4>✅ DO</h4>
+                    <ul>
+                        <li>Use descriptive titles</li>
+                        <li>Test coordinates before saving</li>
+                        <li>Include multiple contact methods</li>
+                        <li>Use keywords for variations</li>
+                        <li>Specify states to prevent wrong matches</li>
+                        <li>Keep instructions clear and concise</li>
+                    </ul>
+                </div>
+                <div style="background: #ffebee; padding: 1.5rem; border-radius: 12px; border-left: 5px solid #f44336;">
+                    <h4>❌ DON'T</h4>
+                    <ul>
+                        <li>Leave state field empty (unless truly nationwide)</li>
+                        <li>Duplicate entries unnecessarily</li>
+                        <li>Use vague or generic titles</li>
+                        <li>Forget to test after creating</li>
+                        <li>Include outdated contact info</li>
+                        <li>Mix different owner types in one entry</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>🎯 The 5-Tier Matching System Explained</h2>
+
+            <div class="tier-explanation">
+                <h3>⚠️ Why Is This Important?</h3>
+                <p>The 5-tier system determines <strong>which instructions to show the user</strong>. It searches from most specific (Tier 1) to most general (Tier 5), stopping at the first match.</p>
+                
+                <h4 style="margin-top: 1rem;">Key Principles:</h4>
+                <ul>
+                    <li><strong>Specificity Wins:</strong> More specific matches (like a specific owner) override general matches (like state-wide)</li>
+                    <li><strong>Stop on First Match:</strong> Once a tier finds a match, the search stops</li>
+                    <li><strong>State Filtering:</strong> If a database entry specifies states, the property MUST be in one of those states to match</li>
+                    <li><strong>Empty Fields = More General:</strong> Database entries with NO owner/city/jurisdiction are intentionally broad</li>
+                </ul>
+            </div>
+
+            <!-- TIER 1 -->
+            <div class="tier-card tier-1">
+                <div class="tier-header">
+                    <span class="tier-badge">TIER 1</span>
+                    <span class="tier-title">Owner/Keyword Match</span>
+                </div>
+                <div class="tier-description">
+                    <strong>MOST SPECIFIC:</strong> Matches specific property owners or keywords found in the owner field.
+                </div>
+                
+                <div class="tier-criteria">
+                    <h4>Matching Criteria:</h4>
+                    <ul>
+                        <li>Database has a specific owner name (e.g., "National Park Service")</li>
+                        <li>Property owner contains the database owner name, OR</li>
+                        <li>Property owner contains a keyword from the database (e.g., "NPS", "park")</li>
+                        <li>State must match (if specified in database)</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>💡 Real Example:</h4>
+                    <p><strong>Property Found:</strong> Mt. Rainier National Park</p>
+                    <p><strong>API Returns:</strong> <code>owner: "National Park Service"</code>, <code>state: "WA"</code></p>
+                    <p><strong>Database Entry:</strong></p>
+                    <div class="database-structure">
+<pre>{
+  owner: "National Park Service",
+  keywords: ["nps", "park service"],
+  state: "WA, OR, CA, ID",
+  title: "Federal Land - National Park",
+  steps: "Contact park rangers immediately..."
+}</pre>
+                    </div>
+                    <p><strong>✅ TIER 1 MATCH!</strong> Owner name matches exactly</p>
+                </div>
+            </div>
+
+            <!-- TIER 2 -->
+            <div class="tier-card tier-2">
+                <div class="tier-header">
+                    <span class="tier-badge">TIER 2</span>
+                    <span class="tier-title">City-Wide Match</span>
+                </div>
+                <div class="tier-description">
+                    <strong>CITY LEVEL:</strong> Matches all properties within a specific city, regardless of owner.
+                </div>
+                
+                <div class="tier-criteria">
+                    <h4>Matching Criteria:</h4>
+                    <ul>
+                        <li>Database entry has <strong>NO owner specified</strong> (empty or blank)</li>
+                        <li>Database has a city name (e.g., "Seattle")</li>
+                        <li>Property city matches database city</li>
+                        <li>Jurisdiction matches too (if specified in database, for disambiguation)</li>
+                        <li>State must match (if specified in database)</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>💡 Real Example:</h4>
+                    <p><strong>Property Found:</strong> Private backyard in Seattle</p>
+                    <p><strong>API Returns:</strong> <code>owner: "John Doe"</code>, <code>city: "Seattle"</code>, <code>state: "WA"</code></p>
+                    <p><strong>Database Entry:</strong></p>
+                    <div class="database-structure">
+<pre>{
+  owner: "",  // <-- Empty! This is city-wide
+  city: "Seattle",
+  state: "WA",
+  title: "Seattle City Artifacts",
+  steps: "Contact Seattle City Archaeologist..."
+}</pre>
+                    </div>
+                    <p><strong>✅ TIER 2 MATCH!</strong> No Tier 1 match found, but city matches</p>
+                </div>
+
+                <div class="warning-note">
+                    <strong>⚠️ Important:</strong> If a database entry has BOTH an owner AND a city, it will only match in Tier 1 (owner must match). For Tier 2, the owner field must be empty.
+                </div>
+            </div>
+
+            <!-- TIER 3 -->
+            <div class="tier-card tier-3">
+                <div class="tier-header">
+                    <span class="tier-badge">TIER 3</span>
+                    <span class="tier-title">County/Jurisdiction Match</span>
+                </div>
+                <div class="tier-description">
+                    <strong>COUNTY LEVEL:</strong> Matches all properties within a specific county or jurisdiction.
+                </div>
+                
+                <div class="tier-criteria">
+                    <h4>Matching Criteria:</h4>
+                    <ul>
+                        <li>Database entry has <strong>NO owner specified</strong> (empty)</li>
+                        <li>Database entry has <strong>NO city specified</strong> (empty)</li>
+                        <li>Database has a jurisdiction/county name (e.g., "King County")</li>
+                        <li>Property jurisdiction matches database jurisdiction</li>
+                        <li>State must match (if specified in database)</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>💡 Real Example:</h4>
+                    <p><strong>Property Found:</strong> Rural property in King County</p>
+                    <p><strong>API Returns:</strong> <code>owner: "Jane Smith"</code>, <code>jurisdiction: "King County"</code>, <code>state: "WA"</code></p>
+                    <p><strong>Database Entry:</strong></p>
+                    <div class="database-structure">
+<pre>{
+  owner: "",         // <-- Empty
+  city: "",          // <-- Empty  
+  jurisdiction: "King County",
+  state: "WA",
+  title: "King County Artifacts",
+  steps: "Contact King County Historic Preservation..."
+}</pre>
+                    </div>
+                    <p><strong>✅ TIER 3 MATCH!</strong> No owner/city match, but county matches</p>
+                </div>
+            </div>
+
+            <!-- TIER 4 -->
+            <div class="tier-card tier-4">
+                <div class="tier-header">
+                    <span class="tier-badge">TIER 4</span>
+                    <span class="tier-title">State-Wide Match</span>
+                </div>
+                <div class="tier-description">
+                    <strong>STATE LEVEL:</strong> State Archaeologist contact - applies to any property in the state.
+                </div>
+                
+                <div class="tier-criteria">
+                    <h4>Matching Criteria:</h4>
+                    <ul>
+                        <li>Database entry has <strong>NO owner specified</strong> (empty)</li>
+                        <li>Database entry has <strong>NO city specified</strong> (empty)</li>
+                        <li>Database entry has <strong>NO jurisdiction specified</strong> (empty)</li>
+                        <li>Database has a state (e.g., "WA")</li>
+                        <li>Property state matches database state</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>💡 Real Example:</h4>
+                    <p><strong>Property Found:</strong> Remote location in Washington State</p>
+                    <p><strong>API Returns:</strong> <code>owner: "Unknown"</code>, <code>state: "WA"</code></p>
+                    <p><strong>Database Entry:</strong></p>
+                    <div class="database-structure">
+<pre>{
+  owner: "",         // <-- Empty
+  city: "",          // <-- Empty
+  jurisdiction: "", // <-- Empty
+  state: "WA",
+  title: "Washington State Archaeologist",
+  steps: "Contact the WA State Archaeologist..."
+}</pre>
+                    </div>
+                    <p><strong>✅ TIER 4 MATCH!</strong> Fallback to state-level contact</p>
+                </div>
+            </div>
+
+            <!-- TIER 5 -->
+            <div class="tier-card tier-5">
+                <div class="tier-header">
+                    <span class="tier-badge">TIER 5</span>
+                    <span class="tier-title">Nationwide Default</span>
+                </div>
+                <div class="tier-description">
+                    <strong>FALLBACK:</strong> Generic federal guidance when no specific instructions exist.
+                </div>
+                
+                <div class="tier-criteria">
+                    <h4>When This Applies:</h4>
+                    <ul>
+                        <li>No match found in Tiers 1-4</li>
+                        <li>Property is outside covered areas</li>
+                        <li>Database has no matching entries</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>💡 Real Example:</h4>
+                    <p><strong>Property Found:</strong> Property in a state with no database entries</p>
+                    <p><strong>API Returns:</strong> <code>state: "TX"</code></p>
+                    <p><strong>Database:</strong> No entries match Texas or any owner/city/jurisdiction</p>
+                    <p><strong>✅ TIER 5 DEFAULT!</strong> Shows generic federal laws (ARPA, NAGPRA) and basic guidance</p>
+                </div>
+            </div>
+
+            <h2>🔄 Visual Tier Matching Flow</h2>
+            <div class="visual-flow">
+                <div style="background: #ffe5e5; border: 3px solid #dc3545; padding: 1.5rem; border-radius: 12px; margin: 1rem auto; max-width: 500px;">
+                    <strong>🔍 Start: Check TIER 1</strong><br>
+                    Does property owner match database owner/keywords?
+                </div>
+                <div class="flow-arrow">↓ NO</div>
+                <div style="background: #fff3e5; border: 3px solid #fd7e14; padding: 1.5rem; border-radius: 12px; margin: 1rem auto; max-width: 500px;">
+                    <strong>🔍 Check TIER 2</strong><br>
+                    Does city match a city-wide entry (no owner in DB)?
+                </div>
+                <div class="flow-arrow">↓ NO</div>
+                <div style="background: #fffbe5; border: 3px solid #ffc107; padding: 1.5rem; border-radius: 12px; margin: 1rem auto; max-width: 500px;">
+                    <strong>🔍 Check TIER 3</strong><br>
+                    Does jurisdiction match a county-wide entry (no owner/city in DB)?
+                </div>
+                <div class="flow-arrow">↓ NO</div>
+                <div style="background: #e8f5e9; border: 3px solid #28a745; padding: 1.5rem; border-radius: 12px; margin: 1rem auto; max-width: 500px;">
+                    <strong>🔍 Check TIER 4</strong><br>
+                    Does state match a state-wide entry (no owner/city/jurisdiction in DB)?
+                </div>
+                <div class="flow-arrow">↓ NO</div>
+                <div style="background: #f0f0f0; border: 3px solid #6c757d; padding: 1.5rem; border-radius: 12px; margin: 1rem auto; max-width: 500px;">
+                    <strong>✅ Use TIER 5</strong><br>
+                    Show nationwide default guidance
+                </div>
+            </div>
+
+            <h2>🎓 Complete Use Cases</h2>
+            <div class="use-cases">
+                <div class="use-case">
+                    <h4>🏞️ Case 1: National Park</h4>
+                    <div class="step">📍 Artifact found at Mt. Rainier</div>
+                    <div class="step">🌐 API: <code>owner: "National Park Service"</code></div>
+                    <div class="step">🔍 Search Tier 1: Owner matches!</div>
+                    <div class="result">
+                        <strong>✅ Result:</strong> Show NPS-specific instructions, ARPA law, park ranger contacts
+                    </div>
+                </div>
+
+                <div class="use-case">
+                    <h4>🏙️ Case 2: Seattle Private Property</h4>
+                    <div class="step">📍 Artifact in Seattle backyard</div>
+                    <div class="step">🌐 API: <code>owner: "John Doe"</code>, <code>city: "Seattle"</code></div>
+                    <div class="step">❌ Tier 1: No owner match</div>
+                    <div class="step">🔍 Tier 2: City matches!</div>
+                    <div class="result">
+                        <strong>✅ Result:</strong> Show Seattle city archaeologist contact, city ordinances
+                    </div>
+                </div>
+
+                <div class="use-case">
+                    <h4>🌲 Case 3: Rural King County</h4>
+                    <div class="step">📍 Rural property in King County</div>
+                    <div class="step">🌐 API: <code>jurisdiction: "King County"</code></div>
+                    <div class="step">❌ Tier 1 & 2: No matches</div>
+                    <div class="step">🔍 Tier 3: County matches!</div>
+                    <div class="result">
+                        <strong>✅ Result:</strong> Show King County historic preservation contacts
+                    </div>
+                </div>
+            </div>
+
+            <h2>📋 Database Entry Best Practices</h2>
+            
+            <div class="info-note">
+                <h3>✍️ How to Create Database Entries</h3>
+                <p>Understanding which fields to fill is crucial:</p>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Entry Type</th>
+                        <th>Owner</th>
+                        <th>City</th>
+                        <th>Jurisdiction</th>
+                        <th>State</th>
+                        <th>Matches In</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Specific Owner</strong></td>
+                        <td>✅ Fill</td>
+                        <td>Optional</td>
+                        <td>Optional</td>
+                        <td>✅ Fill</td>
+                        <td>Tier 1</td>
+                    </tr>
+                    <tr>
+                        <td><strong>City-Wide</strong></td>
+                        <td>❌ Leave Empty</td>
+                        <td>✅ Fill</td>
+                        <td>Optional</td>
+                        <td>✅ Fill</td>
+                        <td>Tier 2</td>
+                    </tr>
+                    <tr>
+                        <td><strong>County-Wide</strong></td>
+                        <td>❌ Leave Empty</td>
+                        <td>❌ Leave Empty</td>
+                        <td>✅ Fill</td>
+                        <td>✅ Fill</td>
+                        <td>Tier 3</td>
+                    </tr>
+                    <tr>
+                        <td><strong>State-Wide</strong></td>
+                        <td>❌ Leave Empty</td>
+                        <td>❌ Leave Empty</td>
+                        <td>❌ Leave Empty</td>
+                        <td>✅ Fill</td>
+                        <td>Tier 4</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="success-note">
+                <h3>💡 Pro Tips</h3>
+                <ul>
+                    <li><strong>Keywords are powerful:</strong> Use them for variations (e.g., "nps", "park service" for National Park Service)</li>
+                    <li><strong>State filtering:</strong> Always specify states to prevent incorrect matches</li>
+                    <li><strong>Multiple states:</strong> You can specify multiple states like "WA, OR, ID"</li>
+                    <li><strong>Empty = Intentional:</strong> Leaving fields empty makes the entry broader on purpose</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

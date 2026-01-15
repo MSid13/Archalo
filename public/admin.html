@@ -604,6 +604,8 @@
                     <button class="admin-nav-tab" onclick="switchAdminSection('parcelViewers')">🗺️ Parcel Viewers</button>
                     <div class="admin-nav-separator"></div>
                     <button class="admin-nav-tab" onclick="switchAdminSection('artifactOfDay')">🏺 Artifact of the Day</button>
+                    <div class="admin-nav-separator"></div>
+                    <button class="admin-nav-tab" onclick="switchAdminSection('database')">🗄️ Database Browser</button>
                 </div>
                 
                 <div class="admin-content-wrapper">
@@ -1295,6 +1297,65 @@
                 </div>
             </div>
             <!-- End Artifact of the Day Section -->
+
+            <!-- Database Browser Section -->
+            <div id="databaseSection" class="admin-section-content">
+                <div class="section-card">
+                    <h2>🗄️ Database Browser</h2>
+                    <p style="color: #7f8c8d; margin-bottom: 1.5rem;">Browse and edit Firestore collections and documents. Click to load data on-demand.</p>
+
+                    <div class="warning-banner" style="margin-bottom: 1.5rem;">
+                        <strong>⚠️ Warning:</strong> Direct database editing is powerful. Changes here affect the live application immediately. Use with caution.
+                    </div>
+
+                    <!-- Collections List -->
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="color: #2c3e50; margin-bottom: 1rem;">📁 Collections</h3>
+                        <div id="collectionsListContainer">
+                            <button onclick="loadCollection('artifactInstructions')" class="btn btn-secondary" style="margin: 0.5rem; width: auto;">🏺 artifactInstructions</button>
+                            <button onclick="loadCollection('laws')" class="btn btn-secondary" style="margin: 0.5rem; width: auto;">⚖️ laws</button>
+                            <button onclick="loadCollection('eduResources')" class="btn btn-secondary" style="margin: 0.5rem; width: auto;">📖 eduResources</button>
+                            <button onclick="loadCollection('announcements')" class="btn btn-secondary" style="margin: 0.5rem; width: auto;">📢 announcements</button>
+                            <button onclick="loadCollection('credits')" class="btn btn-secondary" style="margin: 0.5rem; width: auto;">✍️ credits</button>
+                            <button onclick="loadCollection('parcelViewers')" class="btn btn-secondary" style="margin: 0.5rem; width: auto;">🗺️ parcelViewers</button>
+                            <button onclick="loadCollection('artifactOfDay')" class="btn btn-secondary" style="margin: 0.5rem; width: auto;">🏺 artifactOfDay</button>
+                            <button onclick="loadCollection('config')" class="btn btn-secondary" style="margin: 0.5rem; width: auto;">⚙️ config</button>
+                        </div>
+                    </div>
+
+                    <!-- Collection Contents -->
+                    <div id="collectionContentsContainer" style="display: none;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h3 id="currentCollectionTitle" style="color: #2c3e50; margin: 0;"></h3>
+                            <button onclick="closeCollection()" class="btn btn-secondary" style="width: auto; padding: 0.5rem 1rem;">← Back to Collections</button>
+                        </div>
+
+                        <div id="documentsListContainer" style="margin-bottom: 1.5rem;">
+                            <!-- Documents will be listed here -->
+                        </div>
+                    </div>
+
+                    <!-- Document Editor -->
+                    <div id="documentEditorContainer" style="display: none;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h3 id="currentDocumentTitle" style="color: #2c3e50; margin: 0;"></h3>
+                            <div>
+                                <button onclick="saveDocument()" class="btn btn-success" style="width: auto; padding: 0.5rem 1rem; margin-right: 0.5rem;">💾 Save Changes</button>
+                                <button onclick="closeDocument()" class="btn btn-secondary" style="width: auto; padding: 0.5rem 1rem;">← Back to Documents</button>
+                            </div>
+                        </div>
+
+                        <div class="warning-banner" style="margin-bottom: 1rem;">
+                            <strong>📝 Editing:</strong> Modify the JSON below. Be careful with syntax - invalid JSON will not save.
+                        </div>
+
+                        <textarea id="documentJsonEditor" style="width: 100%; min-height: 400px; font-family: 'Courier New', monospace; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem;"></textarea>
+
+                        <div id="documentEditorMessage" style="margin-top: 1rem;"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Database Browser Section -->
             
                 </div><!-- End admin-content-wrapper -->
             </div><!-- End admin-panel-wrapper -->
@@ -3288,6 +3349,148 @@
         };
 
         // ============== END ARTIFACT OF THE DAY FUNCTIONS ==============
+
+        // ============== DATABASE BROWSER FUNCTIONS ==============
+        let currentCollection = null;
+        let currentDocumentId = null;
+        let currentDocumentData = null;
+
+        window.loadCollection = async function(collectionName) {
+            currentCollection = collectionName;
+            console.log('Loading collection:', collectionName);
+
+            try {
+                // Show loading state
+                document.getElementById('currentCollectionTitle').textContent = `📁 ${collectionName}`;
+                document.getElementById('collectionContentsContainer').style.display = 'block';
+                document.getElementById('documentEditorContainer').style.display = 'none';
+                document.getElementById('documentsListContainer').innerHTML = '<p style="color: #7f8c8d;">Loading documents...</p>';
+
+                // Fetch all documents in collection
+                const querySnapshot = await getDocs(collection(db, collectionName));
+                
+                if (querySnapshot.empty) {
+                    document.getElementById('documentsListContainer').innerHTML = '<p style="color: #7f8c8d;">No documents in this collection.</p>';
+                    return;
+                }
+
+                // Display documents as cards
+                let html = '<div style="display: grid; gap: 1rem;">';
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const preview = JSON.stringify(data, null, 2).substring(0, 200) + '...';
+                    
+                    html += `
+                        <div style="background: #f8f9fa; border: 2px solid #e0e0e0; border-radius: 8px; padding: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <strong style="color: #2c3e50; font-size: 1.1rem;">📄 ${doc.id}</strong>
+                                <button onclick="loadDocument('${doc.id}')" class="btn" style="width: auto; padding: 0.5rem 1rem;">✏️ Edit</button>
+                            </div>
+                            <pre style="background: white; padding: 0.5rem; border-radius: 4px; font-size: 0.85rem; overflow: auto; max-height: 150px;">${escapeHtml(preview)}</pre>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+
+                document.getElementById('documentsListContainer').innerHTML = html;
+
+            } catch (error) {
+                console.error('Error loading collection:', error);
+                document.getElementById('documentsListContainer').innerHTML = `<div class="error-message">Error loading collection: ${error.message}</div>`;
+            }
+        };
+
+        window.loadDocument = async function(docId) {
+            currentDocumentId = docId;
+            console.log('Loading document:', docId, 'from collection:', currentCollection);
+
+            try {
+                // Show loading state
+                document.getElementById('currentDocumentTitle').textContent = `📄 ${currentCollection} / ${docId}`;
+                document.getElementById('collectionContentsContainer').style.display = 'none';
+                document.getElementById('documentEditorContainer').style.display = 'block';
+                document.getElementById('documentJsonEditor').value = 'Loading...';
+
+                // Fetch document
+                const docRef = doc(db, currentCollection, docId);
+                const docSnap = await getDoc(docRef);
+
+                if (!docSnap.exists()) {
+                    throw new Error('Document not found');
+                }
+
+                currentDocumentData = docSnap.data();
+                
+                // Display as formatted JSON
+                document.getElementById('documentJsonEditor').value = JSON.stringify(currentDocumentData, null, 2);
+                document.getElementById('documentEditorMessage').innerHTML = '';
+
+            } catch (error) {
+                console.error('Error loading document:', error);
+                document.getElementById('documentEditorMessage').innerHTML = `<div class="error-message">Error loading document: ${error.message}</div>`;
+            }
+        };
+
+        window.saveDocument = async function() {
+            if (!currentCollection || !currentDocumentId) {
+                alert('No document selected');
+                return;
+            }
+
+            try {
+                // Parse JSON from editor
+                const jsonText = document.getElementById('documentJsonEditor').value;
+                const updatedData = JSON.parse(jsonText);
+
+                // Confirm before saving
+                if (!confirm(`Are you sure you want to save changes to ${currentCollection}/${currentDocumentId}?`)) {
+                    return;
+                }
+
+                // Save to Firestore
+                const docRef = doc(db, currentCollection, currentDocumentId);
+                await setDoc(docRef, updatedData);
+
+                currentDocumentData = updatedData;
+
+                document.getElementById('documentEditorMessage').innerHTML = '<div class="success-message">✅ Document saved successfully!</div>';
+                
+                setTimeout(() => {
+                    document.getElementById('documentEditorMessage').innerHTML = '';
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error saving document:', error);
+                if (error instanceof SyntaxError) {
+                    document.getElementById('documentEditorMessage').innerHTML = `<div class="error-message">❌ Invalid JSON syntax: ${error.message}</div>`;
+                } else {
+                    document.getElementById('documentEditorMessage').innerHTML = `<div class="error-message">❌ Error saving document: ${error.message}</div>`;
+                }
+            }
+        };
+
+        window.closeDocument = function() {
+            document.getElementById('documentEditorContainer').style.display = 'none';
+            document.getElementById('collectionContentsContainer').style.display = 'block';
+            currentDocumentId = null;
+            currentDocumentData = null;
+        };
+
+        window.closeCollection = function() {
+            document.getElementById('collectionContentsContainer').style.display = 'none';
+            currentCollection = null;
+            currentDocumentId = null;
+            currentDocumentData = null;
+        };
+
+        // Helper function to escape HTML for display
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ============== END DATABASE BROWSER FUNCTIONS ==============
 
         // Switch between admin sections
         window.switchAdminSection = function(sectionName) {
